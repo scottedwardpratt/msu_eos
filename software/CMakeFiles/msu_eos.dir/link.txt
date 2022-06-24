@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc lib/libmsu_eos.a CMakeFiles/msu_eos.dir/src/eos.cc.o CMakeFiles/msu_eos.dir/src/resinfo.cc.o CMakeFiles/msu_eos.dir/src/reslist.cc.o CMakeFiles/msu_eos.dir/src/reslistio.cc.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib lib/libmsu_eos.a
