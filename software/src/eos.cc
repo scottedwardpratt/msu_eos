@@ -60,7 +60,10 @@ void MSU_EOS::freegascalc_onespecies(double T,double m,double &epsilon,double &P
 	m3=m2*m;
 	m4=m2*m2;
 	z=m/T;
-	if(z>25){ // non-relativistic approximations
+	if(z>50){
+		dens=P=epsilon=dedt=0.0;
+	}
+	else if(z>25){ // non-relativistic approximations
 		dens=exp(-z)*pow(m*T/(2.0*M_PI*HBARC_GEV*HBARC_GEV),1.5);
 		P=dens*T;
 		epsilon=(m+1.5*T)*dens;
@@ -130,23 +133,28 @@ double MSU_EOS::GetJi(double T,double mass,double dens){
 	*/
 	int n;
 	double Ji,eta=mass/T;
-	double J[100]={0.0};
-	double expeta=exp(-eta),kappa;
-	J[1]=-gsl_sf_expint_Ei(-eta)/expeta;
-	for(n=2;n<100;n++){
-		J[n]=(-eta*J[n-1]+1.0)/double(n-1);
+	if(eta>50.0){
+		Ji=0.0;
 	}
-	Ji=1.0/eta;
-	kappa=1.0;
-	for(n=1;n<50;n++){
-		kappa*=-(1.5-n)/double(n);
-		Ji+=J[2*n]*kappa;
-	}
-	Ji*=expeta;
+	else{
+		double J[100]={0.0};
+		double expeta=exp(-eta),kappa;
+		J[1]=-gsl_sf_expint_Ei(-eta)/expeta;
+		for(n=2;n<100;n++){
+			J[n]=(-eta*J[n-1]+1.0)/double(n-1);
+		}
+		Ji=1.0/eta;
+		kappa=1.0;
+		for(n=1;n<50;n++){
+			kappa*=-(1.5-n)/double(n);
+			Ji+=J[2*n]*kappa;
+		}
+		Ji*=expeta;
 	//freegascalc_onespecies(T,mass,epsiloni,Pi,densi,dedti);
-	double Jcon=1.0/(2.0*PI*PI*pow(HBARC_GEV,3));
-	Ji=dens-mass*mass*mass*Ji*Jcon;
-	Ji=Ji/(3.0*T);
+		double Jcon=1.0/(2.0*PI*PI*pow(HBARC_GEV,3));
+		Ji=dens-mass*mass*mass*Ji*Jcon;
+		Ji=Ji/(3.0*T);
+	}
 	return Ji;
 	
 	/*
@@ -228,25 +236,29 @@ double MSU_EOS::GetLambda(double T,CresList *reslist,double P,double epsilon){
 			m=resinfo->mass;
 			degen=resinfo->degen;
 			z=m/T;
-			alpha=0.0;
+			if(z>50.0){
+				lambdafact=0.0;
+			}
+			else{
+				alpha=0.0;
 
-			G[0]=gsl_sf_gamma_inc(5,z)*pow(z,-5);
-			for(i=1;i<nmax+5;i++){
-				n=5-2*i;
-				if(n!=-1)	G[i]=(-exp(-z)/n)+(G[i-1]*z*z-z*exp(-z))/((n+1.0)*n);
-				else G[i]=gsl_sf_gamma_inc(-1,z)*z;
-			}
-			J=0.0;
-			nfact=1.0;
-			sign=1.0;
-			for(n=0;n<nmax;n+=1){
-				if(n>0) sign=-1.0;
-				J+=sign*nfact*(G[n]-2.0*G[n+1]+G[n+2]);
-				nfact=nfact*0.5/(n+1.0);
-				if(n>0) nfact*=(2.0*n-1.0);
-			}
-			dIpp=degen*exp(alpha)*pow(m,4)*(-z*J+15.0*gsl_sf_bessel_Kn(2,z)/(z*z));
-			dIpp=dIpp/(60.0*PI*PI*HBARC_GEV*HBARC_GEV*HBARC_GEV);
+				G[0]=gsl_sf_gamma_inc(5,z)*pow(z,-5);
+				for(i=1;i<nmax+5;i++){
+					n=5-2*i;
+					if(n!=-1)	G[i]=(-exp(-z)/n)+(G[i-1]*z*z-z*exp(-z))/((n+1.0)*n);
+					else G[i]=gsl_sf_gamma_inc(-1,z)*z;
+				}
+				J=0.0;
+				nfact=1.0;
+				sign=1.0;
+				for(n=0;n<nmax;n+=1){
+					if(n>0) sign=-1.0;
+					J+=sign*nfact*(G[n]-2.0*G[n+1]+G[n+2]);
+					nfact=nfact*0.5/(n+1.0);
+					if(n>0) nfact*=(2.0*n-1.0);
+				}
+				dIpp=degen*exp(alpha)*pow(m,4)*(-z*J+15.0*gsl_sf_bessel_Kn(2,z)/(z*z));
+				dIpp=dIpp/(60.0*PI*PI*HBARC_GEV*HBARC_GEV*HBARC_GEV);
 			/*
 			dIpptest=0.0;
 			for(p=0.5*dp;p<3000;p+=dp){
@@ -256,9 +268,10 @@ double MSU_EOS::GetLambda(double T,CresList *reslist,double P,double epsilon){
 			}
 			Ipptest+=dIpptest;
 			*/
-			
-			Ipp+=dIpp;
+
+				Ipp+=dIpp;
 			//Ptest+=Ipptest;
+			}
 		}
 	}
 	lambdafact=(2.0*P-4.0*Ipp)/(P+epsilon);
@@ -269,10 +282,15 @@ double MSU_EOS::GetLambda(double T,CresList *reslist,double P,double epsilon){
 double MSU_EOS::GetSigma2(double T,double mass){
 	double sigma2,Iomega,I1,I2,z;
 	z=mass/T;
-	Iomega=exp(-z)/(30.0*PI*PI*HBARC*HBARC*HBARC);
-	I1=pow(mass,1.5)*pow(T,3.5)*7.5*sqrt(2.0*PI);
-	I2=24.0*pow(T,5);
-	sigma2=Iomega*(I1+I2+0.5*sqrt(I1*I2));  // this is an approximation (+/-2%) to messy integral
+	if(z>50.0){
+		sigma2=0.0;
+	}
+	else{
+		Iomega=exp(-z)/(30.0*PI*PI*HBARC*HBARC*HBARC);
+		I1=pow(mass,1.5)*pow(T,3.5)*7.5*sqrt(2.0*PI);
+		I2=24.0*pow(T,5);
+		sigma2=Iomega*(I1+I2+0.5*sqrt(I1*I2));  // this is an approximation (+/-2%) to messy integral
+	}
 	return sigma2;
 }
 
