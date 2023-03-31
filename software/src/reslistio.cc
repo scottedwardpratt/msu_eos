@@ -23,20 +23,20 @@ void CresList::ReadResInfo(){
 	CdecayInfoMap::iterator diter;
 	Cmerge *merge;
 	filename=parmap->getS("RESONANCES_INFO_FILE",string("../software/resinfo/pdg-SMASH.dat"));
-	sprintf(message,"will read resonance info from %s\n",filename.c_str());
+	snprintf(message,CLog::CHARLENGTH,"will read resonance info from %s\n",filename.c_str());
 	resinfofile=fopen(filename.c_str(),"r");
 	CLog::Info("will read resonance info from "+filename+"\n");
 	if (resinfofile==NULL) {
-		sprintf(message,"Can't open resinfofile\n");
+		snprintf(message,CLog::CHARLENGTH,"Can't open resinfofile\n");
 		CLog::Fatal(message);
 	}
 
 	ires=0;
 	NResonances=0;
 	while(fscanf(resinfofile," %d",&pid)!=EOF && NResonances<20000){
-		resinfo=new CresInfo();
-		NResonances+=1;
-		resinfo->pid=pid;
+			resinfo=new CresInfo();
+			NResonances+=1;
+			resinfo->pid=pid;
 
 		//main reading
 		fscanf(resinfofile, "%s %lf %lf %d %d %d %d %d %d %d %d", cname,&resinfo->mass,&resinfo->width,&resinfo->degen,&resinfo->baryon,&resinfo->strange,&resinfo->charm,&resinfo->bottom,&resinfo->total_isospin,&resinfo->charge,&resinfo->nchannels);
@@ -51,7 +51,7 @@ void CresList::ReadResInfo(){
 		}
 		cname[int(strlen(cname))-1]='\0';
 		resinfo->name=cname;
-		resinfo->q[0]=resinfo->baryon+resinfo->charge;
+		resinfo->q[0]=resinfo->baryon+resinfo->charge-resinfo->charm;
 		resinfo->q[1]=2.0*resinfo->baryon+resinfo->strange-resinfo->charge;
 		resinfo->q[2]=-resinfo->strange;
 		
@@ -154,13 +154,10 @@ void CresList::ReadResInfo(){
 	CLog::Info("NResonances:"+to_string(NResonances)+"\n");
 	//------------------------------------------
 	MergeArray=new Cmerge **[NResonances];
-	//SigmaMaxArray=new double *[NResonances];
 	for(ires=0;ires<NResonances;ires++){
 		MergeArray[ires]=new Cmerge *[NResonances];
-		//SigmaMaxArray[ires]=new double[NResonances];
 		for(ichannelres=0;ichannelres<NResonances;ichannelres++){
 			MergeArray[ires][ichannelres]=NULL;
-			//SigmaMaxArray[ires][ichannelres]=0.0;
 		}
 	}
 
@@ -196,12 +193,12 @@ void CresList::ReadResInfo(){
 			//total charge and baryon number should be conserved, and shouldn't be larger than single strangeness
 				/*
 				if(netq!=0 || netb!=0 || abs(nets)>1){
-					sprintf(message,"Charge conservation failure while reading decay info,\nnetq=%d, netb=%d, nets=%d\n",netq,netb,nets);
+					snprintf(message,CLog::CHARLENGTH,"Charge conservation failure while reading decay info,\nnetq=%d, netb=%d, nets=%d\n",netq,netb,nets);
 					CLog::Info(message);
 					resinfo->Print();
-					sprintf(message,"nchannels=%d, ichannel=%d\n",resinfo->nchannels,ichannel);
+					snprintf(message,CLog::CHARLENGTH,"nchannels=%d, ichannel=%d\n",resinfo->nchannels,ichannel);
 					CLog::Info(message);
-					sprintf(message,"DAUGHTERS:\n");
+					snprintf(message,CLog::CHARLENGTH,"DAUGHTERS:\n");
 					CLog::Info(message);
 					for(ibody=0;ibody<nbodies;ibody++)
 						bptr->resinfo[ibody]->Print();
@@ -259,6 +256,134 @@ void CresList::ReadSpectralFunctions(){
 		else
 			resinfo->SFcalculated=true;
 	}
+}
+
+void CresList::ReadResInfo_MSU(){
+	Cmerge *merge;
+	int mothercode,code,decay,NResonances;
+	double mothermass,netm,bmax,spin;
+	int ires,jres,ires1,ires2,iresflip,ichannel,nchannels,ibody,nbodies,LDecay;
+	int netq,netb,nets;
+	string name, filename;
+	CresInfo *resinfoptr=NULL;
+	CbranchInfo *bptr=NULL,*firstbptr=NULL;
+	FILE *resinfofile;
+	FILE * decayinfofile;
+	char dummy[200],cname[200];
+	filename=parmap->getS("RESONANCES_INFO_FILE",string("../resinfo/resonances_standardhadrons.dat"));
+	//printf("will read res info from %s\n",filename.c_str());
+	resinfofile=fopen(filename.c_str(),"r");
+	fgets(dummy,200,resinfofile);
+	fgets(dummy,200,resinfofile);
+	fgets(dummy,200,resinfofile);
+	fscanf(resinfofile,"%d",&NResonances);
+	fgets(dummy,200,resinfofile);
+	MergeArray=new Cmerge **[NResonances];
+	for(ires=0;ires<NResonances;ires++){
+		MergeArray[ires]=new Cmerge *[NResonances];
+		for(jres=0;jres<NResonances;jres++){
+			MergeArray[ires][jres]=NULL;
+		}
+	}
+	for(ires=0;ires<NResonances;ires++){
+		resinfoptr=new CresInfo();
+		fscanf(resinfofile,"%d %lf %d %d %d %lf %d %d %lf", &resinfoptr->pid,&resinfoptr->mass,&resinfoptr->charge,&resinfoptr->baryon, &resinfoptr->strange,&spin,&resinfoptr->G_Parity,&decay,&resinfoptr->width);
+		resinfoptr->mass*=0.001;
+		resinfoptr->minmass=resinfoptr->mass;
+		resinfoptr->width*=0.001;
+		resinfoptr->degen=lrint(2.0*spin+1);
+
+		resinfoptr->q[0]=resinfoptr->baryon+resinfoptr->charge;
+		resinfoptr->q[1]=2.0*resinfoptr->baryon+resinfoptr->strange-resinfoptr->charge;
+		resinfoptr->q[2]=-resinfoptr->strange;
+		
+		fgets(cname,100,resinfofile);
+		cname[int(strlen(cname))-1]='\0';
+		resinfoptr->name=cname;
+		resinfoptr->decay=bool(decay);
+		resinfoptr->ires=ires;
+		resinfoptr->branchlist.clear();
+		resmap.insert(CresInfoPair(resinfoptr->pid,resinfoptr));
+		massmap.insert(CresMassPair(resinfoptr->mass,resinfoptr));
+	} 
+	fclose(resinfofile);
+
+	filename=parmap->getS("RESONANCES_DECAYS_FILE",string("../resinfo/decays_pdg_weak.dat"));
+	//printf("will read decay info from %s\n",filename.c_str());
+	decayinfofile=fopen(filename.c_str(),"r");
+	while(fscanf(decayinfofile,"%d %lf",&mothercode,&mothermass) && !feof(decayinfofile)){
+		mothermass*=0.001;
+		fgets(dummy,200,decayinfofile);
+		fscanf(decayinfofile,"%d %d",&mothercode,&nchannels);
+		resinfoptr=GetResInfoPtr(mothercode);
+		resinfoptr->minmass=1.0E10;
+		bmax=0.0;
+		for(ichannel=0;ichannel<nchannels;ichannel++){
+			bptr=new CbranchInfo();
+			bptr->resinfo.clear();
+			resinfoptr->branchlist.push_back(bptr);
+			fscanf(decayinfofile,"%d",&nbodies);
+			netq=-resinfoptr->charge;
+			netb=-resinfoptr->baryon;
+			nets=-resinfoptr->strange;
+			netm=0.0;
+			for(ibody=0;ibody<nbodies;ibody++){
+				fscanf(decayinfofile,"%d",&code);
+				bptr->resinfo.push_back(GetResInfoPtr(code));
+				netq+=bptr->resinfo[ibody]->charge;
+				netb+=bptr->resinfo[ibody]->baryon;
+				nets+=bptr->resinfo[ibody]->strange;
+				netm+=bptr->resinfo[ibody]->mass;
+			}
+			//total charge and baryon number should be conserved, and shouldn't be larger than single strangeness
+			if(netq!=0 || netb!=0 || abs(nets)>1){
+				printf("Charge conservation failure while reading decay info,\nnetq=%d, netb=%d, nets=%d\n",netq,netb,nets);
+				printf("MOTHER (ichannel=%d, nbodies=%d):\n",ichannel,nbodies);
+				resinfoptr->Print();
+				printf("DAUGHTERS:\n");
+				for(ibody=0;ibody<nbodies;ibody++)
+					bptr->resinfo[ibody]->Print();
+				if(netq!=0 || netb!=0)
+					exit(1);
+			}
+			fscanf(decayinfofile,"%lf %d",&bptr->branching,&LDecay);
+			
+			//store two body decays only
+			if(nbodies==2){
+				ires1=bptr->resinfo[0]->ires;
+				ires2=bptr->resinfo[1]->ires;
+				if(ires1>ires2){
+					iresflip=ires1; ires1=ires2; ires2=iresflip;
+				}
+				merge=MergeArray[ires1][ires2];
+				if(merge==NULL){
+					MergeArray[ires1][ires2]=new Cmerge(resinfoptr,bptr->branching, LDecay);
+				}
+				else{
+					while(merge->next!=NULL){
+						merge=merge->next;
+					}
+					merge->next=new Cmerge(resinfoptr,bptr->branching, LDecay);
+				}
+			}
+			//if the total mass is smaller than the minimum required mass, replace it
+			if(netm<resinfoptr->minmass){
+				resinfoptr->minmass=netm;
+				resinfoptr->bptr_minmass=bptr;
+			}
+			// switch places to make sure first branch has largest 
+			if(bptr->branching>bmax){
+				bmax=bptr->branching>bmax;
+				if(ichannel>0){
+					firstbptr=resinfoptr->branchlist[0];
+					resinfoptr->branchlist[0]=bptr;
+					resinfoptr->branchlist[ichannel]=firstbptr;
+				}
+			}
+		}
+	}
+	
+	fclose(decayinfofile);
 }
 
 

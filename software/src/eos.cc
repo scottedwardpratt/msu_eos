@@ -167,24 +167,58 @@ double MSU_EOS::GetJi(double T,double mass,double dens){
 }
 
 void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji){
+	printf("MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji) is deprecated.  Will not correctly handle USE_POLE_MASS variable! Use alt function that inputs bool use_pole_mass.)\n");
 	double degen,m;
-	//decay=false;
-	m=resinfo->mass;
-	degen=resinfo->degen;
-	if(resinfo->width>MIN_WIDTH && resinfo->decay && !USE_POLE_MASS){
-		freegascalc_onespecies_finitewidth(T,resinfo,epsiloni,Pi,densi,dedti,p4overE3i,Ji);
+	if(resinfo->charm==0){
+		m=resinfo->mass;
+		degen=resinfo->degen;
+		if(resinfo->width>MIN_WIDTH && resinfo->decay && !MSU_EOS::USE_POLE_MASS){
+			printf("howdy ???????\n");
+			freegascalc_onespecies_finitewidth(T,resinfo,epsiloni,Pi,densi,dedti,p4overE3i,Ji);
+		}
+		else{
+			printf("howdy\n");
+			freegascalc_onespecies(T,m,epsiloni,Pi,densi,dedti);
+			p4overE3i=Getp4overE3(T,m,densi);
+			Ji=GetJi(T,m,densi);
+		}
+		epsiloni*=degen;
+		Pi*=degen;
+		dedti*=degen;
+		densi*=degen;
+		p4overE3i*=degen;
+		Ji*=degen;
 	}
 	else{
-		freegascalc_onespecies(T,m,epsiloni,Pi,densi,dedti);
-		p4overE3i=Getp4overE3(T,m,densi);
-		Ji=GetJi(T,m,densi);
+		// Ignore charmed hadrons
+		epsiloni=Pi=dedti=densi=p4overE3i=Ji=0.0;
 	}
-	epsiloni*=degen;
-	Pi*=degen;
-	dedti*=degen;
-	densi*=degen;
-	p4overE3i*=degen;
-	Ji*=degen;
+}
+
+void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji,bool use_pole_mass){
+	double degen,m;
+	if(resinfo->charm==0){
+		m=resinfo->mass;
+		degen=resinfo->degen;
+		if(resinfo->width>MIN_WIDTH && resinfo->decay && !use_pole_mass){
+			freegascalc_onespecies_finitewidth(T,resinfo,epsiloni,Pi,densi,dedti,p4overE3i,Ji);
+		}
+		else{
+			freegascalc_onespecies(T,m,epsiloni,Pi,densi,dedti);
+			p4overE3i=Getp4overE3(T,m,densi);
+			Ji=GetJi(T,m,densi);
+		}
+		epsiloni*=degen;
+		Pi*=degen;
+		dedti*=degen;
+		densi*=degen;
+		p4overE3i*=degen;
+		Ji*=degen;
+	}
+	else{
+		// Ignore charmed hadrons
+		epsiloni=Pi=dedti=densi=p4overE3i=Ji=0.0;
+	}
 }
 
 void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma){

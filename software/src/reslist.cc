@@ -3,7 +3,7 @@
 #include "msu_commonutils/log.h"
 
 double CresList::MIN_DECAY_WIDTH=0.0001;
-char *CresList::message=new char[200];
+char *CresList::message=new char[CLog::CHARLENGTH];
 
 CresList::CresList(){
 }
@@ -27,7 +27,7 @@ CresInfo* CresList::GetResInfoPtr(int pid){
 	if(rpos!=resmap.end())
 		return rpos->second;
 	else{
-		sprintf(message,"GetResInfoPtr() can't find match for PID=%d\n",pid);
+		snprintf(message,CLog::CHARLENGTH,"GetResInfoPtr() can't find match for PID=%d\n",pid);
 		CLog::Fatal(message);
 		return NULL;
 	}
@@ -47,9 +47,18 @@ CresList::CresList(CparameterMap* parmap_in){
 	CresInfo::NSPECTRAL=parmap->getI("MSU_SAMPLER_NSPECTRAL",100);
 	CresInfo::SFDIRNAME=parmap->getS("MSU_SAMPLER_SFDIRNAME","../local/resinfo/spectralfunctions");
 	//RESONANCE_DECAYS=parmap->getB("RESONANCE_DECAYS",true);
-	ReadResInfo();
+	readmsu=parmap->getB("MSU_SAMPLER_READ_MSU",false);
+	CresInfo::reslist=this;
+	if(readmsu){
+		printf("calling ReadResInfo_MSU\n");
+		ReadResInfo_MSU();
+	}
+	else
+		ReadResInfo();
 	//CalcSpectralFunctions();
-	ReadSpectralFunctions();
+	if(!readmsu){
+		ReadSpectralFunctions();
+	}
 	CalcMinMasses();
 }
 
@@ -74,10 +83,10 @@ void CresList::PrintMassMaps(){
 		resinfo=rpos->second;
 		if(resinfo->decay){
 			it=resinfo->sfmassmap.begin();
-			sprintf(message," ----- SF massmap for pid=%d ----- \n",resinfo->pid);
+			snprintf(message,CLog::CHARLENGTH," ----- SF massmap for pid=%d ----- \n",resinfo->pid);
 			CLog::Info(message);
 			while(it!=resinfo->sfmassmap.end()){
-				sprintf(message,"%g   %g\n",it->first,it->second);
+				snprintf(message,CLog::CHARLENGTH,"%g   %g\n",it->first,it->second);
 				CLog::Info(message);
 				it++;
 			}

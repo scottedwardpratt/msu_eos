@@ -7,7 +7,8 @@
 Crandy *CresInfo::randy=NULL;
 int CresInfo::NSPECTRAL=100;
 string CresInfo::SFDIRNAME="../progdata/resinfo/spectralfunctions";
-char *CresInfo::message=new char[200];
+char *CresInfo::message=new char[CLog::CHARLENGTH];
+CresList *CresInfo::reslist=NULL;
 
 CresInfo::CresInfo(){
 	minmass=1.0E20;
@@ -42,25 +43,25 @@ CbranchInfo::~CbranchInfo(){
 void CresInfo::PrintBranchInfo(){
 	Print();
 	if(decay){
-		sprintf(message," ------  branches -------\n");
+		snprintf(message,CLog::CHARLENGTH," ------  branches -------\n");
 
 		for(int ib=0;ib<int(branchlist.size());ib++){
-			sprintf(message,"%2d, branching=%5.3f, ",ib,branchlist[ib]->branching);
+			snprintf(message,CLog::CHARLENGTH,"%2d, branching=%5.3f, ",ib,branchlist[ib]->branching);
 			CLog::Info(message);
 			for(int ir=0;ir<int(branchlist[ib]->resinfo.size());ir++){
-				sprintf(message,"%6d ",branchlist[ib]->resinfo[ir]->pid);
+				snprintf(message,CLog::CHARLENGTH,"%6d ",branchlist[ib]->resinfo[ir]->pid);
 				CLog::Info(message);
 			}
-			sprintf(message,"Gamma_i=%g\n",width*branchlist[ib]->branching);
+			snprintf(message,CLog::CHARLENGTH,"Gamma_i=%g\n",width*branchlist[ib]->branching);
 			CLog::Info(message);
 		}
 	}
 }
 
 void CresInfo::Print(){
-	sprintf(message,"+++++++ ID=%d, M=%g, M_min=%g, %s +++++++++\n",pid,mass,minmass,name.c_str());
-	sprintf(message,"%sGamma=%g, Degen=%d, Decay=%d\n",message,width,degen,int(decay));
-	sprintf(message,"%sQ=%d, B=%d, S=%d, G_parity=%d\n",message,charge,baryon,strange,G_Parity);
+	snprintf(message,CLog::CHARLENGTH,"+++++++ ID=%d, M=%g, M_min=%g, %s +++++++++\n",pid,mass,minmass,name.c_str());
+	snprintf(message,CLog::CHARLENGTH,"%sGamma=%g, Degen=%d, Decay=%d\n",message,width,degen,int(decay));
+	snprintf(message,CLog::CHARLENGTH,"%sQ=%d, B=%d, S=%d, Charm=%d, G_parity=%d\n",message,charge,baryon,strange,charm,G_Parity);
 	CLog::Info(message);
 }
 
@@ -87,22 +88,27 @@ void CresInfo::CalcMinMass(){
 				bptr_minmass=bptr;
 			}
 		}
-		minmass=SpectEVec[0];
+		if(reslist->readmsu && minmass>mass){
+			printf("minmass=%g, mass=%g\n",minmass,mass);
+			Print();
+			exit(1);
+		}
+		//minmass=SpectEVec[0];
 	}
 	else
 		minmass=mass;
 }
 
 void CresInfo::ReadSpectralFunction(){
-	char filename[200];
+	char filename[CLog::CHARLENGTH];
 	double E,Gamma,SF,netprob;
 	if(abs(baryon)!=0)
-		sprintf(filename,"%s/%d.txt",SFDIRNAME.c_str(),abs(pid));
+		snprintf(filename,CLog::CHARLENGTH,"%s/%d.txt",SFDIRNAME.c_str(),abs(pid));
 	else
-		sprintf(filename,"%s/%d.txt",SFDIRNAME.c_str(),pid);
+		snprintf(filename,CLog::CHARLENGTH,"%s/%d.txt",SFDIRNAME.c_str(),pid);
 	FILE *fptr=fopen(filename,"r");
 	if (fptr==NULL) {
-		sprintf(message,"Can't open spectral function file, filename=%s\n",filename);
+		snprintf(message,CLog::CHARLENGTH,"Can't open spectral function file, filename=%s\n",filename);
 		CLog::Fatal(message);
 	}
 	fscanf(fptr,"%lf",&E);
@@ -121,7 +127,7 @@ void CresInfo::ReadSpectralFunction(){
 
 void CresInfo::CalcSpectralFunction(){
 	if(!decay){
-		sprintf(message,"Calling CalcSpectralFunction() for stable particle\n");
+		snprintf(message,CLog::CHARLENGTH,"Calling CalcSpectralFunction() for stable particle\n");
 		CLog::Fatal(message);
 	}
 	int n,ibranch;
@@ -151,18 +157,18 @@ void CresInfo::CalcSpectralFunction(){
 					rhoratio=rho_ab/rho_ab0;
 					dGamma=Gamma0*rhoratio;
 					if(dGamma!=dGamma){
-						sprintf(message,"Disaster, dGamma=%g\n",dGamma);
+						snprintf(message,CLog::CHARLENGTH,"Disaster, dGamma=%g\n",dGamma);
 						resinfo_a->Print();
 						resinfo_b->Print();
 						CLog::Info(message);
 						Print();
-						sprintf(message,"---------------------------------\n");
+						snprintf(message,CLog::CHARLENGTH,"---------------------------------\n");
 						CLog::Info(message);
-						sprintf(message,"ibranch=%d, E=%g, Gamma_ab=%g\n",ibranch,E,Gamma0*rho_ab/rho_ab0);
+						snprintf(message,CLog::CHARLENGTH,"ibranch=%d, E=%g, Gamma_ab=%g\n",ibranch,E,Gamma0*rho_ab/rho_ab0);
 						CLog::Info(message);
-						sprintf(message,"Gamma0=%g, rho_ab=%g, rho_ab0=%g\n",Gamma0,rho_ab,rho_ab0);
+						snprintf(message,CLog::CHARLENGTH,"Gamma0=%g, rho_ab=%g, rho_ab0=%g\n",Gamma0,rho_ab,rho_ab0);
 						CLog::Info(message);
-						sprintf(message,"mass-m_amin-m_bmin=%g\n",mass-resinfo_a->minmass-resinfo_b->minmass);
+						snprintf(message,CLog::CHARLENGTH,"mass-m_amin-m_bmin=%g\n",mass-resinfo_a->minmass-resinfo_b->minmass);
 						CLog::Info(message);
 						CLog::Fatal(message);
 					}
@@ -309,12 +315,12 @@ double CresInfo::GenerateMassFromSF(double netprob){
 	else{
 		it1=sfmassmap.lower_bound(netprob);
 		if(it1==sfmassmap.end()){
-			sprintf(message,"GenerateMass_T0: it1 at end of map, netprob=%g\n",netprob);
+			snprintf(message,CLog::CHARLENGTH,"GenerateMass_T0: it1 at end of map, netprob=%g\n",netprob);
 			CLog::Info(message);
 			Print();
 			it2=sfmassmap.begin();
 			while(it2!=sfmassmap.end()){
-				sprintf(message,"%g   %g\n",it2->first,it2->second);
+				snprintf(message,CLog::CHARLENGTH,"%g   %g\n",it2->first,it2->second);
 				CLog::Info(message);
 				it2++;
 			}
@@ -347,7 +353,7 @@ double CresInfo::GenerateMassFromSF(double netprob){
 	}
 	if(E!=E){
 		Print();
-		sprintf(message,"In GenerateMasssFromSF, E=%g\n",E);
+		snprintf(message,CLog::CHARLENGTH,"In GenerateMasssFromSF, E=%g\n",E);
 		CLog::Fatal(message);
 	}
 	return E; //returns a random mass proportional to SF'
@@ -369,12 +375,12 @@ void CresInfo::NormalizeSF(){
 
 void CresInfo::PrintSpectralFunction(){
 	int n;
-	sprintf(message,"- Spectral Function for pid=%d -\n",pid);
+	snprintf(message,CLog::CHARLENGTH,"- Spectral Function for pid=%d -\n",pid);
 	CLog::Info(message);
-	sprintf(message,"__ E ___ Gamma ____  A/A_BW ___ A _ (A/A_BW)*dens(M)/dens(M0) _ A*dens(M)/dens(M0) \n");
+	snprintf(message,CLog::CHARLENGTH,"__ E ___ Gamma ____  A/A_BW ___ A _ (A/A_BW)*dens(M)/dens(M0) _ A*dens(M)/dens(M0) \n");
 	CLog::Info(message);
 	for(n=0;n<int(SpectVec.size());n++){
-		sprintf(message,"%8.4f %8.4f %8.4f\n",
+		snprintf(message,CLog::CHARLENGTH,"%8.4f %8.4f %8.4f\n",
 			SpectEVec[n],GammaVec[n],SpectVec[n]);
 		CLog::Info(message);
 	}
@@ -388,7 +394,7 @@ double CresInfo::GetDecayMomentum(double M,double ma,double mb){ // Gives relati
 }
 
 void CresInfo::DecayGetResInfoPtr(int &nbodies,array<CresInfo *,5> &daughterresinfo){
-	char message[100];
+	char message[CLog::CHARLENGTH];
 	double r,bsum;
 	int ibody,ibranch;
 	CbranchInfo *bptr;
@@ -402,7 +408,7 @@ void CresInfo::DecayGetResInfoPtr(int &nbodies,array<CresInfo *,5> &daughterresi
 		ibranch++;
 		if(bsum>1.00000001){
 			Print();
-			sprintf(message,"In DecayGetResInfoPtr: bsum too large, = %g\n",bsum);
+			snprintf(message,CLog::CHARLENGTH,"In DecayGetResInfoPtr: bsum too large, = %g\n",bsum);
 			CLog::Fatal(message);
 		}
 	}while(bsum<r);
@@ -413,7 +419,7 @@ void CresInfo::DecayGetResInfoPtr(int &nbodies,array<CresInfo *,5> &daughterresi
 }
 
 void CresInfo::DecayGetResInfoPtr(double mothermass,int &nbodies,array<CresInfo *,5> &daughterresinfo){
-	char message[100];
+	char message[CLog::CHARLENGTH];
 	double r,bsum;
 	int ibody,ibranch;
 	CbranchInfo *bptr;
@@ -425,13 +431,13 @@ void CresInfo::DecayGetResInfoPtr(double mothermass,int &nbodies,array<CresInfo 
 			bsum+=bptr->branching;
 	};
 	if(bsum<1.0E-10){
-		sprintf(message,"mothermass=%g\n",mothermass);
+		snprintf(message,CLog::CHARLENGTH,"mothermass=%g\n",mothermass);
 		CLog::Info(message);
 		Print();
-		sprintf(message,"branchlist.size()=%d\n",int(branchlist.size()));
+		snprintf(message,CLog::CHARLENGTH,"branchlist.size()=%d\n",int(branchlist.size()));
 		CLog::Info(message);
 		CLog::Info("pid="+to_string(pid)+"\n");
-		sprintf(message,"In DecayGetResInfo: bsum too small, = %15.7e\n",bsum);
+		snprintf(message,CLog::CHARLENGTH,"In DecayGetResInfo: bsum too small, = %15.7e\n",bsum);
 		CLog::Fatal(message);
 	}
 
@@ -487,9 +493,9 @@ void CresInfo::SetBtype(){
 			Btype=7;
 	}
 	if(Btype==-1 && baryon!=0){
-		sprintf(message,"Btype=%d, pid=%d\n",Btype,pid);
-		sprintf(message,"%s%s=%d, total_isospin=%d\n",message,name.c_str(),s,total_isospin);
-		sprintf(message,"%scharm=%d, bottom=%d\n",message,charm,bottom);
+		snprintf(message,CLog::CHARLENGTH,"Btype=%d, pid=%d\n",Btype,pid);
+		snprintf(message,CLog::CHARLENGTH,"%s%s=%d, total_isospin=%d\n",message,name.c_str(),s,total_isospin);
+		snprintf(message,CLog::CHARLENGTH,"%scharm=%d, bottom=%d\n",message,charm,bottom);
 		CLog::Info(message);
 		Print();
 		exit(1);		

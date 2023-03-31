@@ -14,14 +14,16 @@ namespace MSU_EOS{
   void freegascalc_onespecies_finitewidth(double T,CresInfo *resinfo,double &epsilon,double &P,double &dens,double &dedt);
   void freegascalc_onespecies_finitewidth(double T,CresInfo *resinfo,double &epsilon,double &P,double &dens,double &dedt,double &P4overE3,double &Ji);
   double Getp4overE3(double T,double m,double dens);
-  double GetJi(double T,double m,double dens);
+	double GetJi(double T,double m,double dens);
 
-      // Gets values for specific resonances
-  void GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,
-    double &dedti,double &p4overE3i,double &Ji);
+	// Gets values for specific resonances
+	void GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,
+	double &dedti,double &p4overE3i,double &Ji);
+	void GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,
+	double &dedti,double &p4overE3i,double &Ji,bool use_pole_mass);
 
-      // Gets Quantities for all resonances
-  void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma);
+	// Gets Quantities for all resonances
+	void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma);
 
   double CalcBalanceNorm(CresList *reslist,int pid,int pidprime,double taumax);
   void CalcConductivity(CresList *reslist,double T,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma);

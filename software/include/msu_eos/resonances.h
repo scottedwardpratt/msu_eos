@@ -119,14 +119,15 @@ public:
 	Cmerge ***MergeArray;
 	CresInfo *GetResInfoPtr(int pid);
 	void ReadResInfo();
+	void ReadResInfo_MSU();
 	void CalcMinMasses();
 	void ReadSpectralFunctions();
 	void CalcSpectralFunctions();
 	void PrintMassMaps();
-	//bool RESONANCE_DECAYS;
 	CparameterMap *parmap;
 	static double MIN_DECAY_WIDTH;
 	static char *message;
+	bool readmsu;
 };
 
 class CdecayInfo{
