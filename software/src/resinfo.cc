@@ -501,4 +501,3 @@ void CresInfo::SetBtype(){
 		exit(1);		
 	}
 }
-

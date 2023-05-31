@@ -33,4 +33,17 @@ namespace MSU_EOS{
   static double MIN_WIDTH=0.001;
 };
 
+class CcanonicalHadronGasInfo{
+public:
+	CcanonicalInfo();
+	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double epsilon,P,f;// f is Helmholtz free energy density
+	Eigen::MatrixXd chi,chiinv,A;
+	double chiEE,chiEB,chiEQ,chiES;
+	Csampler *sampler;
+	void CalcHadronicQuantities();  // in terms of T, muB,muQ,muS
+	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
+	void CalcMuQFromMuH(); // opposite
+};
+
 #endif
