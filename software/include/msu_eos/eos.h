@@ -1,6 +1,7 @@
 #ifndef __EOS_H_
 #define __EOS_H_
 #include "msu_eos/resonances.h"
+#include "msu_sampler/sampler.h"
 
 // ------------------------
 // functions for calculating EoS (epsilon,P,density,depsilon/dT, and sigma^2) of single species
@@ -35,13 +36,15 @@ namespace MSU_EOS{
 
 class CcanonicalHadronGasInfo{
 public:
-	CcanonicalInfo();
+	CcanonicalHadronGasInfo();
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double rhoB,rhoQ,rhoS,nhadrons;
 	double epsilon,P,f;// f is Helmholtz free energy density
 	Eigen::MatrixXd chi,chiinv,A;
 	double chiEE,chiEB,chiEQ,chiES;
 	Csampler *sampler;
 	void CalcHadronicQuantities();  // in terms of T, muB,muQ,muS
+	void CalcHadronicQuantities(double T,double rhoB,double rhoQ,double rhoS);
 	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
 	void CalcMuQFromMuH(); // opposite
 };
