@@ -190,20 +190,6 @@ void CresList::ReadResInfo(){
 				}
 				bptr->L=decayinfo->d_L[ichannel];
 
-			//total charge and baryon number should be conserved, and shouldn't be larger than single strangeness
-				/*
-				if(netq!=0 || netb!=0 || abs(nets)>1){
-					snprintf(message,CLog::CHARLENGTH,"Charge conservation failure while reading decay info,\nnetq=%d, netb=%d, nets=%d\n",netq,netb,nets);
-					CLog::Info(message);
-					resinfo->Print();
-					snprintf(message,CLog::CHARLENGTH,"nchannels=%d, ichannel=%d\n",resinfo->nchannels,ichannel);
-					CLog::Info(message);
-					snprintf(message,CLog::CHARLENGTH,"DAUGHTERS:\n");
-					CLog::Info(message);
-					for(ibody=0;ibody<nbodies;ibody++)
-						bptr->resinfo[ibody]->Print();
-					exit(1);
-				}*/
 				if(nophotons){
 					ires1=bptr->resinfo[0]->ires;
 					ires2=bptr->resinfo[1]->ires;
@@ -271,7 +257,6 @@ void CresList::ReadResInfo_MSU(){
 	FILE * decayinfofile;
 	char dummy[200],cname[200];
 	filename=parmap->getS("RESONANCES_INFO_FILE",string("../resinfo/resonances_standardhadrons.dat"));
-	//printf("will read res info from %s\n",filename.c_str());
 	resinfofile=fopen(filename.c_str(),"r");
 	fgets(dummy,200,resinfofile);
 	fgets(dummy,200,resinfofile);
@@ -309,7 +294,6 @@ void CresList::ReadResInfo_MSU(){
 	fclose(resinfofile);
 
 	filename=parmap->getS("RESONANCES_DECAYS_FILE",string("../resinfo/decays_pdg_weak.dat"));
-	//printf("will read decay info from %s\n",filename.c_str());
 	decayinfofile=fopen(filename.c_str(),"r");
 	while(fscanf(decayinfofile,"%d %lf",&mothercode,&mothermass) && !feof(decayinfofile)){
 		mothermass*=0.001;
@@ -337,10 +321,10 @@ void CresList::ReadResInfo_MSU(){
 			}
 			//total charge and baryon number should be conserved, and shouldn't be larger than single strangeness
 			if(netq!=0 || netb!=0 || abs(nets)>1){
-				printf("Charge conservation failure while reading decay info,\nnetq=%d, netb=%d, nets=%d\n",netq,netb,nets);
-				printf("MOTHER (ichannel=%d, nbodies=%d):\n",ichannel,nbodies);
+				CLog::Info("Charge conservation failure while reading decay info,\nnetq="+to_string(netq)+", netb"+to_string(netb)+", nets="+to_string(nets)+"\n");
+				CLog::Info("MOTHER (ichannel="+to_string(ichannel)+", nbodies="+to_string(nbodies)+":\n");
 				resinfoptr->Print();
-				printf("DAUGHTERS:\n");
+				CLog::Info("DAUGHTERS:\n");
 				for(ibody=0;ibody<nbodies;ibody++)
 					bptr->resinfo[ibody]->Print();
 				if(netq!=0 || netb!=0)
