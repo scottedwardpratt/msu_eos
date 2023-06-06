@@ -40,7 +40,7 @@ public:
 	~CcanonicalHadronGasInfo();
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
 	double rhoB,rhoQ,rhoS,nhadrons;
-	double epsilon,P,f;// f is Helmholtz free energy density
+	double epsilon,P,s,f;// f is Helmholtz free energy density
 	Eigen::MatrixXd chi,chiinv,A;
 	double chiEE,chiEB,chiEQ,chiES;
 	Csampler *sampler;
