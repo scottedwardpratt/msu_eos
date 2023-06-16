@@ -50,4 +50,27 @@ public:
 	void CalcMuQFromMuH(); // opposite
 };
 
+class ChadronInteractionInfo{
+public:
+	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double rhoB,rhoQ,rhoS,nhadrons;
+	double epsilon,P,s,f;// f is Helmholtz free energy density
+	Eigen::MatrixXd chi,chiinv,A;
+	double chiEE,chiEB,chiEQ,chiES;
+	void CalcHadronicQuantities();  // in terms of T, muB,muQ,muS
+	void CalcHadronicQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
+	void CalcMuQFromMuH(); // opposite
+};
+
+class CinteractingHadronGas{
+public:
+	CinteractingHadronGas();
+	CcanonicalHadronGasInfo *hgasinfo;
+	ChadronInteractionInfo *hintinfo;
+	
+	virtual CalcInteraction();
+	
+}
+
 #endif
