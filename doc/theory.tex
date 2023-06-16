@@ -1,0 +1,185 @@
+\documentclass[12pt]{article}
+\usepackage{subfiles}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage[
+        pdfencoding=auto,%
+        pdfauthor={Scott Pratt},%
+        pdfstartview=FitV,%
+        colorlinks=true,%
+        linkcolor=blue,%
+        citecolor=blue, %
+        urlcolor=blue,
+        breaklinks=true]{hyperref}
+%\usepackage[anythingbreaks,hyphenbreaks]{breakurl}
+\usepackage[anythingbreaks,hyphenbreaks]{xurl}
+%\usepackage{pdfsync}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\numberwithin{equation}{section} 
+\numberwithin{figure}{section} 
+\usepackage[small,bf]{caption}
+%\usepackage{fontspec}
+%\usepackage{textcomp}
+%\usepackage{color}
+\usepackage{fancyhdr}
+\setlength{\headheight}{16pt}
+%\usepackage[headheight=110pt]{geometry}
+\usepackage{bm}
+
+\usepackage[most]{tcolorbox}
+\tcbset{
+frame code={}
+center title,
+left=0pt,
+right=0pt,
+top=0pt,
+bottom=0pt,
+colback=gray!25,
+colframe=white,
+width=\dimexpr\textwidth\relax,
+enlarge left by=0mm,
+boxsep=5pt,
+arc=0pt,outer arc=0pt,
+}
+\newcounter{examplecounter}
+\counterwithin{examplecounter}{section}
+\setcounter{examplecounter}{0}
+\newcommand{\example}[2]{\begin{tcolorbox}[breakable,enhanced]
+\refstepcounter{examplecounter}{
+\bf Example \arabic{section}.\arabic{examplecounter}:}~~{\bf #1}\\
+{#2}
+\end{tcolorbox}
+}
+\textwidth 7.0 in
+\hoffset -0.8 in
+%\newcommand{\exampleend}{
+%\begin{samepage}
+%\nopagebreak\noindent\rule{\textwidth}{1pt}
+%\end{samepage}
+%}
+
+
+%\usepackage{silence}
+%\WarningFilter{hyperref}{Token not allowed in a PDF String}
+
+\newcommand\eqnumber{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\solution}[1]{ }
+
+
+
+\usepackage{comment}
+\parskip 4pt
+\parindent 0pt
+
+%\newcommand{\bm}{\boldmath}
+\boldmath
+
+%
+
+\begin{document}
+
+\today\\
+
+\centerline{\bf \large Fixed Charge Thermodynamics}
+%\centerline{Oleh Savchuk and Scott Pratt}
+%\centerline{Michigan State University}
+
+\section{Basing relations on Free-Energy Density}
+
+The Helmholtz free energy density is convenient when writing quantities as functions of the charge density $\rho$ and the temperature $T$. In terms of the canonical partition function,
+\begin{align*}\eqnumber
+f(\rho,T)&=\frac{1}{V}(E-TS)=-\frac{T}{V}\ln Z.
+\end{align*}
+
+The differential free energy density is, after using the identity $dV/V=-d\rho/\rho$,
+\begin{align*}\eqnumber
+df&=\frac{d\rho}{\rho}f+\frac{1}{V}(-SdT-PdV)\\
+&=\frac{d\rho}{\rho}f-sdT+\frac{Pd\rho}{\rho}\\
+&=\mu d\rho-sdT.
+\end{align*}
+
+The last relation used the identity,
+\begin{align*}\eqnumber\label{eq:sept}
+s=\beta\epsilon+P/T-\mu\rho/T.
+\end{align*}
+Reading off the last expression,
+\begin{align*}\eqnumber
+s&=-\frac{\partial f}{\partial T},~~~\mu=\frac{\partial f}{\partial\rho},
+\end{align*}
+where $f$ is assumed to be a function of $\rho$ and $T$. Using the definition of $f$,
+\begin{align*}\eqnumber
+\epsilon&=f+Ts=f+T\frac{\partial f}{\partial T}=-T^2\frac{\partial}{\partial T}\left(\frac{f}{T}\right).
+\end{align*}
+Using Eq. (\ref{eq:sept}) one can write the pressure,
+\begin{align*}\eqnumber
+P&=-f+\mu\rho.
+\end{align*}
+Summarizing, to this point we have the basic thermodynamic quantities in terms of $f(T,\rho)$:
+\begin{align*}\eqnumber
+\epsilon&=-T^2\frac{\partial}{\partial T}\left(\frac{f}{T}\right),\\
+s&=-\frac{\partial f}{\partial T},\\
+\mu&=\frac{\partial f}{\partial \rho},\\
+P&=-f+\mu\rho.
+\end{align*}
+
+\subsection{Susceptibilities and fluctuations}
+
+Next, we need to express the susceptibilities. Consider two matrices,
+\begin{align*}\eqnumber
+\chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\mu_b},\\
+M_{ab}&\equiv\frac{\partial\mu_a}{\partial\rho_b}.
+\end{align*}
+For the first relation, the derivatives assume the other chemical potentials are held constant (while changing $\mu_b$), whereas the second relation implies that the other densities are held constant. One can rewrite these as,
+\begin{eqnarray}
+\delta\rho_a&=\chi_{ab}\delta\mu_b,\\
+\delta\mu_a&=M_{ab}\delta\rho_b.
+\end{eqnarray}
+If I multiply the lower expression by the inverse of $M$,
+\begin{align*}\eqnumber
+\delta\rho_a&=M^{-1}_{ab}\delta\mu_b.
+\end{align*}
+Thus, one can see that
+\begin{align*}
+M&=\chi^{-1},~~~\chi=M^{-1}.
+\end{align*}
+Thus, to get the charge fluctuations in the grand-canonical ensemble (which is our goal) from a formulation based on the $f(T,\rho)$, one can proceed via,
+\begin{align*}\eqnumber
+\mu_a&=\frac{\partial f}{\partial\rho_a},\\
+\chi^{-1}_{ab}&=\frac{\partial^2 f}{\partial\rho_a\partial\rho_b}.
+\end{align*}
+The charge fluctuation is then found by inverting $\chi^{-1}$.
+
+One can also find the fluctuation of the energy density, at fixed $\mu$, in terms of $f(T,\rho)$.
+
+\begin{align*}\eqnumber
+\delta\epsilon&=
+\frac{\partial\epsilon}{\partial\rho_a}\delta\rho_a
++\frac{\partial\epsilon}{\partial T}\delta T,\\
+\delta\mu_a&=\frac{\partial\mu_a}{\partial\rho_b}\delta\rho_b+\frac{\partial\mu_a}{\partial T}\delta T=0,\\
+\delta\rho_a&=-\left(\frac{\partial\mu}{\partial\rho}\right)_{ab}^{-1}\frac{\partial\mu_b}{\partial T}\delta T,\\
+&=-\chi_{ab}\frac{\partial\mu_b}{\partial T}\delta T,\\
+\delta\epsilon&=\delta T\left\{
+-\frac{\partial \epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\mu_b}{\partial T}+\frac{\partial\epsilon}{\partial T}
+\right\}.
+\end{align*}
+This yields
+\begin{align*}\eqnumber
+\chi_{EE}&=\frac{\partial\epsilon}{\partial T}
+-\frac{\partial\epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\mu_b}{\partial T}.
+\end{align*}
+
+Next, let's calculate $\chi_{EQ}$. We do similar steps above, except set $\delta T=0$.
+\begin{align*}\eqnumber
+\delta\epsilon&=\frac{\partial\epsilon}{\partial\rho_a}\delta\rho_a,\\
+\delta\rho_a&=\chi_{ab}\delta\mu_b,\\
+\delta\mu_a&=\chi^{-1}_{ab}\delta\rho_b,\\
+\frac{\partial\epsilon}{\partial\mu_a}&=\frac{\partial\epsilon}{\partial\rho_b}\chi_{ba}.
+\end{align*}
+
+\subsection{The speed of sound}
+
+
+\end{document}
