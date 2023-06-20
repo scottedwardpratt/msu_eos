@@ -182,8 +182,55 @@ Next, let's calculate $\chi_{EQ}$. We do similar steps above, except set $\delta
 \subsection{The speed of sound}
 When taking partial derivatives, assume functions are of $T$ and $\tilde{\mu}_a\equiv\mu_a/T$.
 \begin{align*}\eqnumber
-c_s^2&=\left.\frac{\partial P}{\partial\epsilon}\right_|_{s/\rho},\\
-\delta P&=\frac{\partial P}{\partial T}\delta T+\frac{\partial P}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\\delta \epsilon&=\frac{\partial\epsilon}{\partial T}\delta T+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+c_s^2&=\left.\frac{\partial P}{\partial\epsilon}\right|_{s/\rho},\\
+\delta P&=\frac{\partial P}{\partial T}\delta T+\frac{\partial P}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+\delta \epsilon&=\frac{\partial\epsilon}{\partial T}\delta T+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+\delta\rho_a&=\frac{\partial \rho_a}{\partial T}\delta T+\frac{\partial \rho_a}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b\\
+&=\frac{\partial \rho_a}{\partial T}\delta T+\chi_{ab}\delta\tilde{\mu}_b,\\
+\delta s&=\frac{\partial s}{\partial T}\delta T+\frac{\partial s}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+s^2\delta\left(\frac{\delta\rho_a}{s}\right)&=s\delta\rho_a-\rho_a\delta s=0,\\
+0&=s\frac{\partial\rho_a}{\partial T}\delta T+s\chi_{ab}\delta\tilde{\mu}_b
+-\rho_b\frac{\partial s}{\partial T}\delta T-\rho_a\frac{\partial s}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b,\\
+\delta\tilde{\mu}_a&=M_a\frac{\delta T}{T},\\
+M_a&=T\left(s\chi-\rho\frac{\partial s}{\partial\tilde{\mu}}\right)_{ab}^{-1}
+\left(\rho_b\frac{\partial s}{\partial T}-s\frac{\partial\rho_b}{\partial T}\right).
+\end{align*}
+By substituting for $\delta\tilde{\mu}$ in the expressions for $\delta P$ and $\delta\epsilon$, then taking the ratio $\delta P/\delta\epsilon$, the factors of $\delta T$ drop out and
+\begin{align*}\eqnumber
+c_s^2&=\frac{1}{T}\frac{P+\epsilon+\rho_aM_a}{\frac{\partial\epsilon}{\partial T}+\frac{\partial\epsilon_a}{\partial\tilde{\mu}_a}M_a}
+\end{align*}
+Next, substitute for derivative of $s$, so that all derivatives are related to fluctuations.
+\begin{align*}
+\frac{\partial P}{\partial T}&=\frac{P+\epsilon}{T},\\
+\frac{\partial s}{\partial T}&=\frac{\partial}{\partial T}\left(\frac{P+\epsilon-\tilde\mu_a\rho_aT}{T}\right)\\
+&=\frac{1}{T}\left(\frac{P+\epsilon}{T}+\frac{\partial\epsilon}{\partial T}-T\tilde{\mu_a}\frac{\partial\rho_a}{\partial T}-\tilde{\mu}_a\rho_a\right)-\frac{s}{T}\\
+&=\frac{1}{T}\frac{\partial\epsilon}{\partial T}-\tilde{\mu}_a\frac{\partial\rho_a}{\partial T},\\
+\frac{\partial s}{\partial\tilde{\mu}_a}&=\frac{1}{T}\frac{\partial}{\partial\tilde{\mu}_a}(P+\epsilon-\tilde{\mu}_b\rho_bT),\\
+&=\frac{1}{T}\left(
+\rho_aT+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\rho_aT-\tilde{\mu_b}T\frac{\partial\tilde{\mu}_b}{\partial\mu_a}
+\right)\\
+&=\frac{1}{T}\left(
+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\tilde{\mu}_bT\frac{\partial\rho_b}{\partial\tilde{\mu}_a}
+\right)m\\
+M_a&=A^{-1}_{ab}\left(
+\rho_b\frac{\partial\epsilon}{\partial T}-Ts\frac{\partial\rho_b}{\partial T}\right),\\
+A_{ab}&=s\chi_{ab}-\rho_a\left(
+\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}-\tilde{\mu}_c\frac{\partial\rho_c}{\partial\tilde{\mu}_b}
+\right)\\
+&=s\chi_{ab}-\frac{\rho_a}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}+\rho_a\chi_{bc}\tilde{\mu}_c.
+\end{align*}
+Now, let's summarize the results for the speed of sound using the following definitions for the generalized susceptibilities,
+\begin{align*}\eqnumber
+\xi&\equiv \frac{\partial\epsilon}{\partial T}=\frac{1}{T^2V}\langle\delta E\delta E\rangle,\\
+\zeta_a&\equiv\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=T\frac{\partial\rho_a}{\partial T}
+=\frac{1}{TV}\langle\delta E\delta Q_a\rangle,\\
+\chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b}=\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle.
+\end{align*}
+This gives
+\begin{align*}\eqnumber
+c_s^2&=\frac{(P+\epsilon)/T+\rho_a M_a}{\xi+\zeta_aM_a},\\
+M_a&=A^{-1}_ab(\xi\rho_b-s\zeta_b),\\
+A_{ab}&=s\chi_{ab}-\rho_a\zeta_b.
 \end{align*}
 
 

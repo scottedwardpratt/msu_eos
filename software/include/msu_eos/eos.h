@@ -42,35 +42,45 @@ public:
 	double rhoB,rhoQ,rhoS,nhadrons;
 	double epsilon,P,s,f;// f is Helmholtz free energy density
 	Eigen::MatrixXd chi,chiinv,A;
-	double chiEE,chiEB,chiEQ,chiES;
+	Eigen::VectorXd chiEQ;
+	double chiEE;
 	Csampler *sampler;
-	void CalcHadronicQuantities();  // in terms of T, muB,muQ,muS
-	void CalcHadronicQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
 	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
 	void CalcMuQFromMuH(); // opposite
 };
 
 class ChadronInteractionInfo{
 public:
+	ChadronInteractionInfo();
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
-	double rhoB,rhoQ,rhoS,nhadrons;
-	double epsilon,P,s,f;// f is Helmholtz free energy density
-	Eigen::MatrixXd chi,chiinv,A;
-	double chiEE,chiEB,chiEQ,chiES;
-	void CalcHadronicQuantities();  // in terms of T, muB,muQ,muS
-	void CalcHadronicQuantities(double T,double rhoB,double rhoQ,double rhoS);
-	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
-	void CalcMuQFromMuH(); // opposite
+	double rhoB,rhoQ,rhoS;
+	double epsilon,P,f,s;// f is Helmholtz free energy density
+	Eigen::MatrixXd chiinv;
+	//double chiEE,chiEB,chiEQ,chiES;
+	Eigen::VectorXd dedrho,dmudT,dedT;
+	virtual void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS); // in terms of density and temperature
 };
 
 class CinteractingHadronGas{
 public:
 	CinteractingHadronGas();
+	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double rhoB,rhoQ,rhoS;
+	double epsilon,P,s,f,cs2;// f is Helmholtz free energy density, cs2 is the speed of sound
+	Eigen::MatrixXd chi,chiinv;
+	Eigen::VectorXd chiEQ;
+	double chiEE;
+
 	CcanonicalHadronGasInfo *hgasinfo;
 	ChadronInteractionInfo *hintinfo;
-	
-	virtual CalcInteraction();
-	
-}
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	virtual void CalcInteraction();
+};
+
+class ChIntInfo_Scott : public ChadronInteractionInfo{ // dummy class
+public:
+	void CalcInteraction();
+};
 
 #endif
