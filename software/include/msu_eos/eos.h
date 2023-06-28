@@ -62,9 +62,16 @@ public:
 	virtual void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS); // in terms of density and temperature
 };
 
+class ChIntInfo_Scott : public ChadronInteractionInfo{ // dummy class
+public:
+	ChIntInfo_Scott();
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+};
+
 class CinteractingHadronGas{
 public:
 	CinteractingHadronGas();
+	~CinteractingHadronGas();
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
 	double rhoB,rhoQ,rhoS;
 	double epsilon,P,s,f,cs2;// f is Helmholtz free energy density, cs2 is the speed of sound
@@ -73,14 +80,11 @@ public:
 	double chiEE;
 
 	CcanonicalHadronGasInfo *hgasinfo;
-	ChadronInteractionInfo *hintinfo;
+	ChIntInfo_Scott *hintinfo;
 	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
-	virtual void CalcInteraction();
+	void PrintQuantities();
 };
 
-class ChIntInfo_Scott : public ChadronInteractionInfo{ // dummy class
-public:
-	void CalcInteraction();
-};
+
 
 #endif
