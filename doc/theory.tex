@@ -133,10 +133,10 @@ Next, we need to express the susceptibilities. Consider two matrices,
 M_{ab}&\equiv\frac{\partial\mu_a}{\partial\rho_b}.
 \end{align*}
 For the first relation, the derivatives assume the other chemical potentials are held constant (while changing $\mu_b$), whereas the second relation implies that the other densities are held constant. One can rewrite these as,
-\begin{eqnarray}
+\begin{align*}
 \delta\rho_a&=\chi_{ab}\delta\mu_b,\\
 \delta\mu_a&=M_{ab}\delta\rho_b.
-\end{eqnarray}
+\end{align*}
 If I multiply the lower expression by the inverse of $M$,
 \begin{align*}\eqnumber
 \delta\rho_a&=M^{-1}_{ab}\delta\mu_b.
@@ -151,6 +151,8 @@ Thus, to get the charge fluctuations in the grand-canonical ensemble (which is o
 \chi^{-1}_{ab}&=\frac{\partial^2 f}{\partial\rho_a\partial\rho_b}.
 \end{align*}
 The charge fluctuation is then found by inverting $\chi^{-1}$.
+
+\subsection{The Specific Heat, $\chi_{EE}$}
 
 One can also find the fluctuation of the energy density, at fixed $\mu$, in terms of $f(T,\rho)$.
 
@@ -227,11 +229,36 @@ Now, let's summarize the results for the speed of sound using the following defi
 \chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b}=\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle.
 \end{align*}
 This gives
-\begin{align*}\eqnumber
+\begin{align*}\eqnumber\label{eq:f12}
 c_s^2&=\frac{(P+\epsilon)/T+\rho_a M_a}{\xi+\zeta_aM_a},\\
 M_a&=A^{-1}_{ab}(\xi\rho_b-s\zeta_b),\\
 A_{ab}&=s\chi_{ab}-\rho_a\zeta_b.
 \end{align*}
+
+\subsection{Adding Interaction Free Energy to Free-Particle Free Energy}
+
+For our aims, we need to have thermodynamic quantities as a function of density, not chemical potential. Going from one to the other is not particularly difficult, unless one has an unstable mixed-phase region. If one wishes to model the dynamics of such a phase it is imperative to work with quantities which are functions of density. Further, the interaction energy is more straight-forward to describe as an addition to the free-energy density, because it is more often more easily understood as a function of density. For that reason one might think it reasonable to express the free-energy density as
+\begin{align*}\eqnumber
+f(\rho,T)&=f_{\rm free}(\vec{\rho},T)+f_{\rm int}(\vec{\rho},T).
+\end{align*}
+In fact, if the interaction is purely density dependent, i.e. independent of the momenta of the underlying particles, then $f_{\rm int}(\rho,T)$ is simply the potential energy density, and is independent of temperature.
+
+Given the definition in Eq. (\ref{eq:f12}), one can immediately see that
+\begin{align*}
+\mu_{\rm tot}(\vec{\rho},T)&=\mu_{\rm free}(\vec{\rho},T)+\mu_{\rm int}(\vec{\rho},T),\\
+P_{\rm tot}(\vec{\rho},T)&=P_{\rm free}(\vec{\rho},T)+P_{\rm int}(\vec{\rho},T).
+\end{align*}
+Note that this definition of $P_{\rm int}$ differs from one where the total pressure is defined by separating out the two contributions at the same chemical potential. The latter choice would be natural if one were working in the grand canonical ensemble, in terms of $\vec{\mu}$, rather than in terms of the density.
+
+Thus, give the choice of Eq. (\ref{eq:f12}) one can see that
+\begin{align*}
+\frac{\partial^2f_{\rm tot}}{\partial\rho_a\partial\rho_b}&=
+\frac{\partial^2f_{\rm free}}{\partial\rho_a\partial\rho_b}+\frac{\partial^2f_{\rm int}}{\partial\rho_a\partial\rho_b},\\
+\chi^{(-1)}_{\rm tot}&=\chi^{(-1)}_{\rm free}+\chi^{(-1)}_{\rm int}.
+\end{align*}
+This if one wants the charge susceptibility of the entire system, one should calculate $\chi^{(-1)}$ for both pieces, add the together, then take the inverse of the matrix.
+
+
 
 
 \end{document}
