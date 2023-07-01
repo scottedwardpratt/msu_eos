@@ -58,7 +58,8 @@ public:
 	double epsilon,P,f,s;// f is Helmholtz free energy density
 	Eigen::MatrixXd chiinv;
 	//double chiEE,chiEB,chiEQ,chiES;
-	Eigen::VectorXd dedrho,dmudT,dedT;
+	double dedT;
+	Eigen::VectorXd dedrho,dmudT;
 	virtual void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS); // in terms of density and temperature
 };
 
