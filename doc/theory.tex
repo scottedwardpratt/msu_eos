@@ -228,9 +228,9 @@ M_a&=T\left(s\chi-\rho\frac{\partial s}{\partial\tilde{\mu}}\right)_{ab}^{-1}
 \end{align*}
 By substituting for $\delta\tilde{\mu}$ in the expressions for $\delta P$ and $\delta\epsilon$, then taking the ratio $\delta P/\delta\epsilon$, the factors of $\delta T$ drop out and
 \begin{align*}\eqnumber
-c_s^2&=\frac{(P+\epsilon)/T+\rho_aM_a}{\frac{\partial\epsilon}{\partial T}+\frac{\partial\epsilon_a}{\partial\tilde{\mu}_a}M_a}
+c_s^2&=\frac{(P+\epsilon)/T+\rho_aM_a}{\frac{\partial\epsilon}{\partial T}+\frac{\partial\epsilon_a}{\partial\tilde{\mu}_a}M_a/T}
 \end{align*}
-Next, substitute to replace derivative of $s$, with derivatives of $\epsilon$ or $\rho$, so that all derivatives in the Eq. (\ref{eq:Mdef})}are related to fluctuations.
+Next, substitute to replace derivative of $s$, with derivatives of $\epsilon$ or $\rho$, so that all derivatives in the Eq. (\ref{eq:Mdef}) are related to fluctuations.
 \begin{align*}
 \frac{\partial P}{\partial T}&=\frac{P+\epsilon}{T},\\
 \frac{\partial s}{\partial T}&=\frac{\partial}{\partial T}\left(\frac{P+\epsilon-\tilde\mu_a\rho_aT}{T}\right)\\
@@ -250,13 +250,16 @@ A_{ab}&=s\chi_{ab}-\rho_a\left(
 \right)\\
 &=s\chi_{ab}-\frac{\rho_a}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}+\rho_a\chi_{bc}\tilde{\mu}_c.
 \end{align*}
-Now, let's summarize the results for the speed of sound using the following definitions for the generalized susceptibilities,
+Now, let's summarize the results for the speed of sound using the following definitions for the susceptibilities,
 \begin{align*}\eqnumber
 \xi&\equiv \frac{\partial\epsilon}{\partial T}=\frac{1}{T^2V}\langle\delta E\delta E\rangle,\\
 \zeta_a&\equiv\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=T\frac{\partial\rho_a}{\partial T}
 =\frac{1}{TV}\langle\delta E\delta Q_a\rangle,\\
-\chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b}=\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle.
+\chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b}=\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle,\\
+F_p&=\frac{P+\epsilon}{T}&=\frac{1}{T^2v}\langle\delta P_x\deltaP_x\rangle,
 \end{align*}
+where $P_x$ is a $x-$component of the momentum.
+
 This gives
 \begin{align*}\eqnumber\label{eq:f12}
 c_s^2&=\frac{(P+\epsilon)/T+\rho_a M_a}{\xi+\zeta_aM_a},\\
