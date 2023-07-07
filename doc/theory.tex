@@ -205,7 +205,75 @@ Thus, give the choice of Eq. (\ref{eq:f12}) one can see that
 \chi^{-1}_{\rm tot}&=\chi^{-1}_{\rm free}+\chi^{-1}_{\rm int}.
 \end{align*}
 This if one wants the charge susceptibility of the entire system, one should calculate $\chi^{-1}$ for both pieces, add them together, then take the inverse of the matrix.
+\begin{align*}\eqnumber
+\chi&=(\chi^{-1}_{\rm free}+\chi^{-1}_{\rm int})^{-1}.
+\end{align*}
+The susceptibilities which include energy can also be found in terms of density-dependent (rather that $\tilde{\mu}-$dependent functions. Beginning as definitions in terms of $\tilde{\mu}$,
+\begin{align*}\eqnumber
+\zeta_a&\equiv\frac{1}{VT}\langle\delta E\delta Q_a\rangle=\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\tilde{\mu}}_a}
+=T\frac{\partial\rho_a}{\partial\epsilon}.
+\end{align*}
+One can then write this as
+\begin{align*}\eqnumber
+\zeta_a&=\frac{1}{T}\frac{\partial\epsilon}{\partial\rho_b}\frac{\partial\rho_b}{\partial\tilde{\mu}_a}\\
+&=\frac{1}{T}\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b}.
+\end{align*}
 
+Rewriting the specific heat requires remembering that derivatives w.r.t. temperature require noting whether $\vec{\tilde{\mu}}$ or $\vec{\rho}$ are being held constant. First, we define the specific heat so that it corresponds to the energy fluctuation in the grand canonical ensemble,
+\begin{align*}\eqnumber
+\xi&\equiv\frac{1}{T^2V}\langle\delta E\delta E\rangle\\
+&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}.
+\end{align*}
+Next, you determine how $\vec{\tilde{\mu}}$ must be changing in order to maintain constant density,
+\begin{align*}\eqnumber
+\delta\rho_a&=0=\left.\frac{\partial\rho_a}{\partial T}\right|_{\vec{\tilde{\mu}}}+\frac{\partial\rho_a}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b,\\
+\delta\tilde{\mu}_a&=-\chi^{-1}_{ab}\left.\frac{\partial\rho_a}{\partial T}\right|_{\vec{\tilde{\mu}}}.
+\end{align*}
+This then gives
+\begin{align*}\eqnumber
+\delta\epsilon&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a\\
+\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}
+&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}-\left.\frac{\partial\rho_a}{\partial T}\right|_{\vec\tilde{\mu}}\chi^{-1}_{ab}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}\\
+&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}-\zeta_a\chi^{-1}_{ab}\zeta_b.
+\end{align*}
+
+For our calculation, we have two components, that of a non-interacting gas, plus an interaction. The thermodynamics of the non-interactiong gas are most easily expressed in terms of chemical potentials, whereas the interaction term is most easily expressed in terms of densities. To add quantities together, we assume that the net free energy is the sum of the free energy of gas and interaction part,
+\begin{align*}\eqnumber
+f&=f^{\rm(gas)}+f^{\rm(int)}.
+\end{align*}
+This then implies that
+\begin{align*}\eqnumber
+\epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
+\tilde{\mu}_a&=\tilde{\mu}_a^{\rm(gas)}+\tilde{\mu}_b^{\rm(int)},\\
+\chi^{-1}&=\chi^{-1{\rm(gas)}}+\chi^{-1{\rm(int)}},\\
+\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}&=
+\left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\rho}}
++\left.\frac{\partial\epsilon^{\rm(int)}}{\partial T}\right|_{\vec{\rho}}.
+\end{align*}
+Note that the chemical potentials of the two parts add (they are not the same) and that the densities are the same. 
+
+The order of operations for adding the two contributions are:
+\begin{enumerate}\itemsep=0pt
+        \item Calculate all quantities for the gas in the grand canonical ensemble. This includes $\epsilon^{\rm(gas)}$, $\zeta_a^{\rm(gas)}$, and $\chi^{\rm(gas)}$. Also take the inverse of $\chi^{\rm(gas)}$ to get $\chi^{-1{\rm(gas)}}$. Also calculate
+        \begin{align*}
+        \frac{d\epsilon^{\rm(gas)}}{d\rho_a}&=\frac{1}{T}\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
+        \left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\rho}}&=\left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\mu}}-\zeta^{\rm(gas)}_a\chi^{-1{\rm(gas)}}_ab\zeta^{\rm(gas)}_b.
+        \end{align*}
+        \item Calculate the quantities for the interaction contribution: 
+        \begin{align*}
+        \epsilon^{\rm(int)}&=-T^2\frac{\partial}{\partial T}(f^{\rm(int)}/T),\\
+        \tilde{\mu}_a^{\rm(int)}&=\frac{1}{T}\frac{\partial f^{\rm(int)}}{\partial\rho_a},\\
+        \chi^{-1{\rm(int)}}_{ab}&=\frac{\partial\tilde{\mu}^{\rm(int)}_a}{\partial\rho_b}.
+        \end{align*}
+        along with $d\epsilon^{\rm(gas)}/d\rho_a$.
+        \item Add quantities to get quantities for the combined parts,
+        \begin{align*}
+        \epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
+        P&=P^{\rm(gas)}+P^{\rm(int)},\\
+        \tilde{\mu}_a&=\tilde{\mu}_a^{\rm(gas)}+\tilde{\mu}_a^{\rm(int)},\\
+        \chi^{-1}_{ab}&=\chi^{-1{\rm(gas)}}_{ab}+\chi^{-1{\rm(int)}}_{ab},\\
+        \end{align*}
+\end{enumerate}
 
 \subsection{The speed of sound}
 When taking partial derivatives, assume functions are of $T$ and $\tilde{\mu}_a\equiv\mu_a/T$.
@@ -256,7 +324,7 @@ Now, let's summarize the results for the speed of sound using the following defi
 \zeta_a&\equiv\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=T\frac{\partial\rho_a}{\partial T}
 =\frac{1}{TV}\langle\delta E\delta Q_a\rangle,\\
 \chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b}=\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle,\\
-F_p&=\frac{P+\epsilon}{T}&=\frac{1}{T^2v}\langle\delta P_x\deltaP_x\rangle,
+F_p&=\frac{P+\epsilon}{T}=\frac{1}{T^2v}\langle\delta P_x\delta P_x\rangle,
 \end{align*}
 where $P_x$ is a $x-$component of the momentum.
 
