@@ -257,7 +257,7 @@ The order of operations for adding the two contributions are:
         \item Calculate all quantities for the gas in the grand canonical ensemble. This includes $\epsilon^{\rm(gas)}$, $\zeta_a^{\rm(gas)}$, and $\chi^{\rm(gas)}$. Also take the inverse of $\chi^{\rm(gas)}$ to get $\chi^{-1{\rm(gas)}}$. Also calculate
         \begin{align*}
         \frac{d\epsilon^{\rm(gas)}}{d\rho_a}&=\frac{1}{T}\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
-        \left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\rho}}&=\left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\mu}}-\zeta^{\rm(gas)}_a\chi^{-1{\rm(gas)}}_ab\zeta^{\rm(gas)}_b.
+        \left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\rho}}&=\left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\mu}}-\zeta^{\rm(gas)}_a\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
         \end{align*}
         \item Calculate the quantities for the interaction contribution: 
         \begin{align*}
@@ -265,13 +265,22 @@ The order of operations for adding the two contributions are:
         \tilde{\mu}_a^{\rm(int)}&=\frac{1}{T}\frac{\partial f^{\rm(int)}}{\partial\rho_a},\\
         \chi^{-1{\rm(int)}}_{ab}&=\frac{\partial\tilde{\mu}^{\rm(int)}_a}{\partial\rho_b}.
         \end{align*}
-        along with $d\epsilon^{\rm(gas)}/d\rho_a$.
-        \item Add quantities to get quantities for the combined parts,
+        along with $d\epsilon^{\rm(gas)}/d\rho_a$ and $d\epsilon^{\rm(gas)}/dT|_{\vec{\rho}}$.
+        \item Add contribution from gas and interactions to  get combined quantities,
         \begin{align*}
         \epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
         P&=P^{\rm(gas)}+P^{\rm(int)},\\
         \tilde{\mu}_a&=\tilde{\mu}_a^{\rm(gas)}+\tilde{\mu}_a^{\rm(int)},\\
         \chi^{-1}_{ab}&=\chi^{-1{\rm(gas)}}_{ab}+\chi^{-1{\rm(int)}}_{ab},\\
+        \frac{d\epsilon}{d\rho_a}&=\frac{d\epsilon^{\rm(gas)}}{d\rho_a}+\frac{d\epsilon^{\rm(int)}}{d\rho_a},\\
+        \left.\frac{d\epsilon}{dT}\right|_{\vec{\rho}}&=\left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\rho}}
+        +\left.\frac{d\epsilon^{\rm(int)}}{dT}\right|_{\vec{\rho}}.
+        \end{align*}
+        Now, from all the combined quantities, you can calculate all the net susceptibilities,
+        \begin{align*}\eqnumber
+        \chi_{ab}&=\left(\chi^{-1}\right)^{-1}_{ab},\\
+        \zeta_a&=\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b},\\
+        \xi&=\left.\frac{d\epsilon}{dT}\right|_{\vec{\rho}}+\zeta_a\chi^{-1}_{ab}\zeta_b.
         \end{align*}
 \end{enumerate}
 
