@@ -94,11 +94,11 @@ We need thermodynamic quantities in terms of density and temperature. This inclu
 f(\rho,T)&=\frac{1}{V}(E-TS)=-\frac{T}{V}\ln Z.
 \end{align*}
 
-The differential free energy density is, after using the identity $dV/V=-d\rho/\rho$,
+The differential free energy density is, after using the identity $\delta V/V=-\delta\rho/\rho$,
 \begin{align*}\eqnumber
-df&=\frac{d\rho}{\rho}f+\frac{1}{V}(-SdT-PdV)\\
-&=\frac{d\rho}{\rho}f-sdT+\frac{Pd\rho}{\rho}\\
-&=\mu d\rho-sdT.
+\delta f&=\frac{\delta\rho}{\rho}f+\frac{1}{V}(-S\delta T-P\delta V)\\
+&=\frac{\delta\rho}{\rho}f-s\delta T+\frac{P\delta\rho}{\rho}\\
+&=\mu \delta\rho-s\delta T.
 \end{align*}
 
 The last relation used the identity,
@@ -182,7 +182,7 @@ Next, let's calculate $\chi_{EQ}$. We do similar steps above, except set $\delta
 \chi_{EQ}&=\frac{\partial\epsilon}{\partial\mu_a}=\frac{\partial\epsilon}{\partial\rho_b}\chi_{ba}.
 \end{align*}
 
-\subsection{Adding Interaction Free Energy to Free-Particle Free Energy}
+\subsection{Adding Interaction Free Energy to Free-Particle(gas) Free Energy}
 
 For our aims, we need to have thermodynamic quantities as a function of density, not chemical potential. Going from one to the other is not particularly difficult, unless one has an unstable mixed-phase region. If one wishes to model the dynamics of such a phase it is imperative to work with quantities which are functions of density. Further, the interaction energy is more straight-forward to describe as an addition to the free-energy density, because it is more often more easily understood as a function of density. For that reason one might think it reasonable to express the free-energy density as
 \begin{align*}\eqnumber
@@ -192,11 +192,11 @@ In fact, if the interaction is purely density dependent, i.e. independent of the
 
 Given the definition in Eq. (\ref{eq:f12}), one can immediately see that
 \begin{align*}
-\mu_{\rm tot}(\vec{\rho},T)&=\mu_{\rm free}(\vec{\rho},T)+\mu_{\rm int}(\vec{\rho},T),\\
+\tilde{\mu}_{\rm tot}(\vec{\rho},T)&=\tilde{\mu}_{\rm free}(\vec{\rho},T)+\tilde{\mu}_{\rm int}(\vec{\rho},T),\\
 P_{\rm tot}(\vec{\rho},T)&=P_{\rm free}(\vec{\rho},T)+P_{\rm int}(\vec{\rho},T),\\
 \epsilon_{\rm tot}(\vec{\rho},T)&=\epsilon_{\rm free}(\vec{\rho},T)+\epsilon_{\rm int}(\vec{\rho},T).
 \end{align*}
-Note that this definition of $P_{\rm int}$ differs from one where the total pressure is defined by separating out the two contributions at the same chemical potential. The latter choice would be natural if one were working in the grand canonical ensemble, in terms of $\vec{\mu}$, rather than in terms of the density.
+Note that this definition of $P_{\rm int}$ differs from one where the total pressure is defined by separating out the two contributions at the same chemical potential. The latter choice would be natural if one were working in the grand canonical ensemble, in terms of $\vec{\tilde{\mu}}$, rather than in terms of the density.
 
 Thus, give the choice of Eq. (\ref{eq:f12}) one can see that
 \begin{align*}
@@ -256,8 +256,8 @@ The order of operations for adding the two contributions are:
 \begin{enumerate}\itemsep=0pt
         \item Calculate all quantities for the gas in the grand canonical ensemble. This includes $\epsilon^{\rm(gas)}$, $\zeta_a^{\rm(gas)}$, and $\chi^{\rm(gas)}$. Also take the inverse of $\chi^{\rm(gas)}$ to get $\chi^{-1{\rm(gas)}}$. Also calculate
         \begin{align*}
-        \frac{d\epsilon^{\rm(gas)}}{d\rho_a}&=\frac{1}{T}\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
-        \left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\rho}}&=\left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\mu}}-\zeta^{\rm(gas)}_a\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
+        \frac{\partial\epsilon^{\rm(gas)}}{\partial\rho_a}&=\frac{1}{T}\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
+        \left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\rho}}&=\left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\tilde{\mu}}}-\zeta^{\rm(gas)}_a\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
         \end{align*}
         \item Calculate the quantities for the interaction contribution: 
         \begin{align*}
@@ -265,22 +265,22 @@ The order of operations for adding the two contributions are:
         \tilde{\mu}_a^{\rm(int)}&=\frac{1}{T}\frac{\partial f^{\rm(int)}}{\partial\rho_a},\\
         \chi^{-1{\rm(int)}}_{ab}&=\frac{\partial\tilde{\mu}^{\rm(int)}_a}{\partial\rho_b}.
         \end{align*}
-        along with $d\epsilon^{\rm(gas)}/d\rho_a$ and $d\epsilon^{\rm(gas)}/dT|_{\vec{\rho}}$.
+        along with $\partial\epsilon^{\rm(gas)}/\partial\rho_a$ and $\partial\epsilon^{\rm(gas)}/\partialT|_{\vec{\rho}}$.
         \item Add contribution from gas and interactions to  get combined quantities,
         \begin{align*}
         \epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
         P&=P^{\rm(gas)}+P^{\rm(int)},\\
         \tilde{\mu}_a&=\tilde{\mu}_a^{\rm(gas)}+\tilde{\mu}_a^{\rm(int)},\\
         \chi^{-1}_{ab}&=\chi^{-1{\rm(gas)}}_{ab}+\chi^{-1{\rm(int)}}_{ab},\\
-        \frac{d\epsilon}{d\rho_a}&=\frac{d\epsilon^{\rm(gas)}}{d\rho_a}+\frac{d\epsilon^{\rm(int)}}{d\rho_a},\\
-        \left.\frac{d\epsilon}{dT}\right|_{\vec{\rho}}&=\left.\frac{d\epsilon^{\rm(gas)}}{dT}\right|_{\vec{\rho}}
-        +\left.\frac{d\epsilon^{\rm(int)}}{dT}\right|_{\vec{\rho}}.
+        \frac{\partial\epsilon}{\partial\rho_a}&=\frac{\partial\epsilon^{\rm(gas)}}{\partial\rho_a}+\frac{\partial\epsilon^{\rm(int)}}{\partial\rho_a},\\
+        \left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}&=\left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\rho}}
+        +\left.\frac{\partial\epsilon^{\rm(int)}}{\partial T}\right|_{\vec{\rho}}.
         \end{align*}
         Now, from all the combined quantities, you can calculate all the net susceptibilities,
         \begin{align*}\eqnumber
         \chi_{ab}&=\left(\chi^{-1}\right)^{-1}_{ab},\\
         \zeta_a&=\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b},\\
-        \xi&=\left.\frac{d\epsilon}{dT}\right|_{\vec{\rho}}+\zeta_a\chi^{-1}_{ab}\zeta_b.
+        \xi&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}+\zeta_a\chi^{-1}_{ab}\zeta_b.
         \end{align*}
 \end{enumerate}
 
