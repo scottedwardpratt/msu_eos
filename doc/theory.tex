@@ -127,12 +127,24 @@ P&=-f+\mu\rho.
 
 \subsection{Susceptibilities and fluctuations}
 
-Next, we need to express the susceptibilities. Here, we define $\tilde{\mu}_a=\mu_a/T$. Consider two matrices,
+Next, we need to express the susceptibilities or fluctuations. As they are more conveniently defined in terms of $T$ and $\mu/T$ instead of $\mu$, we define $\tilde{\mu}_a=\mu_a/T$. Charge and energy fluctuations are defined in the grand canonical ensemble. First, the charge fluctuations are
 \begin{align*}\eqnumber
-\chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b},\\
-M_{ab}&\equiv\frac{\partial\tilde{\mu}_a}{\partial\rho_b}.
+\chi_{ab}&\equiv\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle\\
+&=\frac{\partial\rho_a}{\partial\tilde{\mu}_b}.
 \end{align*}
-For the first relation, the derivatives assume the other chemical potentials are held constant (while changing $\mu_b$), whereas the second relation implies that the other densities are held constant. One can rewrite these as,
+Energy-energy and energy-charge fluctuations are
+\begin{align*}\eqnumber
+\chi_{EQ_a}&\equiv\frac{1}{V}\langle\delta E\delta Q_a\rangle\\
+&=\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=T^2\frac{\partial\rho_a}{\partial T},\\
+\chi_{EE}&\equiv\frac{1}{V}\langle\delta E\delta E\rangle\\
+&=T^2\frac{\partial\epsilon}{\partial T}.
+\end{align*}
+
+To see how to express such quantities in the canonical ensemble, we consider the matrix
+\begin{align*}\eqnumber
+M_{ab}&\equiv\frac{\partial\tilde{\mu}_a}{\partial\rho_b}.
+\end{align*},
+The matrix is simply the inverse of $\chi_{ab}$,
 \begin{align*}
 \delta\rho_a&=\chi_{ab}\delta\tilde{\mu}_b,\\
 \delta\tilde{\mu}_a&=M_{ab}\delta\rho_b.
@@ -145,41 +157,41 @@ Thus, one can see that
 \begin{align*}
 M&=\chi^{-1},~~~\chi=M^{-1}.
 \end{align*}
-Thus, to get the charge fluctuations in the grand-canonical ensemble (which is our goal) from a formulation based on the $f(T,\rho)$, one can proceed via,
+Thus, to get the charge fluctuations, which were defined in the grand-canonical ensemble,  from a formulation based on the $f(T,\rho)$, one can proceed via,
 \begin{align*}\eqnumber
-\tilde{\mu}_a&=\frac{\partial f}{\partial\rho_a},\\
-\chi^{-1}_{ab}&=\frac{\partial^2 f}{\partial\rho_a\partial\rho_b}.
+\tilde{\mu}_a&=\frac{1}{T}\frac{\partial f}{\partial\rho_a},\\
+\chi^{-1}_{ab}&=\frac{1}{T}\frac{\partial^2 f}{\partial\rho_a\partial\rho_b}.
 \end{align*}
 The charge fluctuation is then found by inverting $\chi^{-1}$.
 
-\subsection{The Specific Heat, $\chi_{EE}$, and $\chi_{EQ}$}
+\subsection{The Specific Heat and Energy-Charge Fluctuation Expressed in the Canonical Ensemble}
 
-One can also find the fluctuation of the energy density, at fixed $\mu$, in terms of $f(T,\rho)$.
+One can also find the fluctuation of the energy density, at fixed $\tilde{\mu}$, in terms of $f(T,\rho)$.
 
 \begin{align*}\eqnumber
 \delta\epsilon&=
 \frac{\partial\epsilon}{\partial\rho_a}\delta\rho_a
 +\frac{\partial\epsilon}{\partial T}\delta T,\\
-\delta\mu_a&=\frac{\partial\mu_a}{\partial\rho_b}\delta\rho_b+\frac{\partial\mu_a}{\partial T}\delta T=0,\\
-\delta\rho_a&=-\left(\frac{\partial\mu}{\partial\rho}\right)_{ab}^{-1}\frac{\partial\mu_b}{\partial T}\delta T,\\
-&=-\chi_{ab}\frac{\partial\mu_b}{\partial T}\delta T,\\
+\delta\tilde{\mu}_a&=\frac{\partial\tilde{\mu_a}}{\partial\rho_b}\delta\rho_b+\frac{\partial\tilde{\mu_a}}{\partial T}\delta T=0,\\
+\delta\rho_a&=-\left(\frac{\partial\tilde{\mu}}{\partial\rho}\right)_{ab}^{-1}\frac{\partial\tilde{\mu}_b}{\partial T}\delta T,\\
+&=-\chi_{ab}\frac{\partial\tilde{\mu}_b}{\partial T}\delta T,\\
 \delta\epsilon&=\delta T\left\{
--\frac{\partial \epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\mu_b}{\partial T}+\frac{\partial\epsilon}{\partial T}
+-\frac{\partial \epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\tilde{\mu_b}}{\partial T}+\frac{\partial\epsilon}{\partial T}
 \right\}.
 \end{align*}
 This yields
 \begin{align*}\eqnumber\label{eq:chiEE}
 \chi_{EE}&=\frac{\partial\epsilon}{\partial T}
--\frac{\partial\epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\mu_b}{\partial T}.
+-\frac{\partial\epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\tilde{\mu}_b}{\partial T}.
 \end{align*}
 
 Next, let's calculate $\chi_{EQ}$. We do similar steps above, except set $\delta T=0$.
 \begin{align*}
 \delta\epsilon&=\frac{\partial\epsilon}{\partial\rho_a}\delta\rho_a,\\
-\delta\rho_a&=\chi_{ab}\delta\mu_b,\\
+\delta\rho_a&=\chi_{ab}\delta\tilde{\mu}_b,\\
 \delta\mu_a&=\chi^{-1}_{ab}\delta\rho_b,\\
 \eqnumber\label{eq:chiEQ}
-\chi_{EQ}&=\frac{\partial\epsilon}{\partial\mu_a}=\frac{\partial\epsilon}{\partial\rho_b}\chi_{ba}.
+\chi_{EQ}&=\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=\frac{\partial\epsilon}{\partial\rho_b}\chi_{ba}.
 \end{align*}
 
 \subsection{Adding Interaction Free Energy to Free-Particle(gas) Free Energy}
@@ -208,10 +220,10 @@ This if one wants the charge susceptibility of the entire system, one should cal
 \begin{align*}\eqnumber
 \chi&=(\chi^{-1}_{\rm free}+\chi^{-1}_{\rm int})^{-1}.
 \end{align*}
-The susceptibilities which include energy can also be found in terms of density-dependent (rather that $\tilde{\mu}-$dependent functions. Beginning as definitions in terms of $\tilde{\mu}$,
+The susceptibilities which include energy can also be found in terms of density-dependent (rather that $\tilde{\mu}-$dependent functions. Beginning by expressing the grand partition function in terms of $T$ and $\tilde{\mu}$, one can write the energy charge fluctuation,
 \begin{align*}\eqnumber
 \zeta_a&\equiv\frac{1}{VT}\langle\delta E\delta Q_a\rangle=\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\tilde{\mu}}_a}
-=T\frac{\partial\rho_a}{\partial\epsilon}.
+=T\frac{\partial\rho_a}{\partial T}.
 \end{align*}
 One can then write this as
 \begin{align*}\eqnumber
@@ -265,7 +277,7 @@ The order of operations for adding the two contributions are:
         \tilde{\mu}_a^{\rm(int)}&=\frac{1}{T}\frac{\partial f^{\rm(int)}}{\partial\rho_a},\\
         \chi^{-1{\rm(int)}}_{ab}&=\frac{\partial\tilde{\mu}^{\rm(int)}_a}{\partial\rho_b}.
         \end{align*}
-        along with $\partial\epsilon^{\rm(gas)}/\partial\rho_a$ and $\partial\epsilon^{\rm(gas)}/\partialT|_{\vec{\rho}}$.
+        along with $\partial\epsilon^{\rm(gas)}/\partial\rho_a$ and $\partial\epsilon^{\rm(gas)}/\partial T|_{\vec{\rho}}$.
         \item Add contribution from gas and interactions to  get combined quantities,
         \begin{align*}
         \epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
