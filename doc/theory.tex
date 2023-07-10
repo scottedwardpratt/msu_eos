@@ -291,7 +291,7 @@ The order of operations for adding the two contributions are:
         Now, from all the combined quantities, you can calculate all the net susceptibilities,
         \begin{align*}\eqnumber
         \chi_{ab}&=\left(\chi^{-1}\right)^{-1}_{ab},\\
-        \zeta_a&=\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b},\\
+        \zeta_a&=\frac{1}{T}\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b},\\
         \xi&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}+\zeta_a\chi^{-1}_{ab}\zeta_b.
         \end{align*}
 \end{enumerate}
@@ -317,17 +317,17 @@ M_a&=T\left(s\chi-\rho\frac{\partial s}{\partial\tilde{\mu}}\right)_{ab}^{-1}
 \end{align*}
 By substituting for $\delta\tilde{\mu}$ in the expressions for $\delta P$ and $\delta\epsilon$, then taking the ratio $\delta P/\delta\epsilon$, the factors of $\delta T$ drop out and
 \begin{align*}\eqnumber
-c_s^2&=\frac{(P+\epsilon)/T+\rho_aM_a}{\frac{\partial\epsilon}{\partial T}+\frac{\partial\epsilon_a}{\partial\tilde{\mu}_a}M_a/T}
+c_s^2&=\frac{(P+\epsilon)/T+\rho_aM_a}{\frac{\partial\epsilon}{\partial T}+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}M_a/T}
 \end{align*}
 Next, substitute to replace derivative of $s$, with derivatives of $\epsilon$ or $\rho$, so that all derivatives in the Eq. (\ref{eq:Mdef}) are related to fluctuations.
-\begin{align*}
+\begin{align*}\eqnumber
 \frac{\partial P}{\partial T}&=\frac{P+\epsilon}{T},\\
 \frac{\partial s}{\partial T}&=\frac{\partial}{\partial T}\left(\frac{P+\epsilon-\tilde\mu_a\rho_aT}{T}\right)\\
 &=\frac{1}{T}\left(\frac{P+\epsilon}{T}+\frac{\partial\epsilon}{\partial T}-T\tilde{\mu_a}\frac{\partial\rho_a}{\partial T}-\tilde{\mu}_a\rho_a\right)-\frac{s}{T}\\
 &=\frac{1}{T}\frac{\partial\epsilon}{\partial T}-\tilde{\mu}_a\frac{\partial\rho_a}{\partial T},\\
 \frac{\partial s}{\partial\tilde{\mu}_a}&=\frac{1}{T}\frac{\partial}{\partial\tilde{\mu}_a}(P+\epsilon-\tilde{\mu}_b\rho_bT),\\
 &=\frac{1}{T}\left(
-\rho_aT+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\rho_aT-\tilde{\mu_b}T\frac{\partial\tilde{\mu}_b}{\partial\mu_a}
+\rho_aT+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\rho_aT-\tilde{\mu_b}T\frac{\partial\tilde{\rho}_b}{\partial\tilde{\mu}_a}
 \right)\\
 &=\frac{1}{T}\left(
 \frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\tilde{\mu}_bT\frac{\partial\rho_b}{\partial\tilde{\mu}_a}

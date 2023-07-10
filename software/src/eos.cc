@@ -226,6 +226,8 @@ void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double 
 	double pi,epsiloni,densi,dedti,p4overE3i,Ji;
 	Eigen::Matrix3d sigmai(3,3);
 	int a,b,ires;
+	if(density.size()!=reslist->resmap.size())
+		density.resize(reslist->resmap.size());
 	chi.setZero();
 	sigma.setZero();
 	P=epsilon=s=nh=0.0;
