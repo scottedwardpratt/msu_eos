@@ -74,6 +74,9 @@ CinteractingHadronGas::CinteractingHadronGas(CparameterMap *parmap_set){
 	chi.resize(3,3);
 	chiinv.resize(3,3);
 	chiEQ.resize(3);
+	dPdrho_T.resize(3);
+	dedrho_T.resize(3);
+	dPdrho_e.resize(3);
 	hgasinfo=new CcanonicalHadronGasInfo();
 	//hintinfo=new ChadronInteractionInfo();
 	hintinfo=new ChIntInfo_Scott(parmap);
@@ -152,6 +155,13 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	rhoM=rho.transpose()*M;
 	chiEQM=chiEQ.transpose()*M;
 	cs2=((P+epsilon)/T+rhoM)/(chiEE/(T*T)+chiEQM/T);
+	
+	dPdT_rho=(P+epsilon)/T-(1.0/T)*rho.transpose()*chiinv*chiEQ;
+	dedT_rho=chiEE/(T*T)-(1.0/(T*T))*chiEQ.transpose()*chiinv*chiEQ;
+	dPde_rho=dPdT_rho/dedT_rho;
+	dPdrho_T=chiinv*rho*T;
+	dedrho_T=chiinv*chiEQ;
+	dPdrho_e=dPdrho_T-(dPdT_rho/dedT_rho)*dedrho_T;
 	
 }
 

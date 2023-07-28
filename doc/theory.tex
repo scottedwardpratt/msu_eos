@@ -356,7 +356,48 @@ M_a&=A^{-1}_{ab}[(\xi-\tilde{\mu}_c\zeta_c)\rho_b-s\zeta_b],\\
 A_{ab}&=s\chi_{ab}-\rho_a\zeta_b.
 \end{align*}
 
-\subsection{How our code works}
+\subsection{Derivatives at fixed energy density}
+First, define some derivatives w.r.t. density at fixed temperature.
+\begin{align*}\eqnumber\label{eq:dPdrhoT}
+\left.\frac{\partial P}{\partial\rho_a}\right|_T&=
+\frac{\partial P}{\partial\tilde{\mu}_b}\frac{\partial\tilde{\mu}_b}{\partial\rho_a}\\
+&=\chi^{-1}_{ab}\rho_bT,\\
+\left.\frac{\partial\epsilon}{\partial\rho_a}\right|_T&=\chi^{-1}_{ab}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}\\
+&=\chi^{-1}_{ab}\zeta_bT=0,\\
+\left.\delta P\right|_\rho&=\left[\left.\frac{\partial P}{\partial T}\right|_{\tilde{\mu}}
+-\left.\frac{\partial P}{\partial\tilde{\mu}_a}\right|_{\tilde{\mu}}\frac{1}{T}\chi^{-1}_{ab}\zeta_b
+\right]\delta T,\\
+\left.\frac{\partial P}{\partial T}\right|_\rho&=\frac{P+\epsilon}{T}-\rho_a\chi^{-1}_{ab}\zeta_b.
+\end{align*}
+Similarly, derivatives of $\epsilon$ are
+\begin{align*}\eqnumber\label{eq:dedrhoT}
+\left.\frac{\partial\epsilon}{\partial T}\right|_\rho&=
+\left.\frac{\partial\epsilon}{\partial T}\right|_{\tilde{\mu}}
+-\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\frac{1}{T}\chi^{-1}_{ab}\zeta_b\\
+&=\xi-\zeta_a\chi^{-1}_{ab}\zeta_b.
+\end{align*}
+Next, we need to find derivatives of $P$ and $\epsilon$ w.r.t $T$ at fixed density,
+\begin{eqnarray}
+\delta P&=\frac{\partial P}{\partial T}\delta T+\frac{\partial P}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+\delta\rho_a&=\frac{\partial\rho}{\partial T}\delta T+\frac{\partial\rho_a}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b=0\\
+&=\frac{1}{T}\zeta_a\delta T+\chi_{ab}\delta\tilde{\mu}_b
+\end{eqnarray}
+Now, to find $\partial P/\partial \rho_a|_\epsilon$, 
+\begin{align*}\eqnumber
+\delta P&=\left.\frac{\partial P}{\partial\rho_a}\right|_T\delta\rho_a+\left.\frac{\partial P}{\partial T}\right|_\rho\delta T,\\
+\delta \epsilon&=\left.\frac{\partial \epsilon}{\partial\rho_a}\right|_T\delta\rho_a+\left.\frac{\partial \epsilon}{\partial T}\right|_\rho\delta T=0\\
+\delta P&=\left.\frac{\partial P}{\partial\rho_a}\right|_T\delta\rho_a-\frac{\delta\rho_a}{\partial\epsilon/\partial T|_\rho}
+\left.\frac{\partial P}{\partial T}\right|_\rho\left.\frac{\partial\epsilon}{\partial\rho_a}\right|_T,\\
+\left.\frac{\partial P}{\partial\rho_a}\right|_\epsilon&=\left.\frac{\partial P}{\partial \rho_a}\right|_T
+-\frac{1}{\xi}\left.\frac{\partial P}{\partial T}\right|_\rho\left.\frac{\partial\epsilon}{\partial\rho_a}\right|_T.
+\end{align*}
+Finally, to find $\partial P/\partial\epsilon$ at fixed density, one can apply Eq.s (\ref{eq:dPdrhoT}) and (\ref{eq:dedrhoT}),
+\begin{align*}\eqnumber
+\left.\frac{\partial P}{\partial\epsilon}\right|_\rho&=\frac{\left.\frac{\partial P}{\partial T}\right|_\rho}
+{\left.\frac{\partial\epsilon}{\partial T}\right|_\rho}
+\end{align*}
+
+\subsection{How the code works}
 
 The code has simple routines that calculate the free-particle contributions to $\vec{\rho},P,\epsilon$ and $\chi$ in terms of $\vec{\mu}$ and $T$. An optimized Newton's method routine is used to find $\vec{\mu}$ in terms of $\vec{\rho}$ and $T$. This results in an easily accessible routine that gives all the thermodyanmic quantities in terms of $\vec{\rho}$ and $T$. One can invert $\chi$ to find the free-energy contribution to $\chi^{-1}$. This thus provides $P_{\rm free}$, $\epsilon_{\rm free}, \vec{\mu}_{\rm free}$ and $\chi^{-1}_{\rm free}$.
 

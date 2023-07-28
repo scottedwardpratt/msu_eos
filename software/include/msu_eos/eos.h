@@ -85,6 +85,8 @@ public:
 	Eigen::MatrixXd chi,chiinv;
 	Eigen::VectorXd chiEQ;
 	double chiEE;
+	Eigen::VectorXd dPdrho_T,dedrho_T,dPdrho_e;
+	double dPdT_rho,dedT_rho,dPde_rho;
 
 	CcanonicalHadronGasInfo *hgasinfo;
 	ChIntInfo_Scott *hintinfo;
