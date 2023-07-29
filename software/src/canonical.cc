@@ -165,23 +165,16 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	
 }
 
-void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset){
+void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double rhoBtarget,double rhoQtarget,double rhoStarget){
 	char message[CLog::CHARLENGTH];
 	//4D Newton's Method
 	// Here rhoII refers to rho_u-rho_d = 2*I3 and mu[1]=muII/2
-	double rhoBtarget,rhoStarget,rhoIItarget;
-	double rhoII,smb,cmb,Tf,epsilonh,ehtarget,muII_h,muB_h,muS_h;
+	double rhoII,rhoIItarget,smb,cmb,Tf,epsilonh,epsilon,muII_h,muB_h,muS_h;
 	Eigen::MatrixXd A(4,4);
 	Eigen::VectorXd dmu(4),drho(4);
 	int ntries=0;
 	
-	epsilon=epsilonset;
-	// Note only works when hintinfo doesn't depend on T
-	hintinfo->CalcQuantities(0.1,rhoBset,rhoQset,rhoSset);
-	ehtarget=epsilon-hintinfo->epsilon;
-	rhoBtarget=rhoBset;
-	rhoStarget=rhoSset;
-	rhoIItarget=2*rhoQset-rhoBset-rhoSset;
+	rhoIItarget=2*rhoQtarget-rhoBtarget-rhoStarget;
 	// change basis of chemical potentials
 	muII_h=0.5*hgasinfo->muQ;
 	muB_h=hgasinfo->muB+muII_h;
@@ -199,14 +192,17 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilonset,double rho
 		}
 		smb=sinh(muB_h);
 		cmb=cosh(muB_h);
-
+		
+		hintinfo->CalcQuantities(Tf,rhoBtarget,rhoQtarget,rhoStarget);
 		sampler->GetEpsilonRhoDerivatives(muB_h,muII_h,muS_h,epsilonh,rhoB,rhoII,rhoS,A);
 		for(int i=0;i<4;i++){
 			A(i,1)=A(i,1)/cmb;
 			A(i,0)=A(i,0)/(Tf*Tf);
 		}
+		epsilon=epsilonh+hintinfo->epsilon;
+		A(0,0)+=hintinfo->dedT;
 		
-		drho[0]=ehtarget-epsilonh;
+		drho[0]=epsilontarget-epsilon;
 		drho[1]=rhoBtarget-rhoB;
 		drho[2]=rhoIItarget-rhoII;
 		drho[3]=rhoStarget-rhoS;
@@ -219,11 +215,12 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilonset,double rho
 		muII_h+=dmu[2];
 		muS_h+=dmu[3];
 
-	}while(fabs(drho[0])>1.0E-6 || fabs(drho[1])>1.0E-8 || fabs(drho[2])>1.0E-8 || fabs(drho[3])>1.0E-8);
+	}while(fabs(drho[0])>1.0E-5 || fabs(drho[1])>1.0E-6 || fabs(drho[2])>1.0E-6 || fabs(drho[3])>1.0E-6);
 	
-	rhoB=rhoBset;
-	rhoQ=rhoQset;
-	rhoS=rhoSset;
+	epsilon=epsilontarget;
+	rhoB=rhoBtarget;
+	rhoQ=rhoQtarget;
+	rhoS=rhoStarget;
 	T=Tf;
 	// change back to BQS basis
 	hgasinfo->muQ=2*muII_h;

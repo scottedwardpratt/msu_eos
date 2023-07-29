@@ -32,9 +32,9 @@ int main(){
 		etarget=epsilon;
 		IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
 		
-		printf("TEST: tau=%5.2f, T=%8.5f, epsilon=%8.5f=?%8.5f, rho=(%8.5f,%8.5f,%8.5f)\n",
+		printf("tau=%5.2f, T=%8.5f, e=%8.5f=?%8.5f, e_h=%8.5f, e_int=%8.5f, rhoB=%8.5f, cs2=%8.5f\n",
 		tau,IntHadronGas->T,IntHadronGas->epsilon,etarget,
-		IntHadronGas->rhoB,IntHadronGas->rhoQ,IntHadronGas->rhoS);
+		IntHadronGas->hgasinfo->epsilon,IntHadronGas->hintinfo->epsilon,IntHadronGas->rhoB,IntHadronGas->cs2);
 	}
 	
 	delete sampler;

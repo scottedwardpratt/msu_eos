@@ -56,28 +56,16 @@ void ChIntInfo_Scott::CalcQuantities(double T,double rhoB,double rhoQ,double rho
 			mu[0]+=(A[n]/rhoA[n])*pow(y,1.0/kappa-1.0)*pow(x,kappa-1);
 			chiinv(0,0)+=(A[n]/(rhoA[n]*rhoA[n]))*(\
 				pow(x,2*kappa-2)*(1.0-kappa)*pow(y,1.0/kappa-2)
-					+pow(x,kappa-2)*(kappa-1.0)*pow(y,1.0/kappa-1)
-						);
+					+pow(x,kappa-2)*(kappa-1.0)*pow(y,1.0/kappa-1));
 			
-				
-				
-			//x=1.0+pow((rhoB-rho0)/rhoA[n],kappa);
-			//f+=A[n]*pow(x,1.0/kappa);
-			//mu[0]+=A[n]*pow(x,(1.0/kappa)-1)*pow(rhoB-rho0,kappa-1)/pow(rhoA[n],kappa);
-			//chiinv(0,0)+=A[n]*pow(x,(1.0/kappa)-2.0)*(1.0-kappa)*pow(rhoB-rho0,2.0*(kappa-1))/pow(rhoA[n],2*kappa);
-			//chiinv(0,0)+=A[n]*pow(x,(1.0/kappa)-1.0)*(kappa-1.0)*pow(rhoB-rho0,(kappa-2))/pow(rhoA[n],kappa);
 		}
 		P=-f+rhoB*mu[0];
 		mu[0]=mu[0]/T;
 		epsilon=f;
 		chiinv(0,0)=chiinv(0,0)/T;
-		
-		//printf("mu=(%g,%g,%g)\n",mu[0],mu[1],mu[2]);
-		//cout << chiinv << endl;
-		//printf("P=%g, epsilon=%g, f=%g\n",P,epsilon,f);
-
 	
 	}
+	
 	muB=mu[0];
 	muQ=mu[1];
 	muS=mu[2];
