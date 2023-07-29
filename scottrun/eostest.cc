@@ -33,33 +33,33 @@ int main(){
 
 	
 	
-		/*
+	/*
 	IntHadronGas->hgasinfo->sampler=sampler;
 	
 	string filename;
 	FILE *fptr;
 	for(T=T0;T<0.161;T+=0.01){
-		filename="results/T"+to_string(lrint(1000*T))+".txt";
-		fptr=fopen(filename.c_str(),"w");
-		printf("---------- T=%g ------------\n",T);
-		printf("   rho.    cs2.      P.       f.      mu/T.   chiinv(0,0)\n");
-		fprintf(fptr,"   rho.    cs2.      P.       f.      mu/T.   chiinv(0,0)\n");
-		for(rhoB=0.0;rhoB<1.0;rhoB+=0.02){
-			rhoS=0.0;
-			rhoQ=0.4*rhoB;
-			IntHadronGas->CalcQuantities(T,rhoB,rhoQ,rhoS);
-			printf("%6.3f  %7.4f  %7.4f  %7.4f   %7.4f   %7.4f\n",
-			rhoB,IntHadronGas->cs2,IntHadronGas->P,
-			IntHadronGas->hintinfo->f,IntHadronGas->hintinfo->muB,IntHadronGas->hintinfo->chiinv(0,0));
-			fprintf(fptr,"%6.3f  %7.4f  %7.4f  %7.4f   %7.4f   %7.4f\n",
-			rhoB,IntHadronGas->cs2,IntHadronGas->P,
-			IntHadronGas->hintinfo->f,IntHadronGas->hintinfo->muB,IntHadronGas->hintinfo->chiinv(0,0));
-			//IntHadronGas->PrintQuantities();
-		}
-		fclose(fptr);
+	filename="results/T"+to_string(lrint(1000*T))+".txt";
+	fptr=fopen(filename.c_str(),"w");
+	printf("---------- T=%g ------------\n",T);
+	printf("   rho.    cs2.      P.       f.      mu/T.   chiinv(0,0)\n");
+	fprintf(fptr,"   rho.    cs2.      P.       f.      mu/T.   chiinv(0,0)\n");
+	for(rhoB=0.0;rhoB<1.0;rhoB+=0.02){
+	rhoS=0.0;
+	rhoQ=0.4*rhoB;
+	IntHadronGas->CalcQuantities(T,rhoB,rhoQ,rhoS);
+	printf("%6.3f  %7.4f  %7.4f  %7.4f   %7.4f   %7.4f\n",
+	rhoB,IntHadronGas->cs2,IntHadronGas->P,
+	IntHadronGas->hintinfo->f,IntHadronGas->hintinfo->muB,IntHadronGas->hintinfo->chiinv(0,0));
+	fprintf(fptr,"%6.3f  %7.4f  %7.4f  %7.4f   %7.4f   %7.4f\n",
+	rhoB,IntHadronGas->cs2,IntHadronGas->P,
+	IntHadronGas->hintinfo->f,IntHadronGas->hintinfo->muB,IntHadronGas->hintinfo->chiinv(0,0));
+	//IntHadronGas->PrintQuantities();
+	}
+	fclose(fptr);
 	}
 		
-		*/
+	*/
 		
 	delete sampler;
 	delete reslist;
