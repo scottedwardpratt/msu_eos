@@ -231,6 +231,8 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilonset,double rho
 	hgasinfo->muS=-muII_h+muS_h;
 	
 	CalcQuantities(T,rhoB,rhoQ,rhoS);
+	
+	printf("TEST: T=%g, epsilon=%g, rho=(%g,%g,%g)\n",T,epsilon,rhoB,rhoQ,rhoS);
 }
 	
 void CinteractingHadronGas::PrintQuantities(){

@@ -16,6 +16,7 @@ int main(){
 	rhoB=(8.0/11.0)*0.16;
 	rhoQ=0.4*rhoB;
 	rhoS=0.0;
+	printf("rho=(%g,%g,%g)\n",rhoB,rhoQ,rhoS);
 	Crandy *randy=new Crandy(-1234);
 	string parfilename="parameters/parameters.txt";
 	CparameterMap *parmap=new CparameterMap();
@@ -29,6 +30,8 @@ int main(){
 	//int_scott->CalcQuantities(T0,rhoB,rhoQ,rhoS);
 	
 	IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
+	
+	
 	
 
 	
