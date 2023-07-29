@@ -165,6 +165,74 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	
 }
 
+void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset){
+	char message[CLog::CHARLENGTH];
+	//4D Newton's Method
+	// Here rhoII refers to rho_u-rho_d = 2*I3 and mu[1]=muII/2
+	double rhoBtarget,rhoStarget,rhoIItarget;
+	double rhoII,smb,cmb,Tf,epsilonh,ehtarget,muII_h,muB_h,muS_h;
+	Eigen::MatrixXd A(4,4);
+	Eigen::VectorXd dmu(4),drho(4);
+	int ntries=0;
+	
+	epsilon=epsilonset;
+	// Note only works when hintinfo doesn't depend on T
+	hintinfo->CalcQuantities(0.1,rhoBset,rhoQset,rhoSset);
+	ehtarget=epsilon-hintinfo->epsilon;
+	rhoBtarget=rhoBset;
+	rhoStarget=rhoSset;
+	rhoIItarget=2*rhoQset-rhoBset-rhoSset;
+	// change basis of chemical potentials
+	muII_h=0.5*hgasinfo->muQ;
+	muB_h=hgasinfo->muB+muII_h;
+	muS_h=hgasinfo->muS+muII_h;
+	
+	Csampler *sampler=hgasinfo->sampler;
+	Tf=sampler->Tf;
+	sampler->GetNHMu0();
+	
+	do{
+		ntries+=1;
+		if(ntries>30){
+			snprintf(message,CLog::CHARLENGTH,"FAILURE, ntries=%d\n",ntries);
+			CLog::Fatal(message);
+		}
+		smb=sinh(muB_h);
+		cmb=cosh(muB_h);
+
+		sampler->GetEpsilonRhoDerivatives(muB_h,muII_h,muS_h,epsilonh,rhoB,rhoII,rhoS,A);
+		for(int i=0;i<4;i++){
+			A(i,1)=A(i,1)/cmb;
+			A(i,0)=A(i,0)/(Tf*Tf);
+		}
+		
+		drho[0]=ehtarget-epsilonh;
+		drho[1]=rhoBtarget-rhoB;
+		drho[2]=rhoIItarget-rhoII;
+		drho[3]=rhoStarget-rhoS;
+		dmu=A.colPivHouseholderQr().solve(drho);
+		Tf+=dmu[0];
+		sampler->Tf=Tf;
+		sampler->GetNHMu0();
+		smb+=dmu[1];
+		muB_h=asinh(smb);
+		muII_h+=dmu[2];
+		muS_h+=dmu[3];
+
+	}while(fabs(drho[0])>1.0E-6 || fabs(drho[1])>1.0E-8 || fabs(drho[2])>1.0E-8 || fabs(drho[3])>1.0E-8);
+	
+	rhoB=rhoBset;
+	rhoQ=rhoQset;
+	rhoS=rhoSset;
+	T=Tf;
+	// change back to BQS basis
+	hgasinfo->muQ=2*muII_h;
+	hgasinfo->muB=-muII_h+muB_h;
+	hgasinfo->muS=-muII_h+muS_h;
+	
+	CalcQuantities(T,rhoB,rhoQ,rhoS);
+}
+	
 void CinteractingHadronGas::PrintQuantities(){
 	int a;
 	char output[CLog::CHARLENGTH];

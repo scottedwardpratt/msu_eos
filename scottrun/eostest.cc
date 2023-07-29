@@ -10,8 +10,9 @@ using namespace std;
 
 int main(){
 	MSU_EOS::USE_POLE_MASS=true;
-	double T,T0=0.100;
-	double rhoB,rhoQ,rhoS;
+	double T0=0.140;
+	double rhoB,rhoQ,rhoS,epsilon;
+	epsilon=0.25;
 	rhoB=(8.0/11.0)*0.16;
 	rhoQ=0.4*rhoB;
 	rhoS=0.0;
@@ -22,6 +23,17 @@ int main(){
 	CresList *reslist=new CresList(parmap);
 	CinteractingHadronGas *IntHadronGas=new CinteractingHadronGas(parmap);
 	Csampler *sampler=new Csampler(T0,0.093,parmap,reslist,randy);
+	IntHadronGas->hgasinfo->sampler=sampler;
+	
+	//ChIntInfo_Scott *int_scott=new ChIntInfo_Scott(parmap); // note this does (must) not depend on T
+	//int_scott->CalcQuantities(T0,rhoB,rhoQ,rhoS);
+	
+	IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
+	
+
+	
+	
+		/*
 	IntHadronGas->hgasinfo->sampler=sampler;
 	
 	string filename;
@@ -46,6 +58,9 @@ int main(){
 		}
 		fclose(fptr);
 	}
+		
+		*/
+		
 	delete sampler;
 	delete reslist;
 	

@@ -91,6 +91,7 @@ public:
 	CcanonicalHadronGasInfo *hgasinfo;
 	ChIntInfo_Scott *hintinfo;
 	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	void CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset);
 	void PrintQuantities();
 };
 
