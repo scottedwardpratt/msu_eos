@@ -26,6 +26,7 @@ int main(){
 	Csampler *sampler=new Csampler(T0,0.093,parmap,reslist,randy);
 	IntHadronGas->hgasinfo->sampler=sampler;
 	
+	printf("check a\n");
 	//ChIntInfo_Scott *int_scott=new ChIntInfo_Scott(parmap); // note this does (must) not depend on T
 	//int_scott->CalcQuantities(T0,rhoB,rhoQ,rhoS);
 	
