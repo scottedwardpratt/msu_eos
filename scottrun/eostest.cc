@@ -10,7 +10,7 @@ using namespace std;
 
 int main(){
 	MSU_EOS::USE_POLE_MASS=true;
-	double T0=0.140;
+	double T0=0.190;
 	double rhoB,rhoQ,rhoS,epsilon;
 	epsilon=0.25;
 	rhoB=(8.0/11.0)*0.16;
@@ -26,41 +26,18 @@ int main(){
 	Csampler *sampler=new Csampler(T0,0.093,parmap,reslist,randy);
 	IntHadronGas->hgasinfo->sampler=sampler;
 	
-	IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
+	//IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
 	
-	
-	
-
-	
-	
-	/*
-	IntHadronGas->hgasinfo->sampler=sampler;
-	
-	string filename;
-	FILE *fptr;
-	for(T=T0;T<0.161;T+=0.01){
-	filename="results/T"+to_string(lrint(1000*T))+".txt";
-	fptr=fopen(filename.c_str(),"w");
-	printf("---------- T=%g ------------\n",T);
-	printf("   rho.    cs2.      P.       f.      mu/T.   chiinv(0,0)\n");
-	fprintf(fptr,"   rho.    cs2.      P.       f.      mu/T.   chiinv(0,0)\n");
-	for(rhoB=0.0;rhoB<1.0;rhoB+=0.02){
-	rhoS=0.0;
-	rhoQ=0.4*rhoB;
-	IntHadronGas->CalcQuantities(T,rhoB,rhoQ,rhoS);
-	printf("%6.3f  %7.4f  %7.4f  %7.4f   %7.4f   %7.4f\n",
-	rhoB,IntHadronGas->cs2,IntHadronGas->P,
-	IntHadronGas->hintinfo->f,IntHadronGas->hintinfo->muB,IntHadronGas->hintinfo->chiinv(0,0));
-	fprintf(fptr,"%6.3f  %7.4f  %7.4f  %7.4f   %7.4f   %7.4f\n",
-	rhoB,IntHadronGas->cs2,IntHadronGas->P,
-	IntHadronGas->hintinfo->f,IntHadronGas->hintinfo->muB,IntHadronGas->hintinfo->chiinv(0,0));
-	//IntHadronGas->PrintQuantities();
+	double deltau=0.1,tau0=1.0;
+	for(double tau=1.0;tau<11.0+0.5*deltau;tau+=deltau){
+		rhoB=8*0.16/tau;
+		rhoQ=0.4*rhoB;
+		rhoS=0.0;
+		epsilon=3.0*pow(tau/tau0,-1.25);
+		printf("tau=%5g, epsilon=%g\n",tau,epsilon);
+		IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
 	}
-	fclose(fptr);
-	}
-		
-	*/
-		
+	
 	delete sampler;
 	delete reslist;
 	
