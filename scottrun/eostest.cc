@@ -9,14 +9,9 @@ using namespace std;
 // This makes a dummy hyper-element then creates particles and tests yield and energy of created partilces of specific pid
 
 int main(){
-	MSU_EOS::USE_POLE_MASS=true;
 	double T0=0.190;
-	double rhoB,rhoQ,rhoS,epsilon;
+	double rhoB,rhoQ,rhoS,epsilon,etarget;
 	epsilon=0.25;
-	rhoB=(8.0/11.0)*0.16;
-	rhoQ=0.4*rhoB;
-	rhoS=0.0;
-	printf("rho=(%g,%g,%g)\n",rhoB,rhoQ,rhoS);
 	Crandy *randy=new Crandy(-1234);
 	string parfilename="parameters/parameters.txt";
 	CparameterMap *parmap=new CparameterMap();
@@ -34,8 +29,12 @@ int main(){
 		rhoQ=0.4*rhoB;
 		rhoS=0.0;
 		epsilon=3.0*pow(tau/tau0,-1.25);
-		printf("tau=%5g, epsilon=%g\n",tau,epsilon);
+		etarget=epsilon;
 		IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
+		
+		printf("TEST: tau=%5.2f, T=%8.5f, epsilon=%8.5f=?%8.5f, rho=(%8.5f,%8.5f,%8.5f)\n",
+		tau,IntHadronGas->T,IntHadronGas->epsilon,etarget,
+		IntHadronGas->rhoB,IntHadronGas->rhoQ,IntHadronGas->rhoS);
 	}
 	
 	delete sampler;
