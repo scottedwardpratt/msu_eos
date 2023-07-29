@@ -50,7 +50,6 @@ CresList::CresList(CparameterMap* parmap_in){
 	readmsu=parmap->getB("MSU_SAMPLER_READ_MSU",false);
 	CresInfo::reslist=this;
 	if(readmsu){
-		printf("calling ReadResInfo_MSU\n");
 		ReadResInfo_MSU();
 	}
 	else

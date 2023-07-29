@@ -1,0 +1,413 @@
+\documentclass[12pt]{article}
+\usepackage{subfiles}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage[
+        pdfencoding=auto,%
+        pdfauthor={Scott Pratt},%
+        pdfstartview=FitV,%
+        colorlinks=true,%
+        linkcolor=blue,%
+        citecolor=blue, %
+        urlcolor=blue,
+        breaklinks=true]{hyperref}
+%\usepackage[anythingbreaks,hyphenbreaks]{breakurl}
+\usepackage[anythingbreaks,hyphenbreaks]{xurl}
+%\usepackage{pdfsync}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\numberwithin{equation}{section} 
+\numberwithin{figure}{section} 
+\usepackage[small,bf]{caption}
+%\usepackage{fontspec}
+%\usepackage{textcomp}
+%\usepackage{color}
+\usepackage{fancyhdr}
+\setlength{\headheight}{16pt}
+%\usepackage[headheight=110pt]{geometry}
+\usepackage{bm}
+
+\usepackage[most]{tcolorbox}
+\tcbset{
+frame code={}
+center title,
+left=0pt,
+right=0pt,
+top=0pt,
+bottom=0pt,
+colback=gray!25,
+colframe=white,
+width=\dimexpr\textwidth\relax,
+enlarge left by=0mm,
+boxsep=5pt,
+arc=0pt,outer arc=0pt,
+}
+\newcounter{examplecounter}
+\counterwithin{examplecounter}{section}
+\setcounter{examplecounter}{0}
+\newcommand{\example}[2]{\begin{tcolorbox}[breakable,enhanced]
+\refstepcounter{examplecounter}{
+\bf Example \arabic{section}.\arabic{examplecounter}:}~~{\bf #1}\\
+{#2}
+\end{tcolorbox}
+}
+\textwidth 7.0 in
+\hoffset -0.8 in
+%\newcommand{\exampleend}{
+%\begin{samepage}
+%\nopagebreak\noindent\rule{\textwidth}{1pt}
+%\end{samepage}
+%}
+
+
+%\usepackage{silence}
+%\WarningFilter{hyperref}{Token not allowed in a PDF String}
+
+\newcommand\eqnumber{\addtocounter{equation}{1}\tag{\theequation}}
+
+\newcommand{\solution}[1]{ }
+
+
+
+\usepackage{comment}
+\parskip 4pt
+\parindent 0pt
+
+%\newcommand{\bm}{\boldmath}
+\boldmath
+
+%
+
+\begin{document}
+
+\today\\
+
+\centerline{\bf \large Fixed Charge Thermodynamics}
+%\centerline{Oleh Savchuk and Scott Pratt}
+%\centerline{Michigan State University}
+
+\section{Basing relations on Free-Energy Density}
+
+We need thermodynamic quantities in terms of density and temperature. This includes fluctuations, which are most readily expressed in terms of chemical potentials. The Helmholtz free energy density is convenient when writing quantities as functions of the charge density $\rho$ and the temperature $T$. In terms of the canonical partition function,
+\begin{align*}\eqnumber
+f(\rho,T)&=\frac{1}{V}(E-TS)=-\frac{T}{V}\ln Z.
+\end{align*}
+
+The differential free energy density is, after using the identity $\delta V/V=-\delta\rho/\rho$,
+\begin{align*}\eqnumber
+\delta f&=\frac{\delta\rho}{\rho}f+\frac{1}{V}(-S\delta T-P\delta V)\\
+&=\frac{\delta\rho}{\rho}f-s\delta T+\frac{P\delta\rho}{\rho}\\
+&=\mu \delta\rho-s\delta T.
+\end{align*}
+
+The last relation used the identity,
+\begin{align*}\eqnumber\label{eq:sept}
+s=\beta\epsilon+P/T-\mu\rho/T.
+\end{align*}
+Reading off the last expression,
+\begin{align*}\eqnumber
+s&=-\frac{\partial f}{\partial T},~~~\mu=\frac{\partial f}{\partial\rho},
+\end{align*}
+where $f$ is assumed to be a function of $\rho$ and $T$. Using the definition of $f$,
+\begin{align*}\eqnumber
+\epsilon&=f+Ts=f+T\frac{\partial f}{\partial T}=-T^2\frac{\partial}{\partial T}\left(\frac{f}{T}\right).
+\end{align*}
+Using Eq. (\ref{eq:sept}) one can write the pressure,
+\begin{align*}\eqnumber
+P&=-f+\mu\rho.
+\end{align*}
+Summarizing, to this point we have the basic thermodynamic quantities in terms of $f(T,\rho)$:
+\begin{align*}\eqnumber
+\epsilon&=-T^2\frac{\partial}{\partial T}\left(\frac{f}{T}\right),\\
+s&=-\frac{\partial f}{\partial T},\\
+\mu&=\frac{\partial f}{\partial \rho},\\
+P&=-f+\mu\rho.
+\end{align*}
+
+\subsection{Susceptibilities and fluctuations}
+
+Next, we need to express the susceptibilities or fluctuations. As they are more conveniently defined in terms of $T$ and $\mu/T$ instead of $\mu$, we define $\tilde{\mu}_a=\mu_a/T$. Charge and energy fluctuations are defined in the grand canonical ensemble. First, the charge fluctuations are
+\begin{align*}\eqnumber
+\chi_{ab}&\equiv\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle\\
+&=\frac{\partial\rho_a}{\partial\tilde{\mu}_b}.
+\end{align*}
+Energy-energy and energy-charge fluctuations are
+\begin{align*}\eqnumber
+\chi_{EQ_a}&\equiv\frac{1}{V}\langle\delta E\delta Q_a\rangle\\
+&=\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=T^2\frac{\partial\rho_a}{\partial T},\\
+\chi_{EE}&\equiv\frac{1}{V}\langle\delta E\delta E\rangle\\
+&=T^2\frac{\partial\epsilon}{\partial T}.
+\end{align*}
+
+To see how to express such quantities in the canonical ensemble, we consider the matrix
+\begin{align*}\eqnumber
+M_{ab}&\equiv\frac{\partial\tilde{\mu}_a}{\partial\rho_b}.
+\end{align*},
+The matrix is simply the inverse of $\chi_{ab}$,
+\begin{align*}
+\delta\rho_a&=\chi_{ab}\delta\tilde{\mu}_b,\\
+\delta\tilde{\mu}_a&=M_{ab}\delta\rho_b.
+\end{align*}
+If I multiply the lower expression by the inverse of $M$,
+\begin{align*}\eqnumber
+\delta\rho_a&=M^{-1}_{ab}\delta\tilde{\mu}_b.
+\end{align*}
+Thus, one can see that
+\begin{align*}
+M&=\chi^{-1},~~~\chi=M^{-1}.
+\end{align*}
+Thus, to get the charge fluctuations, which were defined in the grand-canonical ensemble,  from a formulation based on the $f(T,\rho)$, one can proceed via,
+\begin{align*}\eqnumber
+\tilde{\mu}_a&=\frac{1}{T}\frac{\partial f}{\partial\rho_a},\\
+\chi^{-1}_{ab}&=\frac{1}{T}\frac{\partial^2 f}{\partial\rho_a\partial\rho_b}.
+\end{align*}
+The charge fluctuation is then found by inverting $\chi^{-1}$.
+
+\subsection{The Specific Heat and Energy-Charge Fluctuation Expressed in the Canonical Ensemble}
+
+One can also find the fluctuation of the energy density, at fixed $\tilde{\mu}$, in terms of $f(T,\rho)$.
+
+\begin{align*}\eqnumber
+\delta\epsilon&=
+\frac{\partial\epsilon}{\partial\rho_a}\delta\rho_a
++\frac{\partial\epsilon}{\partial T}\delta T,\\
+\delta\tilde{\mu}_a&=\frac{\partial\tilde{\mu_a}}{\partial\rho_b}\delta\rho_b+\frac{\partial\tilde{\mu_a}}{\partial T}\delta T=0,\\
+\delta\rho_a&=-\left(\frac{\partial\tilde{\mu}}{\partial\rho}\right)_{ab}^{-1}\frac{\partial\tilde{\mu}_b}{\partial T}\delta T,\\
+&=-\chi_{ab}\frac{\partial\tilde{\mu}_b}{\partial T}\delta T,\\
+\delta\epsilon&=\delta T\left\{
+-\frac{\partial \epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\tilde{\mu_b}}{\partial T}+\frac{\partial\epsilon}{\partial T}
+\right\}.
+\end{align*}
+This yields
+\begin{align*}\eqnumber\label{eq:chiEE}
+\chi_{EE}&=\frac{\partial\epsilon}{\partial T}
+-\frac{\partial\epsilon}{\partial\rho_a}\chi_{ab}\frac{\partial\tilde{\mu}_b}{\partial T}.
+\end{align*}
+
+Next, let's calculate $\chi_{EQ}$. We do similar steps above, except set $\delta T=0$.
+\begin{align*}
+\delta\epsilon&=\frac{\partial\epsilon}{\partial\rho_a}\delta\rho_a,\\
+\delta\rho_a&=\chi_{ab}\delta\tilde{\mu}_b,\\
+\delta\mu_a&=\chi^{-1}_{ab}\delta\rho_b,\\
+\eqnumber\label{eq:chiEQ}
+\chi_{EQ}&=\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=\frac{\partial\epsilon}{\partial\rho_b}\chi_{ba}.
+\end{align*}
+
+\subsection{Adding Interaction Free Energy to Free-Particle(gas) Free Energy}
+
+For our aims, we need to have thermodynamic quantities as a function of density, not chemical potential. Going from one to the other is not particularly difficult, unless one has an unstable mixed-phase region. If one wishes to model the dynamics of such a phase it is imperative to work with quantities which are functions of density. Further, the interaction energy is more straight-forward to describe as an addition to the free-energy density, because it is more often more easily understood as a function of density. For that reason one might think it reasonable to express the free-energy density as
+\begin{align*}\eqnumber
+f(\rho,T)&=f_{\rm free}(\vec{\rho},T)+f_{\rm int}(\vec{\rho},T).
+\end{align*}
+In fact, if the interaction is purely density dependent, i.e. independent of the momenta of the underlying particles, then $f_{\rm int}(\rho,T)$ is simply the potential energy density, and is independent of temperature.
+
+Given the definition in Eq. (\ref{eq:f12}), one can immediately see that
+\begin{align*}
+\tilde{\mu}_{\rm tot}(\vec{\rho},T)&=\tilde{\mu}_{\rm free}(\vec{\rho},T)+\tilde{\mu}_{\rm int}(\vec{\rho},T),\\
+P_{\rm tot}(\vec{\rho},T)&=P_{\rm free}(\vec{\rho},T)+P_{\rm int}(\vec{\rho},T),\\
+\epsilon_{\rm tot}(\vec{\rho},T)&=\epsilon_{\rm free}(\vec{\rho},T)+\epsilon_{\rm int}(\vec{\rho},T).
+\end{align*}
+Note that this definition of $P_{\rm int}$ differs from one where the total pressure is defined by separating out the two contributions at the same chemical potential. The latter choice would be natural if one were working in the grand canonical ensemble, in terms of $\vec{\tilde{\mu}}$, rather than in terms of the density.
+
+Thus, give the choice of Eq. (\ref{eq:f12}) one can see that
+\begin{align*}
+\frac{\partial^2f_{\rm tot}}{\partial\rho_a\partial\rho_b}&=
+\frac{\partial^2f_{\rm free}}{\partial\rho_a\partial\rho_b}+\frac{\partial^2f_{\rm int}}{\partial\rho_a\partial\rho_b},\\
+\chi^{-1}_{\rm tot}&=\chi^{-1}_{\rm free}+\chi^{-1}_{\rm int}.
+\end{align*}
+This if one wants the charge susceptibility of the entire system, one should calculate $\chi^{-1}$ for both pieces, add them together, then take the inverse of the matrix.
+\begin{align*}\eqnumber
+\chi&=(\chi^{-1}_{\rm free}+\chi^{-1}_{\rm int})^{-1}.
+\end{align*}
+The susceptibilities which include energy can also be found in terms of density-dependent (rather that $\tilde{\mu}-$dependent functions. Beginning by expressing the grand partition function in terms of $T$ and $\tilde{\mu}$, one can write the energy charge fluctuation,
+\begin{align*}\eqnumber
+\zeta_a&\equiv\frac{1}{VT}\langle\delta E\delta Q_a\rangle=\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\tilde{\mu}}_a}
+=T\frac{\partial\rho_a}{\partial T}.
+\end{align*}
+One can then write this as
+\begin{align*}\eqnumber
+\zeta_a&=\frac{1}{T}\frac{\partial\epsilon}{\partial\rho_b}\frac{\partial\rho_b}{\partial\tilde{\mu}_a}\\
+&=\frac{1}{T}\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b}.
+\end{align*}
+
+Rewriting the specific heat requires remembering that derivatives w.r.t. temperature require noting whether $\vec{\tilde{\mu}}$ or $\vec{\rho}$ are being held constant. First, we define the specific heat so that it corresponds to the energy fluctuation in the grand canonical ensemble,
+\begin{align*}\eqnumber
+\xi&\equiv\frac{1}{T^2V}\langle\delta E\delta E\rangle\\
+&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}.
+\end{align*}
+Next, you determine how $\vec{\tilde{\mu}}$ must be changing in order to maintain constant density,
+\begin{align*}\eqnumber
+\delta\rho_a&=0=\left.\frac{\partial\rho_a}{\partial T}\right|_{\vec{\tilde{\mu}}}+\frac{\partial\rho_a}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b,\\
+\delta\tilde{\mu}_a&=-\chi^{-1}_{ab}\left.\frac{\partial\rho_a}{\partial T}\right|_{\vec{\tilde{\mu}}}.
+\end{align*}
+This then gives
+\begin{align*}\eqnumber
+\delta\epsilon&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a\\
+\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}
+&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}-\left.\frac{\partial\rho_a}{\partial T}\right|_{\vec\tilde{\mu}}\chi^{-1}_{ab}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}\\
+&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\tilde{\mu}}}-\zeta_a\chi^{-1}_{ab}\zeta_b.
+\end{align*}
+
+For our calculation, we have two components, that of a non-interacting gas, plus an interaction. The thermodynamics of the non-interactiong gas are most easily expressed in terms of chemical potentials, whereas the interaction term is most easily expressed in terms of densities. To add quantities together, we assume that the net free energy is the sum of the free energy of a gas and the interaction part,
+\begin{align*}\eqnumber
+f&=f^{\rm(gas)}+f^{\rm(int)}.
+\end{align*}
+This then implies that
+\begin{align*}\eqnumber
+\epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
+\tilde{\mu}_a&=\tilde{\mu}_a^{\rm(gas)}+\tilde{\mu}_b^{\rm(int)},\\
+\chi^{-1}&=\chi^{-1{\rm(gas)}}+\chi^{-1{\rm(int)}},\\
+\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}&=
+\left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\rho}}
++\left.\frac{\partial\epsilon^{\rm(int)}}{\partial T}\right|_{\vec{\rho}}.
+\end{align*}
+Note that the chemical potentials of the two parts add (they are not the same) and that the densities are the same. 
+
+The order of operations for adding the two contributions are:
+\begin{enumerate}\itemsep=0pt
+        \item Calculate all quantities for the gas in the grand canonical ensemble. This includes $\epsilon^{\rm(gas)}$, $\zeta_a^{\rm(gas)}$, and $\chi^{\rm(gas)}$. Also take the inverse of $\chi^{\rm(gas)}$ to get $\chi^{-1{\rm(gas)}}$. Also calculate
+        \begin{align*}
+        \frac{\partial\epsilon^{\rm(gas)}}{\partial\rho_a}&=\frac{1}{T}\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
+        \left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\rho}}&=\left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\tilde{\mu}}}-\zeta^{\rm(gas)}_a\chi^{-1{\rm(gas)}}_{ab}\zeta^{\rm(gas)}_b,\\
+        \end{align*}
+        \item Calculate the quantities for the interaction contribution: 
+        \begin{align*}
+        \epsilon^{\rm(int)}&=-T^2\frac{\partial}{\partial T}(f^{\rm(int)}/T),\\
+        \tilde{\mu}_a^{\rm(int)}&=\frac{1}{T}\frac{\partial f^{\rm(int)}}{\partial\rho_a},\\
+        \chi^{-1{\rm(int)}}_{ab}&=\frac{\partial\tilde{\mu}^{\rm(int)}_a}{\partial\rho_b}.
+        \end{align*}
+        along with $\partial\epsilon^{\rm(gas)}/\partial\rho_a$ and $\partial\epsilon^{\rm(gas)}/\partial T|_{\vec{\rho}}$.
+        \item Add contribution from gas and interactions to  get combined quantities,
+        \begin{align*}
+        \epsilon&=\epsilon^{\rm(gas)}+\epsilon^{\rm(int)},\\
+        P&=P^{\rm(gas)}+P^{\rm(int)},\\
+        \tilde{\mu}_a&=\tilde{\mu}_a^{\rm(gas)}+\tilde{\mu}_a^{\rm(int)},\\
+        \chi^{-1}_{ab}&=\chi^{-1{\rm(gas)}}_{ab}+\chi^{-1{\rm(int)}}_{ab},\\
+        \frac{\partial\epsilon}{\partial\rho_a}&=\frac{\partial\epsilon^{\rm(gas)}}{\partial\rho_a}+\frac{\partial\epsilon^{\rm(int)}}{\partial\rho_a},\\
+        \left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}&=\left.\frac{\partial\epsilon^{\rm(gas)}}{\partial T}\right|_{\vec{\rho}}
+        +\left.\frac{\partial\epsilon^{\rm(int)}}{\partial T}\right|_{\vec{\rho}}.
+        \end{align*}
+        Now, from all the combined quantities, you can calculate all the net susceptibilities,
+        \begin{align*}\eqnumber
+        \chi_{ab}&=\left(\chi^{-1}\right)^{-1}_{ab},\\
+        \zeta_a&=\frac{1}{T}\chi_{ab}\frac{\partial\epsilon}{\partial\rho_b},\\
+        \xi&=\left.\frac{\partial\epsilon}{\partial T}\right|_{\vec{\rho}}+\zeta_a\chi^{-1}_{ab}\zeta_b.
+        \end{align*}
+\end{enumerate}
+
+\subsection{The speed of sound}
+When taking partial derivatives, assume functions are of $T$ and $\tilde{\mu}_a\equiv\mu_a/T$.
+\begin{align*}\eqnumber
+c_s^2&=\left.\frac{\partial P}{\partial\epsilon}\right|_{s/\rho},\\
+\delta P&=\frac{\partial P}{\partial T}\delta T+\frac{\partial P}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+&=\frac{P+\epsilon}{T}\delta T+\rho_aT\delta\tilde{\mu}_a,\\
+\delta \epsilon&=\frac{\partial\epsilon}{\partial T}\delta T+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+\delta\rho_a&=\frac{\partial \rho_a}{\partial T}\delta T+\frac{\partial \rho_a}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b\\
+&=\frac{\partial \rho_a}{\partial T}\delta T+\chi_{ab}\delta\tilde{\mu}_b,\\
+\delta s&=\frac{\partial s}{\partial T}\delta T+\frac{\partial s}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+s^2\delta\left(\frac{\rho_a}{s}\right)&=s\delta\rho_a-\rho_a\delta s=0,\\
+0&=s\frac{\partial\rho_a}{\partial T}\delta T+s\chi_{ab}\delta\tilde{\mu}_b
+-\rho_b\frac{\partial s}{\partial T}\delta T-\rho_a\frac{\partial s}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b,\\
+\delta\tilde{\mu}_a&=M_a\frac{\delta T}{T},\\
+%%%
+\label{eq:Mdef}
+M_a&=T\left(s\chi-\rho\frac{\partial s}{\partial\tilde{\mu}}\right)_{ab}^{-1}
+\left(\rho_b\frac{\partial s}{\partial T}-s\frac{\partial\rho_b}{\partial T}\right).
+\end{align*}
+By substituting for $\delta\tilde{\mu}$ in the expressions for $\delta P$ and $\delta\epsilon$, then taking the ratio $\delta P/\delta\epsilon$, the factors of $\delta T$ drop out and
+\begin{align*}\eqnumber
+c_s^2&=\frac{(P+\epsilon)/T+\rho_aM_a}{\frac{\partial\epsilon}{\partial T}+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}M_a/T}
+\end{align*}
+Next, substitute to replace derivative of $s$, with derivatives of $\epsilon$ or $\rho$, so that all derivatives in the Eq. (\ref{eq:Mdef}) are related to fluctuations.
+\begin{align*}\eqnumber
+\frac{\partial P}{\partial T}&=\frac{P+\epsilon}{T},\\
+\frac{\partial s}{\partial T}&=\frac{\partial}{\partial T}\left(\frac{P+\epsilon-\tilde\mu_a\rho_aT}{T}\right)\\
+&=\frac{1}{T}\left(\frac{P+\epsilon}{T}+\frac{\partial\epsilon}{\partial T}-T\tilde{\mu_a}\frac{\partial\rho_a}{\partial T}-\tilde{\mu}_a\rho_a\right)-\frac{s}{T}\\
+&=\frac{1}{T}\frac{\partial\epsilon}{\partial T}-\tilde{\mu}_a\frac{\partial\rho_a}{\partial T},\\
+\frac{\partial s}{\partial\tilde{\mu}_a}&=\frac{1}{T}\frac{\partial}{\partial\tilde{\mu}_a}(P+\epsilon-\tilde{\mu}_b\rho_bT),\\
+&=\frac{1}{T}\left(
+\rho_aT+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\rho_aT-\tilde{\mu_b}T\frac{\partial\tilde{\rho}_b}{\partial\tilde{\mu}_a}
+\right)\\
+&=\frac{1}{T}\left(
+\frac{\partial\epsilon}{\partial\tilde{\mu}_a}-\tilde{\mu}_bT\frac{\partial\rho_b}{\partial\tilde{\mu}_a}
+\right)\\
+M_a&=A^{-1}_{ab}\left(
+\rho_b \frac{\partial\epsilon}{\partial T}  -\rho_bT\tilde{\mu}_c\frac{\partial\rho_c}{\partial T}-Ts\frac{\partial\rho_b}{\partial T}\right),\\
+A_{ab}&=s\chi_{ab}-\rho_a\left(
+\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}-\tilde{\mu}_c\frac{\partial\rho_c}{\partial\tilde{\mu}_b}
+\right)\\
+&=s\chi_{ab}-\frac{\rho_a}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}+\rho_a\chi_{bc}\tilde{\mu}_c.
+\end{align*}
+Now, let's summarize the results for the speed of sound using the following definitions for the susceptibilities,
+\begin{align*}\eqnumber
+\xi&\equiv \frac{\partial\epsilon}{\partial T}=\frac{1}{T^2V}\langle\delta E\delta E\rangle,\\
+\zeta_a&\equiv\frac{1}{T}\frac{\partial\epsilon}{\partial\tilde{\mu}_a}=T\frac{\partial\rho_a}{\partial T}
+=\frac{1}{TV}\langle\delta E\delta Q_a\rangle,\\
+\chi_{ab}&\equiv\frac{\partial\rho_a}{\partial\tilde{\mu}_b}=\frac{1}{V}\langle\delta Q_a\delta Q_b\rangle,\\
+F_p&=\frac{P+\epsilon}{T}=\frac{1}{T^2v}\langle\delta P_x\delta P_x\rangle,
+\end{align*}
+where $P_x$ is a $x-$component of the momentum.
+
+This gives
+\begin{align*}\eqnumber\label{eq:f12}
+c_s^2&=\frac{(P+\epsilon)/T+\rho_a M_a}{\xi+\zeta_aM_a},\\
+M_a&=A^{-1}_{ab}[(\xi-\tilde{\mu}_c\zeta_c)\rho_b-s\zeta_b],\\
+A_{ab}&=s\chi_{ab}-\rho_a\zeta_b.
+\end{align*}
+
+\subsection{Derivatives at fixed energy density}
+First, define some derivatives w.r.t. density at fixed temperature.
+\begin{align*}\eqnumber\label{eq:dPdrhoT}
+\left.\frac{\partial P}{\partial\rho_a}\right|_T&=
+\frac{\partial P}{\partial\tilde{\mu}_b}\frac{\partial\tilde{\mu}_b}{\partial\rho_a}\\
+&=\chi^{-1}_{ab}\rho_bT,\\
+\left.\frac{\partial\epsilon}{\partial\rho_a}\right|_T&=\chi^{-1}_{ab}\frac{\partial\epsilon}{\partial\tilde{\mu}_b}\\
+&=\chi^{-1}_{ab}\zeta_bT=0,\\
+\left.\delta P\right|_\rho&=\left[\left.\frac{\partial P}{\partial T}\right|_{\tilde{\mu}}
+-\left.\frac{\partial P}{\partial\tilde{\mu}_a}\right|_{\tilde{\mu}}\frac{1}{T}\chi^{-1}_{ab}\zeta_b
+\right]\delta T,\\
+\left.\frac{\partial P}{\partial T}\right|_\rho&=\frac{P+\epsilon}{T}-\rho_a\chi^{-1}_{ab}\zeta_b.
+\end{align*}
+Similarly, derivatives of $\epsilon$ are
+\begin{align*}\eqnumber\label{eq:dedrhoT}
+\left.\frac{\partial\epsilon}{\partial T}\right|_\rho&=
+\left.\frac{\partial\epsilon}{\partial T}\right|_{\tilde{\mu}}
+-\frac{\partial\epsilon}{\partial\tilde{\mu}_a}\frac{1}{T}\chi^{-1}_{ab}\zeta_b\\
+&=\xi-\zeta_a\chi^{-1}_{ab}\zeta_b.
+\end{align*}
+Next, we need to find derivatives of $P$ and $\epsilon$ w.r.t $T$ at fixed density,
+\begin{align*}\eqnumber
+\delta P&=\frac{\partial P}{\partial T}\delta T+\frac{\partial P}{\partial\tilde{\mu}_a}\delta\tilde{\mu}_a,\\
+\delta\rho_a&=\frac{\partial\rho}{\partial T}\delta T+\frac{\partial\rho_a}{\partial\tilde{\mu}_b}\delta\tilde{\mu}_b=0\\
+&=\frac{1}{T}\zeta_a\delta T+\chi_{ab}\delta\tilde{\mu}_b
+\end{align*}
+Now, to find $\partial P/\partial \rho_a|_\epsilon$,
+\begin{align*}\eqnumber
+\delta P&=\left.\frac{\partial P}{\partial\rho_a}\right|_T\delta\rho_a+\left.\frac{\partial P}{\partial T}\right|_\rho\delta T,\\
+\delta \epsilon&=\left.\frac{\partial \epsilon}{\partial\rho_a}\right|_T\delta\rho_a+\left.\frac{\partial \epsilon}{\partial T}\right|_\rho\delta T=0\\
+\delta P&=\left.\frac{\partial P}{\partial\rho_a}\right|_T\delta\rho_a-\frac{\delta\rho_a}{\partial\epsilon/\partial T|_\rho}
+\left.\frac{\partial P}{\partial T}\right|_\rho\left.\frac{\partial\epsilon}{\partial\rho_a}\right|_T,\\
+\left.\frac{\partial P}{\partial\rho_a}\right|_\epsilon&=\left.\frac{\partial P}{\partial \rho_a}\right|_T
+-\frac{1}{\xi}\left.\frac{\partial P}{\partial T}\right|_\rho\left.\frac{\partial\epsilon}{\partial\rho_a}\right|_T.
+\end{align*}
+Finally, to find $\partial P/\partial\epsilon$ at fixed density, one can apply Eq.s (\ref{eq:dPdrhoT}) and (\ref{eq:dedrhoT}),
+\begin{align*}\eqnumber
+\left.\frac{\partial P}{\partial\epsilon}\right|_\rho&=\frac{\left.\frac{\partial P}{\partial T}\right|_\rho}
+{\left.\frac{\partial\epsilon}{\partial T}\right|_\rho}
+\end{align*}
+
+\subsection{How the code works}
+
+The code has simple routines that calculate the free-particle contributions to $\vec{\rho},P,\epsilon$ and $\chi$ in terms of $\vec{\mu}$ and $T$. An optimized Newton's method routine is used to find $\vec{\mu}$ in terms of $\vec{\rho}$ and $T$. This results in an easily accessible routine that gives all the thermodyanmic quantities in terms of $\vec{\rho}$ and $T$. One can invert $\chi$ to find the free-energy contribution to $\chi^{-1}$. This thus provides $P_{\rm free}$, $\epsilon_{\rm free}, \vec{\mu}_{\rm free}$ and $\chi^{-1}_{\rm free}$.
+
+Next, one calls a function that provides the free energy, plus all its derivatives with respect to $\vec{\rho}$. This provides the interaction contributions, $f_{\rm int}, P_{\rm int}$, $\epsilon_{\rm int}, \vec{\mu}_{\rm int}$ and $\chi^{-1}_{\rm int}$. If one has an analytic form for $f_{\rm int}(\vec{\rho},T)$ it is usually simple to find all the interaction contributions by taking derivatives.
+
+Finally, one finds the thermodynamic quantities of the entire system by simply adding the two pieces. This gives $f_{\rm tot}, P_{\rm tot}$, $\epsilon_{\rm tot}, \vec{\mu}_{\rm tot}$ and $\chi^{-1}_{\rm tot}$. The susceptibility is then found by taking the inverse of the sums of $\chi^{-1}_{\rm free}$ and $\chi^{-1}_{\rm int}$,
+\begin{align*}\eqnumber
+\chi_{\rm tot}&=\left[\chi^{-1}_{\rm free}+\chi^{-1}_{\rm int}\right]^{-1}.
+\end{align*}
+
+Once you have these quantities, you can find $\chi_{EE}$ and $\chi_{EQ}$ using Eq.s (\ref{eq:chiEE}) and (\ref{eq:chiEQ}).
+
+\end{document}

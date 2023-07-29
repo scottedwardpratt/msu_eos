@@ -1,6 +1,7 @@
 #ifndef __EOS_H_
 #define __EOS_H_
 #include "msu_eos/resonances.h"
+#include "msu_sampler/sampler.h"
 
 // ------------------------
 // functions for calculating EoS (epsilon,P,density,depsilon/dT, and sigma^2) of single species
@@ -32,5 +33,68 @@ namespace MSU_EOS{
   static bool USE_POLE_MASS=false;
   static double MIN_WIDTH=0.001;
 };
+
+class CcanonicalHadronGasInfo{
+public:
+	CcanonicalHadronGasInfo();
+	~CcanonicalHadronGasInfo();
+	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double rhoB,rhoQ,rhoS,nhadrons;
+	double epsilon,P,s,f;// f is Helmholtz free energy density
+	Eigen::MatrixXd chi,chiinv,A;
+	Eigen::VectorXd chiEQ;
+	double chiEE;
+	Csampler *sampler;
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
+	void CalcMuQFromMuH(); // opposite
+};
+
+class ChadronInteractionInfo{
+public:
+	ChadronInteractionInfo();
+	ChadronInteractionInfo(CparameterMap *parmap);
+	CparameterMap *parmap;
+	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double rhoB,rhoQ,rhoS;
+	double epsilon,P,f,s;// f is Helmholtz free energy density
+	Eigen::MatrixXd chiinv;
+	//double chiEE,chiEB,chiEQ,chiES;
+	double dedT;
+	Eigen::VectorXd dedrho,dmudT;
+	virtual void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS); // in terms of density and temperature
+};
+
+class ChIntInfo_Scott : public ChadronInteractionInfo{
+public:
+	ChIntInfo_Scott();
+	ChIntInfo_Scott(CparameterMap *parmap);
+	vector<double> A;
+	vector<double> rhoA;
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+};
+
+class CinteractingHadronGas{
+public:
+	CinteractingHadronGas(CparameterMap *parmap);
+	~CinteractingHadronGas();
+	CparameterMap *parmap;
+	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
+	double rhoB,rhoQ,rhoS;
+	double epsilon,P,s,f,cs2;// f is Helmholtz free energy density, cs2 is the speed of sound
+	Eigen::MatrixXd chi,chiinv;
+	Eigen::VectorXd chiEQ;
+	double chiEE;
+	Eigen::VectorXd dPdrho_T,dedrho_T,dPdrho_e;
+	double dPdT_rho,dedT_rho,dPde_rho;
+
+	CcanonicalHadronGasInfo *hgasinfo;
+	ChIntInfo_Scott *hintinfo;
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	void CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset);
+	void PrintQuantities();
+};
+
+
 
 #endif

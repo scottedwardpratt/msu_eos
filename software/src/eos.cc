@@ -167,17 +167,15 @@ double MSU_EOS::GetJi(double T,double mass,double dens){
 }
 
 void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji){
-	printf("MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji) is deprecated.  Will not correctly handle USE_POLE_MASS variable! Use alt function that inputs bool use_pole_mass.)\n");
+	CLog::Info("MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji) is deprecated.  Will not correctly handle USE_POLE_MASS variable! Use alt function that inputs bool use_pole_mass.)\n");
 	double degen,m;
 	if(resinfo->charm==0){
 		m=resinfo->mass;
 		degen=resinfo->degen;
 		if(resinfo->width>MIN_WIDTH && resinfo->decay && !MSU_EOS::USE_POLE_MASS){
-			printf("howdy ???????\n");
 			freegascalc_onespecies_finitewidth(T,resinfo,epsiloni,Pi,densi,dedti,p4overE3i,Ji);
 		}
 		else{
-			printf("howdy\n");
 			freegascalc_onespecies(T,m,epsiloni,Pi,densi,dedti);
 			p4overE3i=Getp4overE3(T,m,densi);
 			Ji=GetJi(T,m,densi);
@@ -228,6 +226,8 @@ void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double 
 	double pi,epsiloni,densi,dedti,p4overE3i,Ji;
 	Eigen::Matrix3d sigmai(3,3);
 	int a,b,ires;
+	if(density.size()!=reslist->resmap.size())
+		density.resize(reslist->resmap.size());
 	chi.setZero();
 	sigma.setZero();
 	P=epsilon=s=nh=0.0;

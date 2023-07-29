@@ -89,9 +89,8 @@ void CresInfo::CalcMinMass(){
 			}
 		}
 		if(reslist->readmsu && minmass>mass){
-			printf("minmass=%g, mass=%g\n",minmass,mass);
 			Print();
-			exit(1);
+			CLog::Fatal("minmass="+to_string(minmass)+", mass="+to_string(mass)+"\n");
 		}
 		//minmass=SpectEVec[0];
 	}
@@ -501,4 +500,3 @@ void CresInfo::SetBtype(){
 		exit(1);		
 	}
 }
-
