@@ -236,6 +236,7 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double 
 void CinteractingHadronGas::PrintQuantities(){
 	int a;
 	char output[CLog::CHARLENGTH];
+	CLog::Info("------------------------------------------\n");
 	snprintf(output,CLog::CHARLENGTH,"T=%g, rhoB=%g, rhoQ=%g, rhoS=%g\n",T,rhoB,rhoQ,rhoS);
 	CLog::Info(output);
 	snprintf(output,CLog::CHARLENGTH,"P=%g, epsilon=%g, f=%g, s=%g, c_s^2=%g\n",P,epsilon,f,s,cs2);
