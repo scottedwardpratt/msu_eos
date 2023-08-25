@@ -12,17 +12,16 @@ CcanonicalHadronGasInfo::CcanonicalHadronGasInfo(){
 CcanonicalHadronGasInfo::~CcanonicalHadronGasInfo(){
 }
 
-void CcanonicalHadronGasInfo::CalcQuantities(double Tset,double rhoBset,double rhoQset,double rhoSset){
+void CcanonicalHadronGasInfo::CalcQuantities(double Tset,double rhoBset,double rhoQset,double rhoSset,Csampler *sampler_set){
+	sampler=sampler_set;
 	T=Tset;
 	rhoB=rhoBset;
 	rhoQ=rhoQset;
 	rhoS=rhoSset;
 	double rhoII,rhoIIcheck,rhoBcheck,rhoScheck,muII;
-	printf("HOWDY A\n");
 	if(sampler==NULL){
 		CLog::Fatal("In CcanonicalHadronGasInfo::CalcHadronicQuantities, sampler pointer is still NULL\n");
 	}
-	printf("HOWDY B\n");
 	rhoII=2*rhoQ-rhoB-rhoS;
 	if(fabs(sampler->Tf-T)>0.0001 || !sampler->forMU0_calculated){
 		//CLog::Info("Resetting sampler T in CcanonicalHadronGasInfo to "+to_string(T)+"\n");
@@ -62,6 +61,8 @@ void CcanonicalHadronGasInfo::CalcQuantities(double Tset,double rhoBset,double r
 	
 }
 
+//#######################################
+
 CinteractingHadronGas::CinteractingHadronGas(CparameterMap *parmap_set){
 	parmap=parmap_set;
 	muB=muS=muQ=0.0;
@@ -71,24 +72,17 @@ CinteractingHadronGas::CinteractingHadronGas(CparameterMap *parmap_set){
 }
 
 CinteractingHadronGas::~CinteractingHadronGas(){
-	//delete chi;
-	//delete 	chiinv;
-	//delete chiEQ;
-	//delete hgasinfo;
-	//delete htinfo;
 }
 
-void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rhoQset,double rhoSset){
-	printf("howdy a\n");
-	cout << hgasinfo->sampler << endl;
+void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rhoQset,double rhoSset,Csampler *sampler){
 	double dedt_rho;
 	int a,b;
 	T=Tset;
 	rhoB=rhoBset;
 	rhoQ=rhoQset;
 	rhoS=rhoSset;
-	hgasinfo->CalcQuantities(T,rhoB,rhoQ,rhoS);
-	printf("howdy b\n");
+	
+	hgasinfo->CalcQuantities(T,rhoB,rhoQ,rhoS,sampler);
 	hintinfo->CalcQuantities(T,rhoB,rhoQ,rhoS);
 	chiinv=hgasinfo->chiinv+hintinfo->chiinv;
 	chi=chiinv.inverse();
@@ -99,15 +93,11 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	P=hgasinfo->P+hintinfo->P;
 	s=hgasinfo->s+hintinfo->s;
 	f=hgasinfo->f+hintinfo->f;
-	Eigen::Matrix<double,3,3> dedrho;
+	Eigen::Vector<double,3> dedrho;
 	
-	cout << hgasinfo->chiEQ << endl;
-	
-	cout << hgasinfo->chiinv << endl;
-	exit(1);
-	//dedrho=hgasinfo->chiinv*hgasinfo->chiEQ;
-	//dedrho=dedrho+hintinfo->dedrho;
-	//chiEQ=chi*dedrho;
+	dedrho=hgasinfo->chiinv*hgasinfo->chiEQ;
+	dedrho=dedrho+hintinfo->dedrho;
+	chiEQ=chi*dedrho;
 	
 	dedt_rho=hgasinfo->chiEE-hgasinfo->chiEQ.transpose()*hgasinfo->chiinv*hgasinfo->chiEQ;
 	dedt_rho+=hintinfo->dedT;
@@ -157,7 +147,8 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	
 }
 
-void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double rhoBtarget,double rhoQtarget,double rhoStarget){
+void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double rhoBtarget,double rhoQtarget,double rhoStarget,Csampler *sampler_set){
+	Csampler *sampler=sampler_set;
 	char message[CLog::CHARLENGTH];
 	//4D Newton's Method
 	// Here rhoII refers to rho_u-rho_d = 2*I3 and mu[1]=muII/2
@@ -172,7 +163,6 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double 
 	muB_h=hgasinfo->muB+muII_h;
 	muS_h=hgasinfo->muS+muII_h;
 	
-	Csampler *sampler=hgasinfo->sampler;
 	Tf=sampler->Tf;
 	sampler->GetNHMu0();
 	
@@ -219,7 +209,7 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double 
 	hgasinfo->muB=-muII_h+muB_h;
 	hgasinfo->muS=-muII_h+muS_h;
 	
-	CalcQuantities(T,rhoB,rhoQ,rhoS);
+	CalcQuantities(T,rhoB,rhoQ,rhoS,sampler);
 	
 	//snprintf(message,CLog::CHARLENGTH,"TEST: T=%g, epsilon=%g, rho=(%g,%g,%g)\n",T,epsilon,rhoB,rhoQ,rhoS);
 	//CLog::Info(message);

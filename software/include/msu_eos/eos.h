@@ -46,7 +46,7 @@ public:
 	Eigen::Vector<double,3> chiEQ;
 	double chiEE;
 	Csampler *sampler;
-	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS,Csampler *sampler_set);
 	void CalcMuHFromMuQ(); // chemical potentials in BQS basis from uds basis
 	void CalcMuQFromMuH(); // opposite
 };
@@ -90,8 +90,8 @@ public:
 
 	CcanonicalHadronGasInfo *hgasinfo;
 	ChIntInfo_Scott *hintinfo;
-	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
-	void CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset);
+	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS,Csampler *sampler_set);
+	void CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset,Csampler *sampler_set);
 	void PrintQuantities();
 };
 
