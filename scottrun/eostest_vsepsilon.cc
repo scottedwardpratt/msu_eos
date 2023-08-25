@@ -23,18 +23,18 @@ int main(){
 	
 	//IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
 	
-	double deltau=0.002,tau0=1.0;
+	double deltau=0.2,tau0=1.0;
 	for(double tau=1.0;tau<11.0+0.5*deltau;tau+=deltau){
 		rhoB=8*0.16/tau;
 		rhoQ=0.4*rhoB;
 		rhoS=0.0;
-		epsilon=3.0*pow(tau/tau0,-1.25);
+		epsilon=7*pow(tau/tau0,-1.25);
 		etarget=epsilon;
 		IntHadronGas->CalcQuantitiesVsEpsilon(epsilon,rhoB,rhoQ,rhoS);
-		
-		printf("tau=%5.2f, T=%8.5f, e=%8.5f=?%8.5f, e_h=%8.5f, e_int=%8.5f, rhoB=%8.5f, cs2=%8.5f, P=%8.5f, s=%8.5f\n",
-		tau,IntHadronGas->T,IntHadronGas->epsilon,etarget,
-		IntHadronGas->hgasinfo->epsilon,IntHadronGas->hintinfo->epsilon,IntHadronGas->rhoB,IntHadronGas->cs2,IntHadronGas->P,IntHadronGas->s);
+		IntHadronGas->PrintQuantities();
+		//printf("tau=%5.2f, T=%8.5f, e=%8.5f=?%8.5f, e_h=%8.5f, e_int=%8.5f, rhoB=%8.5f, cs2=%8.5f, P=%8.5f, s=%8.5f\n",
+		//tau,IntHadronGas->T,IntHadronGas->epsilon,etarget,
+		//IntHadronGas->hgasinfo->epsilon,IntHadronGas->hintinfo->epsilon,IntHadronGas->rhoB,IntHadronGas->cs2,IntHadronGas->P,IntHadronGas->s);
 	}
 	
 	delete sampler;

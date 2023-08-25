@@ -241,10 +241,12 @@ void CinteractingHadronGas::PrintQuantities(){
 	CLog::Info(output);
 	snprintf(output,CLog::CHARLENGTH,"P=%g, epsilon=%g, f=%g, s=%g, c_s^2=%g\n",P,epsilon,f,s,cs2);
 	CLog::Info(output);
+	snprintf(output,CLog::CHARLENGTH,"chiEE=%g, chiEQ=(%g,%g,%g)\n",chiEE,chiEQ(0),chiEQ(1),chiEQ(2));
+	CLog::Info(output);
 	snprintf(output,CLog::CHARLENGTH,"chi=\n");
 	CLog::Info(output);
 	for(a=0;a<3;a++){
-		snprintf(output,CLog::CHARLENGTH,"%10.3e %10.3e %10.3e\n",chi(a,0),chi(a,1),chi(a,2));
+		snprintf(output,CLog::CHARLENGTH,"%10.6f %10.6f %10.6f\n",chi(a,0),chi(a,1),chi(a,2));
 		CLog::Info(output);
 	}
 }
