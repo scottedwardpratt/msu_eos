@@ -7,17 +7,9 @@
 CcanonicalHadronGasInfo::CcanonicalHadronGasInfo(){
 	muB=muS=muQ=0.0;
 	sampler=NULL;
-	chi.resize(3,3);
-	chiinv.resize(3,3);
-	A.resize(4,4);
-	chiEQ.resize(3);
 }
 
 CcanonicalHadronGasInfo::~CcanonicalHadronGasInfo(){
-	chi.resize(0,0);
-	chiinv.resize(0,0);
-	A.resize(0,0);
-	chiEQ.resize(0);
 }
 
 void CcanonicalHadronGasInfo::CalcQuantities(double Tset,double rhoBset,double rhoQset,double rhoSset){
@@ -71,21 +63,12 @@ void CcanonicalHadronGasInfo::CalcQuantities(double Tset,double rhoBset,double r
 CinteractingHadronGas::CinteractingHadronGas(CparameterMap *parmap_set){
 	parmap=parmap_set;
 	muB=muS=muQ=0.0;
-	chi.resize(3,3);
-	chiinv.resize(3,3);
-	chiEQ.resize(3);
-	dPdrho_T.resize(3);
-	dedrho_T.resize(3);
-	dPdrho_e.resize(3);
 	hgasinfo=new CcanonicalHadronGasInfo();
 	//hintinfo=new ChadronInteractionInfo();
 	hintinfo=new ChIntInfo_Scott(parmap);
 }
 
 CinteractingHadronGas::~CinteractingHadronGas(){
-	chi.resize(0,0);
-	chiinv.resize(0,0);
-	chiEQ.resize(0);
 	//delete chi;
 	//delete 	chiinv;
 	//delete chiEQ;
@@ -111,11 +94,15 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	P=hgasinfo->P+hintinfo->P;
 	s=hgasinfo->s+hintinfo->s;
 	f=hgasinfo->f+hintinfo->f;
-	Eigen::MatrixXd dedrho(3,3);
+	Eigen::Matrix<double,3,3> dedrho;
 	
-	dedrho=hgasinfo->chiinv*hgasinfo->chiEQ;
-	dedrho=dedrho+hintinfo->dedrho;
-	chiEQ=chi*dedrho;
+	cout << hgasinfo->chiEQ << endl;
+	
+	cout << hgasinfo->chiinv << endl;
+	exit(1);
+	//dedrho=hgasinfo->chiinv*hgasinfo->chiEQ;
+	//dedrho=dedrho+hintinfo->dedrho;
+	//chiEQ=chi*dedrho;
 	
 	dedt_rho=hgasinfo->chiEE-hgasinfo->chiEQ.transpose()*hgasinfo->chiinv*hgasinfo->chiEQ;
 	dedt_rho+=hintinfo->dedT;
@@ -170,8 +157,8 @@ void CinteractingHadronGas::CalcQuantitiesVsEpsilon(double epsilontarget,double 
 	//4D Newton's Method
 	// Here rhoII refers to rho_u-rho_d = 2*I3 and mu[1]=muII/2
 	double rhoII,rhoIItarget,smb,cmb,Tf,epsilonh,epsilon,muII_h,muB_h,muS_h;
-	Eigen::MatrixXd A(4,4);
-	Eigen::VectorXd dmu(4),drho(4);
+	Eigen::Matrix<double,4,4> A;
+	Eigen::Vector<double,4> dmu,drho;
 	int ntries=0;
 	
 	rhoIItarget=2*rhoQtarget-rhoBtarget-rhoStarget;
