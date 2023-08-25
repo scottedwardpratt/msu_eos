@@ -9,9 +9,6 @@ ChadronInteractionInfo::ChadronInteractionInfo(){
 }
 
 ChadronInteractionInfo::ChadronInteractionInfo(CparameterMap *parmap_set){
-	chiinv.resize(3,3);
-	dedrho.resize(3);
-	dmudT.resize(3);
 	parmap=parmap_set;
 }
 	
@@ -21,9 +18,6 @@ void ChadronInteractionInfo::CalcQuantities(double T,double rhoB,double rhoQ,dou
 }
 
 ChIntInfo_Scott::ChIntInfo_Scott(CparameterMap *parmap){
-	chiinv.resize(3,3);
-	dedrho.resize(3);
-	dmudT.resize(3);
 	A.resize(2);
 	rhoA.resize(2);
 	A[0]=parmap->getD("MSU_EOS_FORMA_A0",-0.02);

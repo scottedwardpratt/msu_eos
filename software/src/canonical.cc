@@ -18,9 +18,11 @@ void CcanonicalHadronGasInfo::CalcQuantities(double Tset,double rhoBset,double r
 	rhoQ=rhoQset;
 	rhoS=rhoSset;
 	double rhoII,rhoIIcheck,rhoBcheck,rhoScheck,muII;
+	printf("HOWDY A\n");
 	if(sampler==NULL){
 		CLog::Fatal("In CcanonicalHadronGasInfo::CalcHadronicQuantities, sampler pointer is still NULL\n");
 	}
+	printf("HOWDY B\n");
 	rhoII=2*rhoQ-rhoB-rhoS;
 	if(fabs(sampler->Tf-T)>0.0001 || !sampler->forMU0_calculated){
 		//CLog::Info("Resetting sampler T in CcanonicalHadronGasInfo to "+to_string(T)+"\n");
@@ -77,6 +79,8 @@ CinteractingHadronGas::~CinteractingHadronGas(){
 }
 
 void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rhoQset,double rhoSset){
+	printf("howdy a\n");
+	cout << hgasinfo->sampler << endl;
 	double dedt_rho;
 	int a,b;
 	T=Tset;
@@ -84,6 +88,7 @@ void CinteractingHadronGas::CalcQuantities(double Tset,double rhoBset,double rho
 	rhoQ=rhoQset;
 	rhoS=rhoSset;
 	hgasinfo->CalcQuantities(T,rhoB,rhoQ,rhoS);
+	printf("howdy b\n");
 	hintinfo->CalcQuantities(T,rhoB,rhoQ,rhoS);
 	chiinv=hgasinfo->chiinv+hintinfo->chiinv;
 	chi=chiinv.inverse();
