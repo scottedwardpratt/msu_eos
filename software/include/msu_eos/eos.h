@@ -24,10 +24,10 @@ namespace MSU_EOS{
 	double &dedti,double &p4overE3i,double &Ji,bool use_pole_mass);
 
 	// Gets Quantities for all resonances
-	void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma);
+	void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix<double,3,3> &chi,Eigen::Matrix<double,3,3> &sigma);
 
   double CalcBalanceNorm(CresList *reslist,int pid,int pidprime,double taumax);
-  void CalcConductivity(CresList *reslist,double T,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma);
+  void CalcConductivity(CresList *reslist,double T,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix<double,3,3> &chi,Eigen::Matrix<double,3,3> &sigma);
   double GetSigma2(double T,double mass);
   double GetLambda(double T,CresList *reslist,double P,double epsilon);
   static bool USE_POLE_MASS=false;
@@ -41,8 +41,9 @@ public:
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
 	double rhoB,rhoQ,rhoS,nhadrons;
 	double epsilon,P,s,f;// f is Helmholtz free energy density
-	Eigen::MatrixXd chi,chiinv,A;
-	Eigen::VectorXd chiEQ;
+	Eigen::Matrix<double,3,3> chi,chiinv;
+	Eigen::Matrix<double,4,4> A;
+	Eigen::Vector<double,3> chiEQ;
 	double chiEE;
 	Csampler *sampler;
 	void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS);
@@ -58,10 +59,9 @@ public:
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
 	double rhoB,rhoQ,rhoS;
 	double epsilon,P,f,s;// f is Helmholtz free energy density
-	Eigen::MatrixXd chiinv;
-	//double chiEE,chiEB,chiEQ,chiES;
+	Eigen::Matrix<double,3,3> chiinv;
 	double dedT;
-	Eigen::VectorXd dedrho,dmudT;
+	Eigen::Vector<double,3> dedrho,dmudT;
 	virtual void CalcQuantities(double T,double rhoB,double rhoQ,double rhoS); // in terms of density and temperature
 };
 
@@ -82,10 +82,10 @@ public:
 	double T, muB,muQ,muS,mu_u,mu_d,mu_s;
 	double rhoB,rhoQ,rhoS;
 	double epsilon,P,s,f,cs2;// f is Helmholtz free energy density, cs2 is the speed of sound
-	Eigen::MatrixXd chi,chiinv;
-	Eigen::VectorXd chiEQ;
+	Eigen::Matrix<double,3,3> chi,chiinv;
+	Eigen::Vector<double,3> chiEQ;
 	double chiEE;
-	Eigen::VectorXd dPdrho_T,dedrho_T,dPdrho_e;
+	Eigen::Vector<double,3> dPdrho_T,dedrho_T,dPdrho_e;
 	double dPdT_rho,dedT_rho,dPde_rho;
 
 	CcanonicalHadronGasInfo *hgasinfo;

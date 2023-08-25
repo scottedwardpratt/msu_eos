@@ -27,6 +27,7 @@ int main(){
 		rhoB=8*0.16/11.0;
 		rhoQ=0.4*rhoB;
 		rhoS=0.0;
+		printf("T=%g\n",T);
 		IntHadronGas->CalcQuantities(T,rhoB,rhoQ,rhoS);
 		IntHadronGas->PrintQuantities();
 	}
