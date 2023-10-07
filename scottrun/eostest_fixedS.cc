@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 // This makes a dummy hyper-element then creates particles and tests yield and energy of created partilces of specific pid
 
 int main(){
@@ -31,7 +30,7 @@ int main(){
 	
 	printf("   T   rhoB  epsilon    P   s/rhoB    cs2    chiEE/s  chiPP/s chiEB/s chiEQ/s chiES/s chiBB/s  chiQQ/s  chiSS/s\n");
 	
-	for(rhoB=rhoB0;rhoB<1.0;rhoB+=0.03){
+	for(rhoB=rhoB0;rhoB<1.0;rhoB+=0.025){
 		rhoQ=0.4*rhoB;
 		
 		do{
@@ -63,8 +62,10 @@ int main(){
 		chi=IntHadronGas->chi;
 		cs2=IntHadronGas->cs2;
 		
-		printf("%6.4f %6.4f %6.4f %6.4f %7.4f %7.4f  %7.4f %7.4f %7.4f %7.4f %7.4f   %7.4f %7.4f %7.4f\n",
-		T,rhoB,epsilon,P,s/rhoB,cs2,chiEE/s,chiPP/s,chiEB/s,chiEQ/s,chiES/s,chi(0,0)/s,chi(1,1)/s,chi(2,2)/s);
+		//printf("%6.4f %6.4f %6.4f %6.4f %7.4f %7.4f  %7.4f %7.4f %7.4f %7.4f %7.4f   %7.4f %7.4f %7.4f\n",
+		//T,rhoB,epsilon,P,s/rhoB,cs2,chiEE/s,chiPP/s,chiEB/s,chiEQ/s,chiES/s,chi(0,0)/s,chi(1,1)/s,chi(2,2)/s);
+		printf("%6.4f %6.4f %6.4f %7.4f %7.4f %7.4f\n",
+		rhoB,T,epsilon,cs2,rhoB/s,(P+epsilon)*T/s);
 		
 		//IntHadronGas->PrintQuantities();
 	}

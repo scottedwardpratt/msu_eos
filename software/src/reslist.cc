@@ -1,6 +1,7 @@
 #include "msu_eos/resonances.h"
 #include "msu_commonutils/constants.h"
 #include "msu_commonutils/log.h"
+using namespace NMSUPratt;
 
 double CresList::MIN_DECAY_WIDTH=0.0001;
 char *CresList::message=new char[CLog::CHARLENGTH];

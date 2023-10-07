@@ -2,6 +2,7 @@
 #include "msu_commonutils/constants.h"
 #include "msu_commonutils/log.h"
 using namespace std;
+using namespace NMSUPratt;
 
 void CresList::ReadResInfo(){
 	//Cmerge *merge;

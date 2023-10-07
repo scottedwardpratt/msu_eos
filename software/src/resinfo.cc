@@ -2,6 +2,7 @@
 #include "msu_eos/resonances.h"
 #include "msu_commonutils/constants.h"
 #include "msu_commonutils/log.h"
+using namespace NMSUPratt;
 
 
 Crandy *CresInfo::randy=NULL;

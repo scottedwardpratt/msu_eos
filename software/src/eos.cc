@@ -3,6 +3,7 @@
 #include "msu_commonutils/constants.h"
 #include "msu_eos/resonances.h"
 //using namespace MSU_EOS;
+using namespace NMSUPratt;
 
 void MSU_EOS::freegascalc_onespecies_finitewidth(double T,CresInfo *resinfo,double &epsilon,double &P,double &dens,double &dedt){
 	int iE,nE;

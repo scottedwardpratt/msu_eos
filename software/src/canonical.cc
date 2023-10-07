@@ -3,6 +3,7 @@
 #include "msu_commonutils/log.h"
 #include "msu_sampler/sampler.h"
 #include "msu_eos/eos.h"
+using namespace NMSUPratt;
 
 CcanonicalHadronGasInfo::CcanonicalHadronGasInfo(){
 	muB=muS=muQ=0.0;
