@@ -4,12 +4,13 @@
 #include "msu_sampler/sampler.h"
 
 using namespace std;
+using namespace NMSUPratt;
 
 
 // This makes a dummy hyper-element then creates particles and tests yield and energy of created partilces of specific pid
 
 int main(){
-	double T0=0.05,T,delT=0.01,oldP=-1.0,P;
+	double T0=0.10,T,delT=0.001,oldP=-1.0,P;
 	double rhoB,rhoQ,rhoS;
 	Crandy *randy=new Crandy(-1234);
 	string parfilename="parameters/parameters.txt";
@@ -25,11 +26,10 @@ int main(){
 	rhoQ=0.4*rhoB;
 	rhoS=0.0;	
 	
-	for(T=T0;T<0.171;T+=delT){
+	for(T=T0;T<0.11;T+=delT){
 		oldP=-1.0;
 		printf("--------- T=%g -----------\n",T);
 		for(rhoB=0.05;rhoB<1.0;rhoB+=0.02){
-		
 			IntHadronGas->CalcQuantities(T,rhoB,rhoQ,rhoS,sampler);
 			//IntHadronGas->PrintQuantities();
 			P=IntHadronGas->P;

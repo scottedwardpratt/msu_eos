@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 set(GITHOME_MSU $ENV{GITHOME_MSU})
 
 project(EoSTest CXX)
@@ -35,6 +35,21 @@ add_dependencies(eostest extern_msu_eos)
 add_dependencies(eostest extern_msu_commonutils)
 target_link_libraries(eostest msu_sampler msu_commonutils msu_eos ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY} ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a ${GITHOME_MSU}/msu_eos/software/lib/libmsu_eos.a ${GITHOME_MSU}/msu_sampler/software/lib/libmsu_sampler.a)
 ########
+
+#######
+set(SOURCE_FILES ./chitest.cc)
+SET_SOURCE_FILES_PROPERTIES(chitest.cc
+	PROPERTIES OBJECT_DEPENDS ${GITHOME_MSU}/msu_sampler/software/lib/libmsu_sampler.a)
+SET_SOURCE_FILES_PROPERTIES(chitest.cc
+	PROPERTIES OBJECT_DEPENDS ${GITHOME_MSU}/msu_eos/software/lib/libmsu_eos.a)
+SET_SOURCE_FILES_PROPERTIES(chitest.cc
+	PROPERTIES OBJECT_DEPENDS ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a)
+	  
+add_executable(chitest ${SOURCE_FILES})
+add_dependencies(chitest extern_msu_sampler)
+add_dependencies(chitest extern_msu_eos)
+add_dependencies(chitest extern_msu_commonutils)
+target_link_libraries(chitest msu_sampler msu_commonutils msu_eos ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY} ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a ${GITHOME_MSU}/msu_eos/software/lib/libmsu_eos.a ${GITHOME_MSU}/msu_sampler/software/lib/libmsu_sampler.a)
 
 #######
 set(SOURCE_FILES ./eostest_vsepsilon.cc)

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 set(GITHOME_MSU $ENV{GITHOME_MSU})
 project(msu_eos CXX C)
 
