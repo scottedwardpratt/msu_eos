@@ -7,7 +7,7 @@ add_custom_target(extern_msu_commonutils COMMAND make WORKING_DIRECTORY ${GITHOM
 add_custom_target(extern_msu_sampler COMMAND make WORKING_DIRECTORY ${GITHOME_MSU}/msu_sampler/software)
 add_custom_target(extern_msu_eos COMMAND make WORKING_DIRECTORY ${GITHOME_MSU}/msu_eos/software)
 
-set(CMAKE_CXX_FLAGS "-O2 -Wall -std=c++17 -mfpmath=sse")
+set(CMAKE_CXX_FLAGS "-W -Wall -march=native -std=c++17 -O2")
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(GSL REQUIRED)
