@@ -7,7 +7,7 @@ using namespace NMSUPratt;
 
 Crandy *CresInfo::randy=NULL;
 int CresInfo::NSPECTRAL=100;
-string CresInfo::SFDIRNAME="../progdata/resinfo/spectralfunctions";
+string CresInfo::SFDIRNAME="progdata/resinfo/spectralfunctions";
 char *CresInfo::message=new char[CLog::CHARLENGTH];
 CresList *CresInfo::reslist=NULL;
 
