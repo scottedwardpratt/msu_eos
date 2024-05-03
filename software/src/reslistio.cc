@@ -7,10 +7,12 @@ using namespace NMSUPratt;
 void CresList::ReadResInfo(){
 	//Cmerge *merge;
 	int motherpid,pid;
-	bool nophotons;
+	bool nophotons,ignore_resonance;
 	double bmax,bsum;
 	int ires,ichannelres,ichannel,ibody,nbodies,NResonances,LDecay=1;
-	int ires1,ires2,iresflip;
+	int degenread,baryonread,sread,cread,bread,Iread,qread,nchannelsread;
+	double mread,wread;
+	int ires1,ires2,iresflip,Nu,Nd,Ns,Nc,Nb;
 	//int netq,netb,nets;
 	string name, filename;
 	CresInfo *resinfo=NULL,*aresinfo=NULL,*temp=NULL;
@@ -35,120 +37,193 @@ void CresList::ReadResInfo(){
 	ires=0;
 	NResonances=0;
 	while(fscanf(resinfofile," %d",&pid)!=EOF && NResonances<20000){
+		fscanf(resinfofile,"%s %lf %lf %d %d %d %d %d %d %d %d",
+		cname,&mread,&wread,&degenread,&baryonread,&sread,&cread,&bread,&Iread,&qread,&nchannelsread);
+		if(cread==0 && bread==0     // neglect any charmed or bottomed hadrons
+			&& pid!=441 && pid!=443 && pid!=445 && pid!=100441 && pid!=100441
+		&& pid!=551 && pid!=553 && pid!=555 && pid!=100553 && pid!=200553
+		&& abs(baryonread)<2){
+				
 			resinfo=new CresInfo();
 			NResonances+=1;
 			resinfo->pid=pid;
-
-		//main reading
-		fscanf(resinfofile, "%s %lf %lf %d %d %d %d %d %d %d %d", cname,&resinfo->mass,&resinfo->width,&resinfo->degen,&resinfo->baryon,&resinfo->strange,&resinfo->charm,&resinfo->bottom,&resinfo->total_isospin,&resinfo->charge,&resinfo->nchannels);
-		resinfo->minmass=resinfo->mass;
-		if(resinfo->width<MIN_DECAY_WIDTH){
-			resinfo->decay=false;
-			decayinfo=NULL;
-		}
-		else{
-			resinfo->decay=true;
-			decayinfo=new CdecayInfo();
-		}
-		cname[int(strlen(cname))-1]='\0';
-		resinfo->name=cname;
-		resinfo->q[0]=resinfo->baryon+resinfo->charge-resinfo->charm;
-		resinfo->q[1]=2.0*resinfo->baryon+resinfo->strange-resinfo->charge;
-		resinfo->q[2]=-resinfo->strange;
+			resinfo->mass=mread;
+			resinfo->width=wread;
+			resinfo->degen=degenread;
+			resinfo->baryon=baryonread;
+			resinfo->strange=sread;
+			resinfo->charm=cread;
+			resinfo->bottom=bread;
+			resinfo->total_isospin=Iread;
+			resinfo->charge=cread;
+			resinfo->nchannels=nchannelsread;
 		
-		//decay reading
-		//reads into map values: will access for decays when done creating resonances
-		for (ichannel=0; ichannel<resinfo->nchannels; ichannel++){
-			if(resinfo->decay){
-				fscanf(resinfofile, "%d %d %lf %d %d %d %d %d %d", 
+			//fscanf(resinfofile,"%s %lf %lf %d %d %d %d %d %d %d %d", cname,&resinfo->mass,&resinfo->width,&resinfo->degen,&resinfo->baryon,&resinfo->strange,&resinfo->charm,&resinfo->bottom,&resinfo->total_isospin,&resinfo->charge,&resinfo->nchannels);
+			resinfo->minmass=resinfo->mass;
+			if(resinfo->width<MIN_DECAY_WIDTH){
+				resinfo->decay=false;
+				decayinfo=NULL;
+			}
+			else{
+				resinfo->decay=true;
+				decayinfo=new CdecayInfo();
+			}
+			cname[int(strlen(cname))-1]='\0';
+			resinfo->name=cname;
+			resinfo->q[0]=resinfo->baryon+resinfo->charge-resinfo->charm+resinfo->bottom;
+			resinfo->q[1]=2.0*resinfo->baryon+resinfo->strange-resinfo->charge;
+			resinfo->q[2]=-resinfo->strange;
+		
+		
+			if(abs(resinfo->baryon)==1){
+				Nu=abs(resinfo->q[0]);
+				Nd=abs(resinfo->q[1]);
+				Ns=abs(resinfo->q[2]);
+				Nc=abs(resinfo->charm);
+				Nb=abs(resinfo->bottom);
+			}
+			else{
+				if(resinfo->q[0]==0 && resinfo->q[1]==0 && resinfo->strange==0 && resinfo->charm==0 && resinfo->bottom==0){
+					if(pid==331 || pid==10331 || pid==100331 || pid==333 || 100333 || 337){
+						Ns=2; Nu=Nd=Nc=Nb=0;
+					}
+					if(pid==443 || pid==10441 || pid==100441){
+						Nc=2; Nu=Nd=Ns=Nb=0;
+					}
+					if(pid==551 || pid==553){
+						Nb=2; Nu=Nd=Ns=Nc=0;
+					}
+				}
+				else{
+					Nu=abs(resinfo->q[0]);
+					Nd=abs(resinfo->q[1]);
+					Ns=abs(resinfo->q[2]);
+					Nc=abs(resinfo->charm);
+					Nb=abs(resinfo->bottom);
+				}
+			}
+			resinfo->Nu=Nu;
+			resinfo->Nd=Nd;
+			resinfo->Ns=Ns;
+			resinfo->Nc=Nc;
+			resinfo->Nb=Nb;
+			
+			//decay reading
+			//reads into map values: will access for decays when done creating resonances
+			for (ichannel=0; ichannel<resinfo->nchannels; ichannel++){
+				if(resinfo->decay){
+					fscanf(resinfofile, "%d %d %lf %d %d %d %d %d %d", 
 					&dummy_int,&decayinfo->Nparts[ichannel],&decayinfo->branchratio[ichannel],&decayinfo->products[ichannel][0],
 					&decayinfo->products[ichannel][1],&decayinfo->products[ichannel][2],&decayinfo->products[ichannel][3],
 					&decayinfo->products[ichannel][4],&decayinfo->d_L[ichannel]);
+				}
+				else{
+					fscanf(resinfofile,"%d",&dummy_int);
+					fgets(dummy,200,resinfofile);
+				}
+			}
+			if(resinfo->decay){
+				bsum=0.0;
+				for(ichannel=0;ichannel<resinfo->nchannels;ichannel++)
+					bsum+=decayinfo->branchratio[ichannel];
+				for(ichannel=0;ichannel<resinfo->nchannels;ichannel++)
+					decayinfo->branchratio[ichannel]=decayinfo->branchratio[ichannel]/bsum;
+			}
+
+			if(resinfo->pid!=22){ //copied from old pid
+				resinfo->ires=ires;
+				ires+=1;
+			}
+			if(resinfo->baryon!=0){
+				resinfo->SetBtype();
+			}
+
+			resinfo->branchlist.clear();
+
+			ignore_resonance=false;
+			if(!IGNORE_CHARM_BOTTOM || (resinfo->Nc==0 && resinfo->Nb==0)){
+				resmap.insert(CresInfoPair(resinfo->pid,resinfo));
+				massmap.insert(CresMassPair(resinfo->mass,resinfo));
+				if(resinfo->decay){
+					if(!IGNORE_CHARM_BOTTOM || (resinfo->Nc==0 && resinfo->Nb==0)){
+						decaymap.insert(CdecayInfoPair(resinfo->pid,decayinfo));
+					}
+				}
 			}
 			else{
-				fscanf(resinfofile,"%d",&dummy_int);
+				ignore_resonance=true;
+				delete resinfo;
+				if(resinfo->decay){
+					delete decayinfo;
+				}
+				delete resinfo;
+			}
+			
+			//antiparticle creation
+
+			if(!ignore_resonance){
+				if(resinfo->baryon!=0){
+					aresinfo=new CresInfo();
+					NResonances+=1;
+
+					aresinfo->pid=-resinfo->pid;
+					aresinfo->mass=resinfo->mass;
+					aresinfo->minmass=resinfo->minmass;
+					aresinfo->width=resinfo->width;
+					aresinfo->degen=resinfo->degen;
+					aresinfo->baryon=-resinfo->baryon;
+					aresinfo->strange=-resinfo->strange;
+					aresinfo->charm=-resinfo->charm;
+					aresinfo->bottom=-resinfo->bottom;
+					aresinfo->charge=-resinfo->charge;
+					aresinfo->decay=resinfo->decay;
+					aresinfo->nchannels=resinfo->nchannels;
+					aresinfo->q[0]=-resinfo->q[0];
+					aresinfo->q[1]=-resinfo->q[1];
+					aresinfo->q[2]=-resinfo->q[2];
+					cname[int(strlen(cname))-1]='\0';
+					string s(cname);
+					aresinfo->name="Anti-"+s;
+					aresinfo->ires=ires;
+					ires+=1;
+					resmap.insert(CresInfoPair(aresinfo->pid,aresinfo));
+					massmap.insert(CresMassPair(aresinfo->mass,aresinfo));
+					if(aresinfo->decay)
+						adecayinfo=new CdecayInfo();
+					else
+						adecayinfo=NULL;
+
+					aresinfo->branchlist.clear();
+					if(aresinfo->decay){
+						for(ichannel=0; ichannel<resinfo->nchannels; ichannel++) { //reads into map values: will access for decays when done creating resonances
+							for(int i=0; i<decayinfo->Nparts[ichannel]; i++) {
+								pid=decayinfo->products[ichannel][i];
+								if(pid!=0){
+									temp=GetResInfoPtr(pid);
+									if(temp->baryon==0 && temp->charge==0 && temp->strange==0){
+										adecayinfo->products[ichannel][i]=decayinfo->products[ichannel][i];
+									}
+									else{
+										adecayinfo->products[ichannel][i]=-decayinfo->products[ichannel][i];
+									}
+								}
+								else adecayinfo->products[ichannel][i]=0;
+							}
+							adecayinfo->Nparts[ichannel]=decayinfo->Nparts[ichannel];
+							adecayinfo->branchratio[ichannel]=decayinfo->branchratio[ichannel];
+							adecayinfo->d_L[ichannel]=decayinfo->d_L[ichannel];
+						}
+						decaymap.insert(CdecayInfoPair(aresinfo->pid,adecayinfo));
+					}
+
+				}
+			}
+		}
+		else{
+			char dummy[200];
+			for(ichannel=0;ichannel<nchannelsread;ichannel++){
 				fgets(dummy,200,resinfofile);
 			}
-		}
-		if(resinfo->decay){
-			bsum=0.0;
-			for(ichannel=0;ichannel<resinfo->nchannels;ichannel++)
-				bsum+=decayinfo->branchratio[ichannel];
-			for(ichannel=0;ichannel<resinfo->nchannels;ichannel++)
-				decayinfo->branchratio[ichannel]=decayinfo->branchratio[ichannel]/bsum;
-		}
-
-		if(resinfo->pid!=22){ //copied from old pid
-			resinfo->ires=ires;
-			ires+=1;
-		}
-		if(resinfo->baryon!=0){
-			resinfo->SetBtype();
-		}
-
-		resinfo->branchlist.clear();
-
-		resmap.insert(CresInfoPair(resinfo->pid,resinfo));
-		massmap.insert(CresMassPair(resinfo->mass,resinfo));
-		if(resinfo->decay)
-			decaymap.insert(CdecayInfoPair(resinfo->pid,decayinfo));
-
-		//antiparticle creation
-
-		if(resinfo->baryon!=0){
-			aresinfo=new CresInfo();
-			NResonances+=1;
-
-			aresinfo->pid=-resinfo->pid;
-			aresinfo->mass=resinfo->mass;
-			aresinfo->minmass=resinfo->minmass;
-			aresinfo->width=resinfo->width;
-			aresinfo->degen=resinfo->degen;
-			aresinfo->baryon=-resinfo->baryon;
-			aresinfo->strange=-resinfo->strange;
-			aresinfo->charm=-resinfo->charm;
-			aresinfo->bottom=-resinfo->bottom;
-			aresinfo->charge=-resinfo->charge;
-			aresinfo->decay=resinfo->decay;
-			aresinfo->nchannels=resinfo->nchannels;
-			aresinfo->q[0]=-resinfo->q[0];
-			aresinfo->q[1]=-resinfo->q[1];
-			aresinfo->q[2]=-resinfo->q[2];
-			cname[int(strlen(cname))-1]='\0';
-			string s(cname);
-			aresinfo->name="Anti-"+s;
-			aresinfo->ires=ires;
-			ires+=1;
-			resmap.insert(CresInfoPair(aresinfo->pid,aresinfo));
-			massmap.insert(CresMassPair(aresinfo->mass,aresinfo));
-			if(aresinfo->decay)
-				adecayinfo=new CdecayInfo();
-			else
-				adecayinfo=NULL;
-
-			aresinfo->branchlist.clear();
-			if(aresinfo->decay){
-				for(ichannel=0; ichannel<resinfo->nchannels; ichannel++) { //reads into map values: will access for decays when done creating resonances
-					for(int i=0; i<decayinfo->Nparts[ichannel]; i++) {
-						pid=decayinfo->products[ichannel][i];
-						if(pid!=0){
-							temp=GetResInfoPtr(pid);
-							if(temp->baryon==0 && temp->charge==0 && temp->strange==0){
-								adecayinfo->products[ichannel][i]=decayinfo->products[ichannel][i];
-							}
-							else{
-								adecayinfo->products[ichannel][i]=-decayinfo->products[ichannel][i];
-							}
-						}
-						else adecayinfo->products[ichannel][i]=0;
-					}
-					adecayinfo->Nparts[ichannel]=decayinfo->Nparts[ichannel];
-					adecayinfo->branchratio[ichannel]=decayinfo->branchratio[ichannel];
-					adecayinfo->d_L[ichannel]=decayinfo->d_L[ichannel];
-				}
-				decaymap.insert(CdecayInfoPair(aresinfo->pid,adecayinfo));
-			}
-
 		}
 	}
 	fclose(resinfofile);

@@ -50,6 +50,7 @@ namespace NMSUPratt{
 		int total_isospin;
 		int q[3];
 		int up,down;
+		int Nu,Nd,Ns,Nc,Nb;
 		int G_Parity;
 		bool decay; //false if stable, true if can decay. check if true
 		int Btype;
@@ -130,6 +131,7 @@ namespace NMSUPratt{
 		static double MIN_DECAY_WIDTH;
 		static char *message;
 		bool readmsu;
+		bool IGNORE_CHARM_BOTTOM;
 	};
 
 	class CdecayInfo{
