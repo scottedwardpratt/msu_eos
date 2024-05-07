@@ -63,6 +63,7 @@ void CresInfo::Print(){
 	snprintf(message,CLog::CHARLENGTH,"+++++++ ID=%d, M=%g, M_min=%g, %s +++++++++\n",pid,mass,minmass,name.c_str());
 	snprintf(message,CLog::CHARLENGTH,"%sGamma=%g, Degen=%d, Decay=%d\n",message,width,degen,int(decay));
 	snprintf(message,CLog::CHARLENGTH,"%sQ=%d, B=%d, S=%d, Charm=%d, G_parity=%d\n",message,charge,baryon,strange,charm,G_Parity);
+	snprintf(message,CLog::CHARLENGTH,"%sNu=%d, Nd=%d, Ns=%d, Nc=%d, Nb=%d\n",message,Nu,Nd,Ns,Nc,Nb);
 	CLog::Info(message);
 }
 

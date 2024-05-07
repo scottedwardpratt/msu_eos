@@ -39,11 +39,12 @@ void CresList::ReadResInfo(){
 	while(fscanf(resinfofile," %d",&pid)!=EOF && NResonances<20000){
 		fscanf(resinfofile,"%s %lf %lf %d %d %d %d %d %d %d %d",
 		cname,&mread,&wread,&degenread,&baryonread,&sread,&cread,&bread,&Iread,&qread,&nchannelsread);
+		fgets(dummy,200,resinfofile);
 		if(cread==0 && bread==0     // neglect any charmed or bottomed hadrons
 			&& pid!=441 && pid!=443 && pid!=445 && pid!=100441 && pid!=100441
-		&& pid!=551 && pid!=553 && pid!=555 && pid!=100553 && pid!=200553
+				&& pid!=551 && pid!=553 && pid!=555 && pid!=100553 && pid!=200553
 		&& abs(baryonread)<2){
-				
+			
 			resinfo=new CresInfo();
 			NResonances+=1;
 			resinfo->pid=pid;
@@ -55,9 +56,9 @@ void CresList::ReadResInfo(){
 			resinfo->charm=cread;
 			resinfo->bottom=bread;
 			resinfo->total_isospin=Iread;
-			resinfo->charge=cread;
+			resinfo->charge=qread;
 			resinfo->nchannels=nchannelsread;
-		
+			
 			//fscanf(resinfofile,"%s %lf %lf %d %d %d %d %d %d %d %d", cname,&resinfo->mass,&resinfo->width,&resinfo->degen,&resinfo->baryon,&resinfo->strange,&resinfo->charm,&resinfo->bottom,&resinfo->total_isospin,&resinfo->charge,&resinfo->nchannels);
 			resinfo->minmass=resinfo->mass;
 			if(resinfo->width<MIN_DECAY_WIDTH){
@@ -73,8 +74,7 @@ void CresList::ReadResInfo(){
 			resinfo->q[0]=resinfo->baryon+resinfo->charge-resinfo->charm+resinfo->bottom;
 			resinfo->q[1]=2.0*resinfo->baryon+resinfo->strange-resinfo->charge;
 			resinfo->q[2]=-resinfo->strange;
-		
-		
+			
 			if(abs(resinfo->baryon)==1){
 				Nu=abs(resinfo->q[0]);
 				Nd=abs(resinfo->q[1]);
@@ -107,7 +107,8 @@ void CresList::ReadResInfo(){
 			resinfo->Ns=Ns;
 			resinfo->Nc=Nc;
 			resinfo->Nb=Nb;
-			
+			//
+			//
 			//decay reading
 			//reads into map values: will access for decays when done creating resonances
 			for (ichannel=0; ichannel<resinfo->nchannels; ichannel++){
@@ -137,7 +138,6 @@ void CresList::ReadResInfo(){
 			if(resinfo->baryon!=0){
 				resinfo->SetBtype();
 			}
-
 			resinfo->branchlist.clear();
 
 			ignore_resonance=false;
@@ -152,7 +152,6 @@ void CresList::ReadResInfo(){
 			}
 			else{
 				ignore_resonance=true;
-				delete resinfo;
 				if(resinfo->decay){
 					delete decayinfo;
 				}
@@ -215,12 +214,15 @@ void CresList::ReadResInfo(){
 						}
 						decaymap.insert(CdecayInfoPair(aresinfo->pid,adecayinfo));
 					}
-
+					aresinfo->Nu=Nu;
+					aresinfo->Nd=Nd;
+					aresinfo->Ns=Ns;
+					aresinfo->Nc=Nc;
+					aresinfo->Nb=Nb;
 				}
 			}
 		}
 		else{
-			char dummy[200];
 			for(ichannel=0;ichannel<nchannelsread;ichannel++){
 				fgets(dummy,200,resinfofile);
 			}
@@ -269,7 +271,6 @@ void CresList::ReadResInfo(){
 				if(nophotons){
 					ires1=bptr->resinfo[0]->ires;
 					ires2=bptr->resinfo[1]->ires;
-					//bptr->resinfo[0]->Print();
 					if(ires1>ires2){
 						iresflip=ires1; ires1=ires2; ires2=iresflip;
 					}
