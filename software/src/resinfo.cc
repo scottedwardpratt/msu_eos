@@ -65,6 +65,9 @@ void CresInfo::Print(){
 	snprintf(message,CLog::CHARLENGTH,"%sQ=%d, B=%d, S=%d, Charm=%d, G_parity=%d\n",message,charge,baryon,strange,charm,G_Parity);
 	snprintf(message,CLog::CHARLENGTH,"%sNu=%d, Nd=%d, Ns=%d, Nc=%d, Nb=%d\n",message,Nu,Nd,Ns,Nc,Nb);
 	CLog::Info(message);
+	if(decay){
+	snprintf(message,CLog::CHARLENGTH,"SpectralFunctionArraySizes=%lu,%lu\n",SpectVec.size(),SpectEVec.size());
+		}
 }
 
 void CresInfo::CalcMinMass(){
@@ -119,6 +122,9 @@ void CresInfo::ReadSpectralFunction(){
 			SpectEVec.push_back(E);
 			GammaVec.push_back(Gamma);
 			SpectVec.push_back(SF);
+			if(ires==385){
+				printf("%lu: %g %g %g %g\n",SpectEVec.size(),E,Gamma,SF,netprob);
+			}
 		}
 		fscanf(fptr,"%lf",&E);
 	}while(!feof(fptr));
