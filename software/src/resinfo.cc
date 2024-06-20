@@ -122,9 +122,6 @@ void CresInfo::ReadSpectralFunction(){
 			SpectEVec.push_back(E);
 			GammaVec.push_back(Gamma);
 			SpectVec.push_back(SF);
-			if(ires==385){
-				printf("%lu: %g %g %g %g\n",SpectEVec.size(),E,Gamma,SF,netprob);
-			}
 		}
 		fscanf(fptr,"%lf",&E);
 	}while(!feof(fptr));
