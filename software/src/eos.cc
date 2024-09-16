@@ -169,6 +169,7 @@ double MSU_EOS::GetJi(double T,double mass,double dens){
 
 void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji){
 	CLog::Info("MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji) is deprecated.  Will not correctly handle USE_POLE_MASS variable! Use alt function that inputs bool use_pole_mass.)\n");
+	CLog::Info("T="+to_string(T)+"\n");
 	double degen,m;
 	if(resinfo->charm==0){
 		m=resinfo->mass;
@@ -194,7 +195,8 @@ void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsi
 	}
 }
 
-void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji,bool use_pole_mass){
+void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,
+double &densi,double &dedti,double &p4overE3i,double &Ji,bool use_pole_mass){
 	double degen,m;
 	if(resinfo->charm==0){
 		m=resinfo->mass;
@@ -220,7 +222,8 @@ void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsi
 	}
 }
 
-void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma){
+void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,
+double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma){
 	CresInfo *resinfoptr;
 	CresInfoMap::iterator rpos;
 	double s;
@@ -236,7 +239,7 @@ void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double 
 		resinfoptr=rpos->second;
 		ires=resinfoptr->ires;
 		if(resinfoptr->pid!=22){
-			GetEpsilonPDens_OneSpecies(T,resinfoptr,epsiloni,pi,densi,dedti,p4overE3i,Ji);
+			GetEpsilonPDens_OneSpecies(T,resinfoptr,epsiloni,pi,densi,dedti,p4overE3i,Ji,true);
 			P+=pi;
 			epsilon+=epsiloni;
 			s+=(pi+epsiloni)/T;
@@ -246,6 +249,44 @@ void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double 
 				for(b=0;b<3;b++){
 					chi(a,b)+=densi*resinfoptr->q[a]*resinfoptr->q[b];
 					sigma(a,b)+=Ji*resinfoptr->q[a]*resinfoptr->q[b];
+				}
+			}
+		}
+		else{
+			density[ires]=0.0;
+		}
+	}
+}
+
+void MSU_EOS::CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,
+double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma,bool use_pole_mass,
+double fugacity_u,double fugacity_d,double fugacity_s){
+	CresInfo *resinfo;
+	CresInfoMap::iterator rpos;
+	double s,fugacity;
+	double pi,epsiloni,densi,dedti,p4overE3i,Ji;
+	Eigen::Matrix3d sigmai(3,3);
+	int a,b,ires;
+	if(density.size()!=reslist->resmap.size())
+		density.resize(reslist->resmap.size());
+	chi.setZero();
+	sigma.setZero();
+	P=epsilon=s=nh=0.0;
+	for(rpos=reslist->resmap.begin();rpos!=reslist->resmap.end();rpos++){
+		resinfo=rpos->second;
+		ires=resinfo->ires;
+		if(resinfo->pid!=22){
+			fugacity=pow(fugacity_u,abs(resinfo->Nu))*pow(fugacity_d,abs(resinfo->Nd))*pow(fugacity_s,abs(resinfo->Ns));
+			GetEpsilonPDens_OneSpecies(T,resinfo,epsiloni,pi,densi,dedti,p4overE3i,Ji,use_pole_mass);
+			P+=pi*fugacity;
+			epsilon+=epsiloni*fugacity;
+			s+=(pi+epsiloni)*fugacity/T-densi*log(fugacity);
+			nh+=densi*fugacity;
+			density[ires]=densi*fugacity;
+			for(a=0;a<3;a++){
+				for(b=0;b<3;b++){
+					chi(a,b)+=densi*fugacity*resinfo->q[a]*resinfo->q[b];
+					sigma(a,b)+=Ji*fugacity*resinfo->q[a]*resinfo->q[b];
 				}
 			}
 		}

@@ -27,6 +27,9 @@ namespace NMSUPratt{
 
 		// Gets Quantities for all resonances
 		void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix<double,3,3> &chi,Eigen::Matrix<double,3,3> &sigma);
+		void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,
+		double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma,bool use_pole_mass,
+		double fugacity_u,double fugacity_d,double fugacity_s);
 
 		double CalcBalanceNorm(CresList *reslist,int pid,int pidprime,double taumax);
 		void CalcConductivity(CresList *reslist,double T,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix<double,3,3> &chi,Eigen::Matrix<double,3,3> &sigma);
