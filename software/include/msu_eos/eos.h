@@ -30,6 +30,8 @@ namespace NMSUPratt{
 		void CalcEoSandTransportCoefficients(double T,CresList *reslist,double &epsilon,double &P,
 		double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma,bool use_pole_mass,
 		double fugacity_u,double fugacity_d,double fugacity_s);
+		void CalcTFromEpsilonFugacity(double epsilon,
+		double fugacity_u,double fugacity_d,double fugacity_s,CresList *reslist,bool use_pole_mass,double &T);
 
 		double CalcBalanceNorm(CresList *reslist,int pid,int pidprime,double taumax);
 		void CalcConductivity(CresList *reslist,double T,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix<double,3,3> &chi,Eigen::Matrix<double,3,3> &sigma);
@@ -99,6 +101,22 @@ namespace NMSUPratt{
 		void CalcQuantitiesVsEpsilon(double epsilonset,double rhoBset,double rhoQset,double rhoSset,Csampler *sampler_set);
 		void PrintQuantities();
 	};
+	
+	class CeosVsEpsilonInfo{
+		// stored as function of energy density,merge lattice and hadron gas
+		CeosVsEpsilonInfo();
+		int Nepsilon,Nfugacities;
+		double depsilon;
+		double Tc_h,Tc_qgp;
+		vector<double> T_h,T_lattice,s_h,s_lattice;  // Equilibrium quant.s for given quantities 
+		vector<double> chill_h,chiud_h,chils,chiss_h;
+		vector<double> chireductionll_h,chireductionud_h,chireductionls_h,chireductionss_h;
+		// At T=Th, reduction of chi relative to f=1
+		void ReadHadronInfo();
+		void ReadLatticeInfo();
+		void GetChi(double epsilon);
+		
+	}
 
 }
 
