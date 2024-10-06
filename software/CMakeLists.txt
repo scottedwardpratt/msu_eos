@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 set(GITHOME_MSU $ENV{GITHOME_MSU})
-project(msu_eos CXX C)
+project(msu_eos CXX)
 
 set(CMAKE_CXX_FLAGS "-W -Wall -march=native -std=c++17 -O2")
 message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS})

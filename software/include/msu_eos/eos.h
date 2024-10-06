@@ -104,7 +104,8 @@ namespace NMSUPratt{
 	
 	class CeosVsEpsilonInfo{
 		// stored as function of energy density,merge lattice and hadron gas
-		CeosVsEpsilonInfo();
+		CresList *reslist;
+		CeosVsEpsilonInfo(CresList *reslist_set);
 		int Nepsilon,Nfugacities;
 		double depsilon;
 		double Tc_h,Tc_qgp;
@@ -112,11 +113,13 @@ namespace NMSUPratt{
 		vector<double> chill_h,chiud_h,chils,chiss_h;
 		vector<double> chireductionll_h,chireductionud_h,chireductionls_h,chireductionss_h;
 		// At T=Th, reduction of chi relative to f=1
+		void SetHadronArrays();
+		void SetLatticeArrays();
+		void GetChi(double epsilon);
 		void ReadHadronInfo();
 		void ReadLatticeInfo();
-		void GetChi(double epsilon);
 		
-	}
+	};
 
 }
 

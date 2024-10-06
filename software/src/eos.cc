@@ -258,6 +258,7 @@ double &nh,vector<double> &density,Eigen::Matrix3d &chi,Eigen::Matrix3d &sigma){
 	}
 }
 
+// only works for rhoB=0
 void MSU_EOS::CalcTFromEpsilonFugacity(double epsilon_target,
 double fugacity_u,double fugacity_d,double fugacity_s,CresList *reslist,bool use_pole_mass,double &T){
 	CresInfo *resinfo;
@@ -285,7 +286,6 @@ double fugacity_u,double fugacity_d,double fugacity_s,CresList *reslist,bool use
 			}
 		}
 		offby=epsilon-epsilon_target;
-		printf("Tguess=%g: offby=%g, epsilon=%g\n",Tguess,offby,epsilon);
 		delT=-offby/dedt;
 		if(fabs(delT)>0.05)
 			delT=0.05*delT/fabs(delT);
