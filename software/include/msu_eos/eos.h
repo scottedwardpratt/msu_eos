@@ -115,9 +115,6 @@ namespace NMSUPratt{
 		// At T=Th, reduction of chi relative to f=1
 		void SetHadronArrays();
 		void SetLatticeArrays();
-		void GetChi(double epsilon);
-		void ReadHadronInfo();
-		void ReadLatticeInfo();
 		
 	};
 
