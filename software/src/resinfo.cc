@@ -500,11 +500,12 @@ void CresInfo::SetBtype(){
 			Btype=7;
 	}
 	if(Btype==-1 && baryon!=0){
-		snprintf(message,CLog::CHARLENGTH,"Btype=%d, pid=%d\n",Btype,pid);
-		snprintf(message,CLog::CHARLENGTH,"%s%s=%d, total_isospin=%d\n",message,name.c_str(),s,total_isospin);
-		snprintf(message,CLog::CHARLENGTH,"%scharm=%d, bottom=%d\n",message,charm,bottom);
-		CLog::Info(message);
 		Print();
-		exit(1);		
+		snprintf(message,CLog::CHARLENGTH,"Btype=%d, pid=%d\n",Btype,pid);
+		CLog::Info(message);
+		snprintf(message,CLog::CHARLENGTH,"%s=%d, total_isospin=%d\n",name.c_str(),s,total_isospin);
+		CLog::Info(message);
+		snprintf(message,CLog::CHARLENGTH,"charm=%d, bottom=%d\n",charm,bottom);
+		CLog::Fatal(message);		
 	}
 }
