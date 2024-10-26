@@ -37,8 +37,8 @@ namespace NMSUPratt{
 		void CalcConductivity(CresList *reslist,double T,double &epsilon,double &P,double &nh,vector<double> &density,Eigen::Matrix<double,3,3> &chi,Eigen::Matrix<double,3,3> &sigma);
 		double GetSigma2(double T,double mass);
 		double GetLambda(double T,CresList *reslist,double P,double epsilon);
-		static bool USE_POLE_MASS;
-		static double MIN_WIDTH;
+		bool USE_POLE_MASS;
+		double MIN_WIDTH;
 	};
 
 	class CcanonicalHadronGasInfo{

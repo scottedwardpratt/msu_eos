@@ -174,7 +174,9 @@ double MSU_EOS::GetJi(double T,double mass,double dens){
 void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji){
 	CLog::Info("MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji) is deprecated.  Will not correctly handle USE_POLE_MASS variable! Use alt function that inputs bool use_pole_mass.)\n");
 	CLog::Info("T="+to_string(T)+"\n");
+	USE_POLE_MASS=true;
 	double degen,m;
+	MIN_WIDTH=0.001;
 	if(resinfo->charm==0){
 		m=resinfo->mass;
 		degen=resinfo->degen;
@@ -202,6 +204,7 @@ void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsi
 void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,
 double &densi,double &dedti,double &p4overE3i,double &Ji,bool use_pole_mass){
 	double degen,m;
+	MIN_WIDTH=0.001;
 	if(resinfo->charm==0){
 		m=resinfo->mass;
 		degen=resinfo->degen;
