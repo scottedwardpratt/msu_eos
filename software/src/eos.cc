@@ -3,6 +3,10 @@
 #include "msu_commonutils/constants.h"
 #include "msu_eos/resonances.h"
 //using namespace MSU_EOS;
+
+bool MSU_EOS::USE_POLE_MAXX=false;
+bool MSU_EOS::MIN_WIDTH=0.001;
+
 using namespace NMSUPratt;
 
 void MSU_EOS::freegascalc_onespecies_finitewidth(double T,CresInfo *resinfo,double &epsilon,double &P,double &dens,double &dedt){
