@@ -61,9 +61,12 @@ void CresInfo::PrintBranchInfo(){
 
 void CresInfo::Print(){
 	snprintf(message,CLog::CHARLENGTH,"+++++++ ID=%d, M=%g, M_min=%g, %s +++++++++\n",pid,mass,minmass,name.c_str());
-	snprintf(message,CLog::CHARLENGTH,"%sGamma=%g, Degen=%d, Decay=%d\n",message,width,degen,int(decay));
-	snprintf(message,CLog::CHARLENGTH,"%sQ=%d, B=%d, S=%d, Charm=%d, G_parity=%d\n",message,charge,baryon,strange,charm,G_Parity);
-	snprintf(message,CLog::CHARLENGTH,"%sNu=%d, Nd=%d, Ns=%d, Nc=%d, Nb=%d\n",message,Nu,Nd,Ns,Nc,Nb);
+	CLog::Info(message);
+	snprintf(message,CLog::CHARLENGTH,"Gamma=%g, Degen=%d, Decay=%d\n",width,degen,int(decay));
+	CLog::Info(message);
+	snprintf(message,CLog::CHARLENGTH,"Q=%d, B=%d, S=%d, Charm=%d, G_parity=%d\n",charge,baryon,strange,charm,G_Parity);
+	CLog::Info(message);
+	snprintf(message,CLog::CHARLENGTH,"Nu=%d, Nd=%d, Ns=%d, Nc=%d, Nb=%d\n",Nu,Nd,Ns,Nc,Nb);
 	CLog::Info(message);
 	if(decay){
 	snprintf(message,CLog::CHARLENGTH,"SpectralFunctionArraySizes=%lu,%lu\n",SpectVec.size(),SpectEVec.size());
@@ -104,16 +107,16 @@ void CresInfo::CalcMinMass(){
 }
 
 void CresInfo::ReadSpectralFunction(){
-	char filename[CLog::CHARLENGTH];
+	string filename;
 	double E,Gamma,SF,netprob;
 	if(abs(baryon)!=0)
-		snprintf(filename,CLog::CHARLENGTH,"%s/%d.txt",SFDIRNAME.c_str(),abs(pid));
+		filename=SFDIRNAME+"/"+to_string(abs(pid))+".txt";
 	else
-		snprintf(filename,CLog::CHARLENGTH,"%s/%d.txt",SFDIRNAME.c_str(),pid);
+		filename=SFDIRNAME+"/"+to_string(pid)+".txt";
 	FILE *fptr=fopen(filename,"r");
 	if (fptr==NULL) {
-		snprintf(message,CLog::CHARLENGTH,"Can't open spectral function file, filename=%s\n",filename);
-		CLog::Fatal(message);
+		snprintf(message,CLog::CHARLENGTH,"Can't open spectral function file, filename=%s\n",filename.c_str());
+		CLog::Fatal("Can't open spectral function file, filename="+filename+"\n");
 	}
 	fscanf(fptr,"%lf",&E);
 	do{
