@@ -4,8 +4,8 @@
 #include "msu_eos/resonances.h"
 //using namespace MSU_EOS;
 
-bool MSU_EOS::USE_POLE_MASS=false;
-bool MSU_EOS::MIN_WIDTH=0.001;
+//bool MSU_EOS::USE_POLE_MASS=false;
+//bool MSU_EOS::MIN_WIDTH=0.001;
 
 using namespace NMSUPratt;
 
