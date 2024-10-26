@@ -2,12 +2,9 @@
 #include "msu_commonutils/sf.h"
 #include "msu_commonutils/constants.h"
 #include "msu_eos/resonances.h"
-//using namespace MSU_EOS;
-
-//bool MSU_EOS::USE_POLE_MASS=false;
-//bool MSU_EOS::MIN_WIDTH=0.001;
 
 using namespace NMSUPratt;
+using namespace MSU_EOS;
 
 void MSU_EOS::freegascalc_onespecies_finitewidth(double T,CresInfo *resinfo,double &epsilon,double &P,double &dens,double &dedt){
 	int iE,nE;
@@ -174,13 +171,12 @@ double MSU_EOS::GetJi(double T,double mass,double dens){
 void MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji){
 	CLog::Info("MSU_EOS::GetEpsilonPDens_OneSpecies(double T,CresInfo *resinfo,double &epsiloni,double &Pi,double &densi,double &dedti,double &p4overE3i,double &Ji) is deprecated.  Will not correctly handle USE_POLE_MASS variable! Use alt function that inputs bool use_pole_mass.)\n");
 	CLog::Info("T="+to_string(T)+"\n");
-	USE_POLE_MASS=true;
 	double degen,m;
-	MIN_WIDTH=0.001;
+	double MIN_WIDTH=0.001;
 	if(resinfo->charm==0){
 		m=resinfo->mass;
 		degen=resinfo->degen;
-		if(resinfo->width>MIN_WIDTH && resinfo->decay && !MSU_EOS::USE_POLE_MASS){
+		if(resinfo->width>MIN_WIDTH && resinfo->decay && !USE_POLE_MASS){
 			freegascalc_onespecies_finitewidth(T,resinfo,epsiloni,Pi,densi,dedti,p4overE3i,Ji);
 		}
 		else{
