@@ -113,7 +113,7 @@ void CresInfo::ReadSpectralFunction(){
 		filename=SFDIRNAME+"/"+to_string(abs(pid))+".txt";
 	else
 		filename=SFDIRNAME+"/"+to_string(pid)+".txt";
-	FILE *fptr=fopen(filename,"r");
+	FILE *fptr=fopen(filename.c_str(),"r");
 	if (fptr==NULL) {
 		snprintf(message,CLog::CHARLENGTH,"Can't open spectral function file, filename=%s\n",filename.c_str());
 		CLog::Fatal("Can't open spectral function file, filename="+filename+"\n");
